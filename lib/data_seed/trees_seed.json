@@ -1,0 +1,17 @@
+[
+{
+"id": "diag_cam_no_img",
+"inicio": "n1",
+"nodos": [
+{"id":"n1","pregunta":"¿La cámara enciende?","tipo":"bool","si":"n2","no":"s1"},
+{"id":"n2","pregunta":"¿PoE 48V?","tipo":"bool","si":"n3","no":"s2"},
+{"id":"n3","pregunta":"¿Link activo?","tipo":"bool","si":"s3","no":"s4"}
+],
+"salidas": [
+{"id":"s1","diagnostico":"Sin alimentación. Verificar PoE/fuente."},
+{"id":"s2","diagnostico":"PoE insuficiente. Probar otro switch/injector."},
+{"id":"s3","diagnostico":"Red OK. Revisar IP/NVR/firmware."},
+{"id":"s4","diagnostico":"Capa física. Cambiar cable/puerto/rosca RJ45."}
+]
+}
+]

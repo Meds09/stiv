@@ -1,0 +1,13 @@
+[
+{
+"id": "cam_ip_no_imagen",
+"categoria": "Cámaras IP",
+"titulo": "Cámara no muestra imagen",
+"descripcion": "La cámara no entrega video en NVR o cliente web.",
+"causas": ["Falta PoE", "Cable dañadoo", "IP duplicada", "Firmware corrupto"],
+"pruebas": ["Verificar LED", "Cambiar patch cord", "Ping a la IP", "Reiniciar"],
+"solucion": "Revisar PoE/red; asignar IP manual; reinstalar firmware.",
+"prioridad": "Alta",
+"etiquetas": ["PoE", "Hikvision", "NVR", "IP"]
+}
+]
