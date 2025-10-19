@@ -13,6 +13,7 @@ return MaterialApp.router(
 title: 'Stiv',
 theme: light,
 darkTheme: dark,
+debugShowCheckedModeBanner: false,
 routerConfig: router,
 );
 }
