@@ -1,13 +1,91 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:stiv/pages/home_page.dart';
+import 'package:stiv/shared/components/squared_tile.dart';
+import 'package:stiv/shared/components/stiv_login_button.dart';
 import 'package:stiv/shared/components/stiv_textfield.dart';
 import 'package:stiv/shared/theme/theme_data.dart';
 
-class LoginPage extends StatelessWidget {
-   LoginPage({super.key});
+class LoginPage extends StatefulWidget {
+  LoginPage({super.key});
 
-  //
-  final usernameController = TextEditingController();
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final user = FirebaseAuth.instance.currentUser;
+
+  final emailController = TextEditingController();
+
   final passwordController = TextEditingController();
+
+  void signUserIn() async {
+    //loading indicator
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
+
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+      Navigator.pop(context); //close the loading indicator
+    } on FirebaseAuthException catch (e) {
+      Navigator.pop(context); //close the loading indicator
+      if (e.code == 'user-not-found') {
+        wrongEmailMessage();
+      } else if (e.code == 'wrong-password') {
+        wrongPasswordMessage();
+      }
+    }
+  }
+
+  void wrongEmailMessage() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Error'),
+          content: const Text('Usuario no encontrado.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void wrongPasswordMessage() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Error'),
+          content: const Text('Contraseña incorrecta.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,10 +93,12 @@ class LoginPage extends StatelessWidget {
       backgroundColor: AppColors.background,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding:  EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom + 16),
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+          ),
           child: Column(
             children: [
-              const SizedBox(height: 50),
+              const SizedBox(height: 30),
               // Icono de la aplicación
               Icon(Icons.lock, size: 100, color: AppColors.primary),
               const SizedBox(height: 20),
@@ -35,33 +115,32 @@ class LoginPage extends StatelessWidget {
               // Subtítulo
               Text(
                 "Tu asistente de diagnostico técnico inteligente",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: AppColors.textSecondary,
-                  
-                )
+                style: TextStyle(fontSize: 16, color: AppColors.textSecondary),
               ),
               const SizedBox(height: 20),
 
-            // Input de usuario
-             StivTextField(
+              // Input de usuario
+              StivTextField(
                 hintText: 'Usuario o Correo electrónico',
                 obscureText: false,
-                controller: usernameController,
+                controller: emailController,
                 suffixIcon: IconButton(
                   icon: Icon(Icons.person, color: AppColors.textSecondary),
                   onPressed: () {},
                 ),
-             ),
+              ),
 
-             const SizedBox(height: 15),
-             // Input de contraseña
+              const SizedBox(height: 15),
+              // Input de contraseña
               StivTextField(
                 hintText: 'Contraseña',
                 obscureText: true,
                 controller: passwordController,
                 suffixIcon: IconButton(
-                  icon: Icon(Icons.visibility_off, color: AppColors.textSecondary),
+                  icon: Icon(
+                    Icons.visibility_off,
+                    color: AppColors.textSecondary,
+                  ),
                   onPressed: () {},
                 ),
               ),
@@ -81,13 +160,74 @@ class LoginPage extends StatelessWidget {
                         decoration: TextDecoration.underline,
                       ),
                     ),
-    
                   ],
                 ),
               ),
 
-            SizedBox(height: 25),
-            ]          
+              SizedBox(height: 25),
+              // Botón de inicio de sesión
+              LoginButton(onTap: signUserIn),
+
+              const SizedBox(height: 20),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Divider(thickness: 0.5, color: Colors.grey[400]),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Text(
+                        " O inicia sesión con ",
+                        style: TextStyle(
+                          color: AppColors.textSecondary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+
+                    Expanded(
+                      child: Divider(thickness: 0.5, color: Colors.grey[400]),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SquareTile(imagePath: 'assets/images/google.png'),
+                  const SizedBox(width: 25),
+                  SquareTile(imagePath: 'assets/images/apple.png'),
+                ],
+              ),
+
+              const SizedBox(height: 20),
+              // Registro
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "¿No tienes una cuenta?",
+                    style: TextStyle(color: AppColors.textSecondary),
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    "Registrate ahora",
+                    style: TextStyle(
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),

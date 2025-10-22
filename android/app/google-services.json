@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "289477125911",
+    "project_id": "stiv-7b758",
+    "storage_bucket": "stiv-7b758.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:289477125911:android:fef83e49fb28e62c0c3952",
+        "android_client_info": {
+          "package_name": "com.example.stiv"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1IeR2WfzBy-xbUMDGj4FX7IXcTtwU6zY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
