@@ -8,7 +8,7 @@ import 'package:stiv/shared/components/stiv_textfield.dart';
 import 'package:stiv/shared/theme/theme_data.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({super.key});
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -36,24 +36,31 @@ class _LoginPageState extends State<LoginPage> {
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
+      if(!mounted) return;
       Navigator.pop(context); //close the loading indicator
     } on FirebaseAuthException catch (e) {
+      if(!mounted) return;
       Navigator.pop(context); //close the loading indicator
-      if (e.code == 'user-not-found') {
-        wrongEmailMessage();
-      } else if (e.code == 'wrong-password') {
-        wrongPasswordMessage();
-      }
+      if (e.code == 'invalid-credential') {
+        wrongCredentialsMessage();
+      } 
     }
+
   }
 
-  void wrongEmailMessage() {
+  void wrongCredentialsMessage() {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: const Text('Error'),
-          content: const Text('Usuario no encontrado.'),
+          icon: const Icon(
+            Icons.error,
+            color: Colors.red,
+          ),
+          content: const Text(
+            textAlign: TextAlign.center,
+            'Usuario o contraseña invalidas.'),
           actions: [
             TextButton(
               onPressed: () {
@@ -67,25 +74,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void wrongPasswordMessage() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Error'),
-          content: const Text('Contraseña incorrecta.'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+
 
   @override
   Widget build(BuildContext context) {
