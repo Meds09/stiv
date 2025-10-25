@@ -1,7 +1,5 @@
-import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stiv/router.dart';
 import 'package:stiv/services/storage_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';

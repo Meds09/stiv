@@ -6,14 +6,16 @@ class StivTextField extends StatelessWidget {
   final String hintText;
   final bool obscureText;
   final IconButton? suffixIcon;
+  final Color? borderColor;
 
   const StivTextField({
     super.key,
     required this.hintText,
     required this.obscureText,
     required this.controller,
+    this.borderColor,
     this.suffixIcon,
-    });
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,17 +27,16 @@ class StivTextField extends StatelessWidget {
         obscureText: obscureText,
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: AppColors.border),
+            borderSide: BorderSide(color: borderColor ?? Colors.grey),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: AppColors.primary),
+            borderSide: BorderSide(color: borderColor ?? AppColors.primary),
           ),
           fillColor: AppColors.surface,
           filled: true,
           hintText: hintText,
           hintStyle: TextStyle(color: AppColors.textSecondary),
-          suffixIcon: suffixIcon
-          
+          suffixIcon: suffixIcon,
         ),
       ),
     );

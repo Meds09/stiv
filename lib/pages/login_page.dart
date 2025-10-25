@@ -1,14 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:stiv/pages/home_page.dart';
 import 'package:stiv/shared/components/squared_tile.dart';
 import 'package:stiv/shared/components/stiv_login_button.dart';
 import 'package:stiv/shared/components/stiv_textfield.dart';
 import 'package:stiv/shared/theme/theme_data.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  final Function()? onTap;
+
+  const LoginPage({super.key, required this.onTap});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -78,6 +78,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -87,10 +88,10 @@ class _LoginPageState extends State<LoginPage> {
           ),
           child: Column(
             children: [
-              const SizedBox(height: 30),
-              // Icono de la aplicación
-              Icon(Icons.lock, size: 100, color: AppColors.primary),
               const SizedBox(height: 20),
+              // Icono de la aplicación
+              Image(image: const AssetImage('assets/images/stiv-logo-blue.png'), height: 120, width: 120,),
+            
               // Título
               Text(
                 'Bienvenido a Stiv',
@@ -119,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
 
-              const SizedBox(height: 15),
+              const SizedBox(height: 10),
               // Input de contraseña
               StivTextField(
                 hintText: 'Contraseña',
@@ -155,7 +156,7 @@ class _LoginPageState extends State<LoginPage> {
 
               SizedBox(height: 25),
               // Botón de inicio de sesión
-              LoginButton(onTap: signUserIn),
+              LoginButton(onTap: signUserIn, buttonText: 'Iniciar sesión'),
 
               const SizedBox(height: 20),
 
@@ -206,12 +207,15 @@ class _LoginPageState extends State<LoginPage> {
                     style: TextStyle(color: AppColors.textSecondary),
                   ),
                   const SizedBox(width: 8),
-                  Text(
-                    "Registrate ahora",
-                    style: TextStyle(
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.underline,
+                  GestureDetector(
+                    onTap: widget.onTap,
+                    child: Text(
+                      "Registrate ahora",
+                      style: TextStyle(
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline,
+                      ),
                     ),
                   ),
                 ],
