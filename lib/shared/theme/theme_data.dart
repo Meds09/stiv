@@ -108,7 +108,7 @@ class AppButtonStyles {
   );
 
   static final ButtonStyle tonal = FilledButton.styleFrom(
-    backgroundColor: AppColors.primary.withOpacity(.12),
+    backgroundColor: AppColors.primary.withValues(alpha: 0.12),
     foregroundColor: AppColors.primary,
     shape: RoundedRectangleBorder(borderRadius: AppRadii.brMd),
     padding: const EdgeInsets.symmetric(

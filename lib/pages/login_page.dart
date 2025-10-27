@@ -111,6 +111,7 @@ class _LoginPageState extends State<LoginPage> {
 
               // Input de usuario
               StivTextField(
+                label: 'Usuario o Correo electrónico',
                 hintText: 'Usuario o Correo electrónico',
                 obscureText: false,
                 controller: emailController,
@@ -123,6 +124,7 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 10),
               // Input de contraseña
               StivTextField(
+                label: 'Contraseña',
                 hintText: 'Contraseña',
                 obscureText: true,
                 controller: passwordController,

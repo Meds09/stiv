@@ -7,11 +7,13 @@ class StivTextField extends StatelessWidget {
   final bool obscureText;
   final IconButton? suffixIcon;
   final Color? borderColor;
+  final String label;
 
   const StivTextField({
     super.key,
     required this.hintText,
     required this.obscureText,
+    required this.label,
     required this.controller,
     this.borderColor,
     this.suffixIcon,
@@ -21,11 +23,12 @@ class StivTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
-      child: TextField(
+      child: TextFormField(
         style: TextStyle(color: AppColors.textPrimary),
         controller: controller,
         obscureText: obscureText,
         decoration: InputDecoration(
+          labelText: label,
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: borderColor ?? Colors.grey),
           ),

@@ -1,8 +1,8 @@
 import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:stiv/shared/components/squared_tile.dart';
+import 'package:stiv/shared/components/stiv_email_formfield.dart';
 import 'package:stiv/shared/components/stiv_login_button.dart';
 import 'package:stiv/shared/components/stiv_textfield.dart';
 import 'package:stiv/shared/theme/theme_data.dart';
@@ -17,8 +17,6 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  // Dentro de build():
-
   final user = FirebaseAuth.instance.currentUser;
 
   final nameController = TextEditingController();
@@ -57,14 +55,12 @@ class _RegisterPageState extends State<RegisterPage> {
         passwordsmatch = match;
       });
     } else {
-      // Si las contraseñas no cambiaron, igual forzamos rebuild
-      // para que canSubmit responda a nombre/correo.
       setState(() {});
     }
   }
 
  Future<void> signUserUp() async {
-  if (_isLoading) return;           // evita doble toque
+  if (_isLoading) return;          
   setState(() => _isLoading = true);
 
   try {
@@ -74,9 +70,6 @@ class _RegisterPageState extends State<RegisterPage> {
           password: passwordController.text.trim(),
         )
         .timeout(const Duration(seconds: 25)); // evita cuelgues infinitos
-
-    // si navegas tras crear cuenta, hazlo aquí (sin dialog que cerrar)
-    // Navigator.pushReplacementNamed(context, '/home');
 
   } on TimeoutException {
     _showErrorMessage('La solicitud tardó demasiado. Verifica tu conexión.');
@@ -121,29 +114,6 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  void wrongCredentialsMessage() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Error'),
-          icon: const Icon(Icons.error, color: Colors.red),
-          content: const Text(
-            textAlign: TextAlign.center,
-            'Usuario o contraseña invalidas.',
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   @override
   void dispose() {
@@ -209,6 +179,7 @@ class _RegisterPageState extends State<RegisterPage> {
             
                   // Input de full name
                   StivTextField(
+                    label: 'Nombre completo',
                     hintText: 'Nombre completo',
                     obscureText: false,
                     controller: nameController,
@@ -217,16 +188,18 @@ class _RegisterPageState extends State<RegisterPage> {
                   const SizedBox(height: 10),
             
                   // Input de email
-                  StivTextField(
+                  StivEmailTextField(
+                    controller:  emailController,
                     hintText: 'Correo electrónico',
                     obscureText: false,
-                    controller: emailController,
-                  ),
+                    label: 'Correo electrónico',
+                    ),
             
                   const SizedBox(height: 10),
             
                   // password textfield
                   StivTextField(
+                    label: 'Contraseña',
                     hintText: 'Contraseña',
                     obscureText: true,
                     controller: passwordController,
@@ -246,6 +219,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       StivTextField(
+                        label: 'Confirmar contraseña',
                         hintText: 'Confirmar contraseña',
                         obscureText: true,
                         borderColor: showPasswordMismatch
