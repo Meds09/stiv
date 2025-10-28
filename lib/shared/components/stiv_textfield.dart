@@ -8,10 +8,14 @@ class StivTextField extends StatelessWidget {
   final IconButton? suffixIcon;
   final Color? borderColor;
   final String label;
+  final TextStyle? labelStyle;
+  final TextStyle? floatingLabelStyle;
 
   const StivTextField({
     super.key,
     required this.hintText,
+    required this.labelStyle,
+    required this.floatingLabelStyle,
     required this.obscureText,
     required this.label,
     required this.controller,
@@ -24,13 +28,15 @@ class StivTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
       child: TextFormField(
-        style: TextStyle(color: AppColors.textPrimary),
+        style: TextStyle(color: AppColors.textSecondary),
         controller: controller,
         obscureText: obscureText,
         decoration: InputDecoration(
           labelText: label,
+          labelStyle: labelStyle,
+          floatingLabelStyle: floatingLabelStyle ?? labelStyle,
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: borderColor ?? Colors.grey),
+            borderSide: BorderSide(color: borderColor ?? AppColors.primaryDark),
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: borderColor ?? AppColors.primary),

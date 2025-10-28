@@ -43,7 +43,6 @@ class _RegisterPageState extends State<RegisterPage> {
     ]) {
       c.addListener(_onFieldsChanged);
     }
-   
   }
 
   void _onFieldsChanged() {
@@ -59,40 +58,40 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
- Future<void> signUserUp() async {
-  if (_isLoading) return;          
-  setState(() => _isLoading = true);
+  Future<void> signUserUp() async {
+    if (_isLoading) return;
+    setState(() => _isLoading = true);
 
-  try {
-    await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(
-          email: emailController.text.trim(),
-          password: passwordController.text.trim(),
-        )
-        .timeout(const Duration(seconds: 25)); // evita cuelgues infinitos
-
-  } on TimeoutException {
-    _showErrorMessage('La solicitud tardó demasiado. Verifica tu conexión.');
-  } on FirebaseAuthException catch (e) {
-    switch (e.code) {
-      case 'email-already-in-use':
-        _showErrorMessage('El correo electrónico ya está registrado.');
-        break;
-      case 'invalid-email':
-        _showErrorMessage('El formato del correo no es válido.');
-        break;
-      case 'weak-password':
-        _showErrorMessage('La contraseña es demasiado débil.');
-        break;
-      default:
-        _showErrorMessage('Error al crear la cuenta. Inténtalo de nuevo.');
+    try {
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+            email: emailController.text.trim(),
+            password: passwordController.text.trim(),
+          )
+          .timeout(const Duration(seconds: 25)); // evita cuelgues infinitos
+    } on TimeoutException {
+      _showErrorMessage('La solicitud tardó demasiado. Verifica tu conexión.');
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case 'email-already-in-use':
+          _showErrorMessage('El correo electrónico ya está registrado.');
+          break;
+        case 'invalid-email':
+          _showErrorMessage('El formato del correo no es válido.');
+          break;
+        case 'weak-password':
+          _showErrorMessage('La contraseña es demasiado débil.');
+          break;
+        default:
+          _showErrorMessage('Error al crear la cuenta. Inténtalo de nuevo.');
+      }
+    } catch (_) {
+      _showErrorMessage('Ocurrió un error inesperado.');
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
     }
-  } catch (_) {
-    _showErrorMessage('Ocurrió un error inesperado.');
-  } finally {
-    if (mounted) setState(() => _isLoading = false);
   }
-}
+
   void _showErrorMessage(String message) {
     showDialog(
       context: context,
@@ -113,7 +112,6 @@ class _RegisterPageState extends State<RegisterPage> {
       },
     );
   }
-
 
   @override
   void dispose() {
@@ -159,7 +157,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     height: 120,
                     width: 120,
                   ),
-            
+
                   // title
                   Text(
                     'Bienvenido a Stiv',
@@ -173,33 +171,49 @@ class _RegisterPageState extends State<RegisterPage> {
                   // subtitle
                   Text(
                     "Crea una cuenta para continuar",
-                    style: TextStyle(fontSize: 16, color: AppColors.textSecondary),
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: AppColors.textSecondary,
+                    ),
                   ),
                   const SizedBox(height: 20),
-            
+
                   // Input de full name
                   StivTextField(
+                    floatingLabelStyle: TextStyle(color: AppColors.textPrimary),
+                    labelStyle: TextStyle(color: AppColors.textSecondary),
                     label: 'Nombre completo',
                     hintText: 'Nombre completo',
                     obscureText: false,
                     controller: nameController,
                   ),
-            
+
                   const SizedBox(height: 10),
-            
+
                   // Input de email
                   StivEmailTextField(
-                    controller:  emailController,
+                    controller: emailController,
                     hintText: 'Correo electrónico',
                     obscureText: false,
                     label: 'Correo electrónico',
-                    ),
-            
+                  ),
+
                   const SizedBox(height: 10),
-            
+
                   // password textfield
                   StivTextField(
                     label: 'Contraseña',
+                    labelStyle: TextStyle(
+                      color: showPasswordMismatch
+                          ? Colors.redAccent
+                          : AppColors.textSecondary,
+                    ),
+                    floatingLabelStyle: TextStyle(
+                      color: showPasswordMismatch
+                          ? Colors.redAccent
+                          : AppColors.textSecondary,
+                    ),
+
                     hintText: 'Contraseña',
                     obscureText: true,
                     controller: passwordController,
@@ -211,20 +225,28 @@ class _RegisterPageState extends State<RegisterPage> {
                       onPressed: () {},
                     ),
                   ),
-            
+
                   const SizedBox(height: 10),
-            
+
                   // confirmn password textfield
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       StivTextField(
                         label: 'Confirmar contraseña',
+                        labelStyle: TextStyle(
+                          color: showPasswordMismatch
+                              ? Colors.redAccent
+                              : AppColors.textSecondary,
+                        ),
+                        floatingLabelStyle: TextStyle(
+                          color: showPasswordMismatch
+                              ? Colors.redAccent
+                              : AppColors.textSecondary,
+                        ),
+                   
                         hintText: 'Confirmar contraseña',
                         obscureText: true,
-                        borderColor: showPasswordMismatch
-                            ? Colors.red
-                            : AppColors.textSecondary,
                         controller: confirmPasswordController,
                         suffixIcon: IconButton(
                           icon: Icon(
@@ -249,7 +271,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 child: Text(
                                   confirmErrorText,
                                   style: const TextStyle(
-                                    color: Colors.red,
+                                    color: Colors.redAccent,
                                     fontSize: 12,
                                   ),
                                 ),
@@ -257,7 +279,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ],
                   ),
-            
+
                   const SizedBox(height: 20),
                   // Botón de inicio de sesión
                   LoginButton(
@@ -265,17 +287,20 @@ class _RegisterPageState extends State<RegisterPage> {
                     buttonText: 'Registrarse',
                     disabled: !canSubmit || _isLoading,
                   ),
-            
+
                   const SizedBox(height: 10),
-            
+
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: Row(
                       children: [
                         Expanded(
-                          child: Divider(thickness: 0.5, color: Colors.grey[400]),
+                          child: Divider(
+                            thickness: 0.5,
+                            color: Colors.grey[400],
+                          ),
                         ),
-            
+
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10.0),
                           child: Text(
@@ -286,16 +311,19 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                           ),
                         ),
-            
+
                         Expanded(
-                          child: Divider(thickness: 0.5, color: Colors.grey[400]),
+                          child: Divider(
+                            thickness: 0.5,
+                            color: Colors.grey[400],
+                          ),
                         ),
                       ],
                     ),
                   ),
-            
+
                   const SizedBox(height: 20),
-            
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -304,7 +332,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       SquareTile(imagePath: 'assets/images/apple.png'),
                     ],
                   ),
-            
+
                   const SizedBox(height: 20),
                   // Registro
                   Row(
@@ -330,14 +358,13 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ],
               ),
-              
             ),
-            
+
             if (_isLoading) ...[
-          const ModalBarrier(dismissible: false, color: Colors.black26),
-          const Center(child: CircularProgressIndicator()),
+              const ModalBarrier(dismissible: false, color: Colors.black26),
+              const Center(child: CircularProgressIndicator()),
+            ],
           ],
-          ],   
         ),
       ),
     );

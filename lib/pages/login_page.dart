@@ -111,6 +111,8 @@ class _LoginPageState extends State<LoginPage> {
 
               // Input de usuario
               StivTextField(
+                floatingLabelStyle: TextStyle(color: AppColors.textPrimary),
+                labelStyle: TextStyle(color: AppColors.textSecondary),
                 label: 'Usuario o Correo electrónico',
                 hintText: 'Usuario o Correo electrónico',
                 obscureText: false,
@@ -124,6 +126,8 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 10),
               // Input de contraseña
               StivTextField(
+                floatingLabelStyle: TextStyle(color: AppColors.textPrimary),
+                labelStyle: TextStyle(color: AppColors.textSecondary),
                 label: 'Contraseña',
                 hintText: 'Contraseña',
                 obscureText: true,

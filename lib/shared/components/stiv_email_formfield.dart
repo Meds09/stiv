@@ -43,7 +43,7 @@ class StivEmailTextField extends StatelessWidget {
           labelText: label,
           enabledBorder: OutlineInputBorder(
             borderRadius: borderRadius,
-            borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+            borderSide: const BorderSide(color: AppColors.primaryDark, width: 1.0),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: borderRadius,
