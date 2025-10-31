@@ -150,12 +150,12 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               child: Column(
                 children: [
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
                   // aplication icon
                   Image(
                     image: const AssetImage('assets/images/stiv-logo-blue.png'),
-                    height: 120,
-                    width: 120,
+                    height: 100,
+                    width: 160,
                   ),
 
                   // title
@@ -180,9 +180,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
                   // Input de full name
                   StivTextField(
-                    floatingLabelStyle: TextStyle(color: AppColors.textPrimary),
-                    labelStyle: TextStyle(color: AppColors.textSecondary),
                     label: 'Nombre completo',
+                    keyboardType: TextInputType.name,
                     hintText: 'Nombre completo',
                     obscureText: false,
                     controller: nameController,
@@ -202,18 +201,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
                   // password textfield
                   StivTextField(
+                    keyboardType: TextInputType.visiblePassword,
                     label: 'Contraseña',
-                    labelStyle: TextStyle(
-                      color: showPasswordMismatch
-                          ? Colors.redAccent
-                          : AppColors.textSecondary,
-                    ),
-                    floatingLabelStyle: TextStyle(
-                      color: showPasswordMismatch
-                          ? Colors.redAccent
-                          : AppColors.textSecondary,
-                    ),
-
                     hintText: 'Contraseña',
                     obscureText: true,
                     controller: passwordController,
@@ -233,27 +222,15 @@ class _RegisterPageState extends State<RegisterPage> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       StivTextField(
+                        keyboardType: TextInputType.visiblePassword,
                         label: 'Confirmar contraseña',
-                        labelStyle: TextStyle(
-                          color: showPasswordMismatch
-                              ? Colors.redAccent
-                              : AppColors.textSecondary,
-                        ),
-                        floatingLabelStyle: TextStyle(
-                          color: showPasswordMismatch
-                              ? Colors.redAccent
-                              : AppColors.textSecondary,
-                        ),
-                   
                         hintText: 'Confirmar contraseña',
                         obscureText: true,
                         controller: confirmPasswordController,
                         suffixIcon: IconButton(
                           icon: Icon(
                             Icons.visibility_off,
-                            color: showPasswordMismatch
-                                ? Colors.red
-                                : AppColors.textSecondary,
+                            color: AppColors.textSecondary,
                           ),
                           onPressed: () {},
                         ),
@@ -304,7 +281,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10.0),
                           child: Text(
-                            " O inicia sesión con ",
+                            " O regístrate con ",
                             style: TextStyle(
                               color: AppColors.textSecondary,
                               fontWeight: FontWeight.bold,
@@ -346,7 +323,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       GestureDetector(
                         onTap: widget.onTap,
                         child: Text(
-                          "Inicia sesion ahora",
+                          "Inicia sesión ahora",
                           style: TextStyle(
                             color: AppColors.primary,
                             fontWeight: FontWeight.bold,

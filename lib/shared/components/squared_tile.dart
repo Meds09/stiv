@@ -11,13 +11,14 @@ class SquareTile extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: AppColors.textSecondary),
         borderRadius: BorderRadius.circular(16),
+        color: AppColors.surface.withValues(alpha: 0.6),
       ),
       child: Image.asset(
         imagePath,
-        height: 40,
-        width: 40,
+        height: 30,
+        width: 30,
         )
       
       ,

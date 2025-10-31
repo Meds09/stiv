@@ -30,7 +30,6 @@ class StivEmailTextField extends StatelessWidget {
     const errorColor = Colors.redAccent;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
-
       child: TextFormField(
         style: TextStyle(color: AppColors.textPrimary),
         controller: controller,
