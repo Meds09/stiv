@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:stiv/services/auth_service.dart';
 import 'package:stiv/shared/components/squared_tile.dart';
 import 'package:stiv/shared/components/stiv_login_button.dart';
 import 'package:stiv/shared/components/stiv_textfield.dart';
@@ -36,16 +37,15 @@ class _LoginPageState extends State<LoginPage> {
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
-      if(!mounted) return;
+      if (!mounted) return;
       Navigator.pop(context); //close the loading indicator
     } on FirebaseAuthException catch (e) {
-      if(!mounted) return;
+      if (!mounted) return;
       Navigator.pop(context); //close the loading indicator
       if (e.code == 'invalid-credential') {
         wrongCredentialsMessage();
-      } 
+      }
     }
-
   }
 
   void wrongCredentialsMessage() {
@@ -54,13 +54,11 @@ class _LoginPageState extends State<LoginPage> {
       builder: (context) {
         return AlertDialog(
           title: const Text('Error'),
-          icon: const Icon(
-            Icons.error,
-            color: Colors.red,
-          ),
+          icon: const Icon(Icons.error, color: Colors.red),
           content: const Text(
             textAlign: TextAlign.center,
-            'Usuario o contraseña invalidas.'),
+            'Usuario o contraseña invalidas.',
+          ),
           actions: [
             TextButton(
               onPressed: () {
@@ -74,11 +72,8 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -90,8 +85,12 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               const SizedBox(height: 20),
               // Icono de la aplicación
-              Image(image: const AssetImage('assets/images/stiv-logo-blue.png'), height: 120, width: 120,),
-            
+              Image(
+                image: const AssetImage('assets/images/stiv-logo-blue.png'),
+                height: 120,
+                width: 120,
+              ),
+
               // Título
               Text(
                 'Bienvenido a Stiv',
@@ -195,9 +194,15 @@ class _LoginPageState extends State<LoginPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SquareTile(imagePath: 'assets/images/google.png'),
+                  SquareTile(
+                    onTap: () => AuthService().signInWithGoogle(),
+                    imagePath: 'assets/images/google.png',
+                  ),
                   const SizedBox(width: 25),
-                  SquareTile(imagePath: 'assets/images/apple.png'),
+                  SquareTile(
+                    onTap: () {},
+                    imagePath: 'assets/images/apple.png',
+                  ),
                 ],
               ),
 

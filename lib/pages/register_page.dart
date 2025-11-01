@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:stiv/services/auth_service.dart';
 import 'package:stiv/shared/components/squared_tile.dart';
 import 'package:stiv/shared/components/stiv_email_formfield.dart';
 import 'package:stiv/shared/components/stiv_login_button.dart';
@@ -304,9 +305,13 @@ class _RegisterPageState extends State<RegisterPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SquareTile(imagePath: 'assets/images/google.png'),
+                      SquareTile(
+                        onTap: ()=>AuthService().signInWithGoogle(),
+                        imagePath: 'assets/images/google.png'),
                       const SizedBox(width: 25),
-                      SquareTile(imagePath: 'assets/images/apple.png'),
+                      SquareTile(
+                        onTap: () {},
+                        imagePath: 'assets/images/apple.png'),
                     ],
                   ),
 

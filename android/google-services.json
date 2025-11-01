@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "289477125911",
+    "project_id": "stiv-7b758",
+    "storage_bucket": "stiv-7b758.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:289477125911:android:fef83e49fb28e62c0c3952",
+        "android_client_info": {
+          "package_name": "com.example.stiv"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "289477125911-jd3kgqh5b6b643flbgbuujrgqq67j0n9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.stiv",
+            "certificate_hash": "e3e2241c6cda5e938e9c80529020bc39ee6cc69a"
+          }
+        },
+        {
+          "client_id": "289477125911-hfcto5v5ocn6fore42b5nhfhr689d7ji.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1IeR2WfzBy-xbUMDGj4FX7IXcTtwU6zY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "289477125911-hfcto5v5ocn6fore42b5nhfhr689d7ji.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "289477125911-qc84mkmpq01cb6p1ku2i3eiud6raj67u.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.stiv"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
