@@ -72,7 +72,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                           style: TextStyle(
                             fontSize: 14.0,
                             fontWeight: FontWeight.normal,
-                            color: Color(0xff60697b),
+                            color: Color.fromARGB(255, 36, 38, 44),
                             height: 1.5,
                           ),
                         ),
@@ -90,17 +90,19 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                         if (currentIndex < contentData.length - 1) {
                           _controller!.nextPage(
                             duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeIn,
+                            curve: Curves.easeInOut,
                           );
                         } else {
                           context.go('/login');
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF0663EF),
+                        backgroundColor:const Color(0xFF0663EF),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
+                          
                         ),
+                        
                       ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
@@ -109,7 +111,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                         ),
                         child: Text(
                           currentIndex == contentData.length - 1
-                              ? "Comenzar"
+                              ? "Comienza ahora"
                               : "Siguiente",
                           style: const TextStyle(color: Colors.white),
                         ),
@@ -136,13 +138,13 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
 
   AnimatedContainer buildDot(int index, BuildContext context) {
     return AnimatedContainer(
-      duration: Duration(microseconds: 500),
+      duration: Duration(milliseconds: 250),
       curve: Curves.easeInOut,
       height: 6,
       width: currentIndex == index ? 24 : 6,
       margin: const EdgeInsets.only(right: 7),
       decoration: BoxDecoration(
-        color: currentIndex == index ? Color(0xFF0663EF) : Color(0xFFD9D9D9),
+        color: currentIndex == index ? Color(0xFF0663EF) : Color.fromARGB(255, 82, 85, 95),
         borderRadius: BorderRadius.circular(20),
       ),
     );
