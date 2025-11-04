@@ -19,6 +19,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final firstName = (user.displayName ?? '').firstName.capitalized;
     return Scaffold(
       backgroundColor: Colors.grey[300],
       body: SafeArea(
@@ -75,8 +76,11 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Text(
-                    'Bienvenido, ${user.displayName}',
-                    style: TextStyle(color: AppColors.textPrimary),
+                    'Bienvenido, ${firstName.isNotEmpty   ? firstName : 'Usuario'}👋',
+                    style: TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 14,
+                    ),
                   ),
                 ),
                 //Message banner
@@ -86,20 +90,15 @@ class _HomePageState extends State<HomePage> {
                     'Comencemos realizando el diagnóstico de tus dispostivos',
                     style: TextStyle(
                       color: AppColors.textPrimary,
-                      fontSize: 18,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  
                 ),
                 const SizedBox(height: 24),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                  child: Divider(
-                    color: Colors.grey[350],
-                    thickness: 4,
-                    
-                  ),
+                  child: Divider(color: Colors.grey[350], thickness: 4),
                 ),
                 const SizedBox(height: 24),
               ],

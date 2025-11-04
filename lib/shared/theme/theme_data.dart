@@ -237,3 +237,21 @@ extension BuildContextThemeX on BuildContext {
   TextTheme get text => Theme.of(this).textTheme;
   ColorScheme get scheme => Theme.of(this).colorScheme;
 }
+
+extension NameFormatter on String {
+  String get firstName {
+    final parts = trim().split(' ');
+    if (parts.isEmpty) return '';
+    final first = parts.first.toLowerCase();
+    return first[0].toUpperCase() + first.substring(1);
+  }
+
+  // opcional: para formatear nombres completos (capitaliza cada palabra)
+  String get capitalized {
+    return split(' ')
+        .where((word) => word.isNotEmpty)
+        .map((word) =>
+            word[0].toUpperCase() + word.substring(1).toLowerCase())
+        .join(' ');
+  }
+}
