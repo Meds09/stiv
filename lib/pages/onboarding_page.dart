@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stiv/models/onboarding_data.dart';
+import 'package:stiv/router.dart';
 
 class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({super.key});
@@ -86,23 +88,26 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   children: [
                     const Spacer(flex: 2),
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (currentIndex < contentData.length - 1) {
                           _controller!.nextPage(
                             duration: const Duration(milliseconds: 300),
                             curve: Curves.easeInOut,
                           );
                         } else {
+                    
+                          await onboardingState.markDone();
+
+                          if (!mounted) return;
+                          // ignore: use_build_context_synchronously
                           context.go('/login');
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor:const Color(0xFF0663EF),
+                        backgroundColor: const Color(0xFF0663EF),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
-                          
                         ),
-                        
                       ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
@@ -144,7 +149,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       width: currentIndex == index ? 24 : 6,
       margin: const EdgeInsets.only(right: 7),
       decoration: BoxDecoration(
-        color: currentIndex == index ? Color(0xFF0663EF) : Color.fromARGB(255, 82, 85, 95),
+        color: currentIndex == index
+            ? Color(0xFF0663EF)
+            : Color.fromARGB(255, 82, 85, 95),
         borderRadius: BorderRadius.circular(20),
       ),
     );

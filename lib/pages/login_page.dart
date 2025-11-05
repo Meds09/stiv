@@ -22,31 +22,37 @@ class _LoginPageState extends State<LoginPage> {
 
   final passwordController = TextEditingController();
 
-  void signUserIn() async {
-    //loading indicator
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return const Center(child: CircularProgressIndicator());
-      },
-    );
+void signUserIn() async {
+  // Mostrar loader
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (_) => const Center(child: CircularProgressIndicator()),
+    useRootNavigator: true,
+  );
 
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      );
-      if (!mounted) return;
-      Navigator.pop(context); //close the loading indicator
-    } on FirebaseAuthException catch (e) {
-      if (!mounted) return;
-      Navigator.pop(context); //close the loading indicator
+  try {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
+    );
+    // No navegues aquí, GoRouter lo hace automáticamente
+  } on FirebaseAuthException catch (e) {
+    if (mounted) {
       if (e.code == 'invalid-credential') {
         wrongCredentialsMessage();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.message ?? 'Error al iniciar sesión')),
+        );
       }
     }
+  } finally {
+    // Siempre cierra el loader
+    if (mounted) Navigator.of(context, rootNavigator: true).pop();
   }
+}
+
 
   void wrongCredentialsMessage() {
     showDialog(

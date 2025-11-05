@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:stiv/pages/login_page.dart';
 import 'package:stiv/shared/theme/theme_data.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,7 +20,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final firstName = (user.displayName ?? '').firstName.capitalized;
+    final firstName = (user.displayName ?? user.email!).firstName.capitalized;
     return Scaffold(
       backgroundColor: Colors.grey[300],
       body: SafeArea(
@@ -76,10 +77,10 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Text(
-                    'Bienvenido, ${firstName.isNotEmpty   ? firstName : 'Usuario'}👋',
+                      '¡Bienvenido de nuevo! $firstName',
                     style: TextStyle(
                       color: AppColors.textSecondary,
-                      fontSize: 14,
+                      fontSize: 16,
                     ),
                   ),
                 ),
@@ -90,7 +91,7 @@ class _HomePageState extends State<HomePage> {
                     'Comencemos realizando el diagnóstico de tus dispostivos',
                     style: TextStyle(
                       color: AppColors.textPrimary,
-                      fontSize: 20,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
