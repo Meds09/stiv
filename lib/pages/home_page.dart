@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:stiv/pages/login_page.dart';
+import 'package:stiv/shared/components/card_menu.dart';
 import 'package:stiv/shared/theme/theme_data.dart';
 
 class HomePage extends StatefulWidget {
@@ -105,8 +105,26 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
             const SizedBox(height: 8),
+            //Menu card section
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                CardMenu(title: "title", icon: Icon(Icons.import_contacts_rounded)),
+                CardMenu(title: "title", icon: Icon(Icons.import_contacts_rounded)),
+              ],
+            ),
+            const SizedBox(height: 30),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                CardMenu(title: "title", icon: Icon(Icons.import_contacts_rounded)),
+                CardMenu(title: "title", icon: Icon(Icons.import_contacts_rounded)),
+              ],
+            )
+           
           ],
         ),
+        
       ),
       //stats
       //cards
