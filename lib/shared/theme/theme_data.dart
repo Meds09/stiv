@@ -84,7 +84,7 @@ class AppTextStyles {
   static const TextStyle body = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w500,
-    color: AppColors.textSecondary,
+    color: Color.fromARGB(255, 54, 61, 72),
   );
   static const TextStyle caption = TextStyle(
     fontSize: 12,

@@ -75,20 +75,38 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: Text(
-                      '¡Bienvenido de nuevo! $firstName',
-                    style: TextStyle(
-                      color: AppColors.textSecondary,
-                      fontSize: 16,
-                    ),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    children: [
+                      Text(
+                        '¡Bienvenido de nuevo!',
+                        style: TextStyle(
+                          color: AppColors.textSecondary,
+                          fontSize: 16,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(width: 4),
+                      Flexible(
+                        child: Text(
+                          '$firstName 👋',
+                          style: TextStyle(
+                            color: AppColors.textPrimary,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
+
                 //Message banner
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
-                    'Comencemos realizando el diagnóstico de tus dispostivos',
+                    'Analicemos tus equipos en segundos 🧠',
                     style: TextStyle(
                       color: AppColors.textPrimary,
                       fontSize: 24,
@@ -96,12 +114,12 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 34),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24.0),
                   child: Divider(color: Colors.grey[350], thickness: 4),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 15),
               ],
             ),
             const SizedBox(height: 8),
@@ -109,22 +127,44 @@ class _HomePageState extends State<HomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                CardMenu(title: "title", icon: Icon(Icons.import_contacts_rounded)),
-                CardMenu(title: "title", icon: Icon(Icons.import_contacts_rounded)),
+                CardMenu(
+                  title: "Diagnóstico Rápido",
+                  icon: Icon(Icons.import_contacts_rounded),
+                  onTap: () {
+                    print('card tapped');
+                  },
+                ),
+                CardMenu(
+                  title: "Equipos / Dispositivos",
+                  icon: Icon(Icons.import_contacts_rounded),
+                  onTap: () {
+                    print('card tapped');
+                  },
+                ),
               ],
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                CardMenu(title: "title", icon: Icon(Icons.import_contacts_rounded)),
-                CardMenu(title: "title", icon: Icon(Icons.import_contacts_rounded)),
+                CardMenu(
+                  title: "Historial de reportes",
+                  icon: Icon(Icons.import_contacts_rounded),
+                  onTap: () {
+                    print('card tapped');
+                  },
+                ),
+                CardMenu(
+                  title: "Manuales / Guías técnicas",
+                  icon: Icon(Icons.import_contacts_rounded),
+                  onTap: () {
+                    print('card tapped');
+                  },
+                ),
               ],
-            )
-           
+            ),
           ],
         ),
-        
       ),
       //stats
       //cards
