@@ -12,8 +12,6 @@ void main() async {
 
   //BORRAR SHARRED PREFERENCES PARA PRUEBAS POR PRIMERA EJECUCION
 
-  final prefs = await SharedPreferences.getInstance();
-  await prefs.clear();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   final storage = StorageService();

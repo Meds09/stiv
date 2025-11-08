@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,6 +9,8 @@ import 'package:stiv/pages/onboarding_page.dart';
 import 'package:stiv/pages/auth_page.dart';
 import 'package:stiv/pages/home_page.dart';
 import 'package:stiv/pages/profile_page.dart';
+import 'package:stiv/pages/diagnostic_page.dart';
+import 'package:stiv/shared/components/custom_bottom_navigation.dart';
 
 /// Estado del Onboarding (usa SharedPreferences)
 class OnboardingState extends ChangeNotifier {
@@ -19,10 +20,10 @@ class OnboardingState extends ChangeNotifier {
   bool get loaded => _loaded;
 
   OnboardingState() {
-    _load();
+    load();
   }
 
-  Future<void> _load() async {
+  Future<void> load() async {
     final prefs = await SharedPreferences.getInstance();
     _done = prefs.getBool('onboarding_done') ?? false;
     _loaded = true;
@@ -60,38 +61,84 @@ class RouterNotifier extends ChangeNotifier {
 final onboardingState = OnboardingState();
 final routerNotifier = RouterNotifier(onboardingState);
 
+final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(
+  debugLabel: 'root',
+);
+final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>(
+  debugLabel: 'shell',
+);
+
 final router = GoRouter(
+  navigatorKey: _rootNavigatorKey,
   initialLocation: '/onboarding',
   refreshListenable: routerNotifier,
+
   routes: [
+    // 🔹 Onboarding
     GoRoute(path: '/onboarding', builder: (_, _) => const OnBoardingPage()),
+
+    // 🔹 Login (fuera del shell)
     GoRoute(path: '/login', builder: (_, _) => const AuthPage()),
-    GoRoute(path: '/home', builder: (_, _) => const HomePage()),
-    GoRoute(path: '/profile', builder: (_, _) => const ProfilePage()),
+
+    // 🔹 Shell persistente con BottomNavigationBar
+    StatefulShellRoute.indexedStack(
+      builder: (context, state, navigationShell) {
+        return Scaffold(
+          body: navigationShell,
+          bottomNavigationBar: const CustomBottomNavigationBar(),
+        );
+      },
+      branches: [
+        // 🏠 Home
+        StatefulShellBranch(
+          navigatorKey: _shellNavigatorKey,
+          routes: [
+            GoRoute(path: '/home', builder: (_, _) => const HomePage()),
+          ],
+        ),
+        // 🔍 Diagnóstico
+        StatefulShellBranch(
+          routes: [
+            GoRoute(path: '/diag', builder: (_, _) => const DiagnosticPage()),
+          ],
+        ),
+        // 👤 Perfil
+        StatefulShellBranch(
+          routes: [
+            GoRoute(path: '/profile', builder: (_, _) => const ProfilePage()),
+          ],
+        ),
+      ],
+    ),
   ],
+
+  // 🔁 Redirecciones inteligentes (mantiene tu lógica actual)
   redirect: (context, state) {
     final user = FirebaseAuth.instance.currentUser;
     final onboarding = onboardingState;
 
-    // Esperar a que cargue el flag del onboarding
-    if (!onboarding.loaded) return null;
+    if (!onboarding.loaded) return null; // espera a que cargue
 
-    final isAtOnboarding = state.matchedLocation == '/onboarding';
-    final isAtLogin = state.matchedLocation == '/login';
+    final atOnboarding = state.matchedLocation == '/onboarding';
+    final atLogin = state.matchedLocation == '/login';
+    final inShell =
+        state.matchedLocation.startsWith('/home') ||
+        state.matchedLocation.startsWith('/diag') ||
+        state.matchedLocation.startsWith('/profile');
 
+    // 🚫 Onboarding no completado
     if (!onboarding.done) {
-      // Onboarding no completado
-      return isAtOnboarding ? null : '/onboarding';
+      return atOnboarding ? null : '/onboarding';
     }
 
-    // Onboarding hecho pero sin login
+    // ✅ Onboarding hecho pero sin login
     if (onboarding.done && user == null) {
-      return isAtLogin ? null : '/login';
+      return atLogin ? null : '/login';
     }
 
-    // Onboarding hecho y autenticado
+    // ✅ Onboarding hecho + login → entra al shell
     if (onboarding.done && user != null) {
-      return isAtOnboarding || isAtLogin ? '/home' : null;
+      if (atOnboarding || atLogin) return '/home';
     }
 
     return null;

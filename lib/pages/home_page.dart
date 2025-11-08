@@ -14,8 +14,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final user = FirebaseAuth.instance.currentUser;
 
-  
-
   //sign out user
   void signUserOut() async {
     await FirebaseAuth.instance.signOut();
@@ -23,13 +21,14 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-  final firstName = (user?.displayName ?? user?.email!)?.firstName.capitalized;
-  
-  if(user == null){
-    WidgetsBinding.instance.addPostFrameCallback((_){
-      context.go("/login");
-    });
-  }
+    final firstName =
+        (user?.displayName ?? user?.email!)?.firstName.capitalized;
+
+    if (user == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        context.go("/login");
+      });
+    }
     return Scaffold(
       backgroundColor: Colors.grey[300],
       body: SafeArea(
@@ -136,19 +135,21 @@ class _HomePageState extends State<HomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                CardMenu(
-                  title: "Diagnóstico Rápido",
-                  icon: Icon(Icons.import_contacts_rounded),
-                  onTap: () {
-                    print('card tapped');
-                  },
+                Expanded(
+                  child: CardMenu(
+                    title: "Diagnóstico Rápido",
+                    icon: const Icon(Icons.import_contacts_rounded),
+                    onTap: () {
+                      print('card tapped ');
+                    },
+                  ),
                 ),
-                CardMenu(
-                  title: "Equipos / Dispositivos",
-                  icon: Icon(Icons.import_contacts_rounded),
-                  onTap: () {
-                    print('card tapped');
-                  },
+                Expanded(
+                  child: CardMenu(
+                    title: "Equipos / Dispositivos",
+                    icon: const Icon(Icons.devices),
+                    onTap: (){},
+                  ),
                 ),
               ],
             ),
@@ -156,26 +157,25 @@ class _HomePageState extends State<HomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                CardMenu(
-                  title: "Historial de reportes",
-                  icon: Icon(Icons.import_contacts_rounded),
-                  onTap: () {
-                    print('card tapped');
-                  },
+                Expanded(
+                  child: CardMenu(
+                    title: "Historial de reportes",
+                    icon: const Icon(Icons.history),
+                    onTap: (){},
+                  ),
                 ),
-                CardMenu(
-                  title: "Manuales / Guías técnicas",
-                  icon: Icon(Icons.import_contacts_rounded),
-                  onTap: () {
-                    print('card tapped');
-                  },
+                Expanded(
+                  child: CardMenu(
+                    title: "Manuales / Guías técnicas",
+                    icon: const Icon(Icons.menu_book_rounded),
+                    onTap: (){},
+                  ),
                 ),
               ],
             ),
           ],
         ),
       ),
-      bottomNavigationBar: const CustomBottomNavigationBar(),
       //stats
       //cards
       //footer

@@ -3,65 +3,57 @@ import 'package:stiv/shared/theme/theme_data.dart';
 
 class CardMenu extends StatelessWidget {
   final String title;
-  final Icon icon;
+  final Widget icon;
   final VoidCallback? onTap;
 
   const CardMenu({
     super.key,
     required this.title,
     required this.icon,
-    this.onTap,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: Card(
-              clipBehavior: Clip.hardEdge,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              color: AppColors.info,
-              child: InkWell(
-                splashColor: Colors.red.withAlpha(30),
-                onTap: onTap,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 20,
-                    horizontal: 20,
+    return Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: Card(
+        clipBehavior: Clip.hardEdge,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        color: AppColors.info,
+        child: InkWell(
+          splashColor: Colors.white.withAlpha(30),
+          onTap: onTap,
+          child: SizedBox(
+            height: 160,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  height: 40,
+                  width: 40,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColors.surface.withValues(alpha: 0.6),
                   ),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.surface.withValues(alpha: 0.6),
-                        ),
-                        child: icon,
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        textAlign: TextAlign.center,
-                        title,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
+                  child: icon,
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
-              ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
