@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stiv/pages/onboarding_page.dart';
 import 'package:stiv/pages/auth_page.dart';
 import 'package:stiv/pages/home_page.dart';
+import 'package:stiv/pages/profile_page.dart';
 
 /// Estado del Onboarding (usa SharedPreferences)
 class OnboardingState extends ChangeNotifier {
@@ -66,6 +67,7 @@ final router = GoRouter(
     GoRoute(path: '/onboarding', builder: (_, _) => const OnBoardingPage()),
     GoRoute(path: '/login', builder: (_, _) => const AuthPage()),
     GoRoute(path: '/home', builder: (_, _) => const HomePage()),
+    GoRoute(path: '/profile', builder: (_, _) => const ProfilePage()),
   ],
   redirect: (context, state) {
     final user = FirebaseAuth.instance.currentUser;

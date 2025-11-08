@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:stiv/shared/components/card_menu.dart';
+import 'package:go_router/go_router.dart';
+import 'package:stiv/shared/components/components.dart';
 import 'package:stiv/shared/theme/theme_data.dart';
 
 class HomePage extends StatefulWidget {
@@ -11,7 +12,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final user = FirebaseAuth.instance.currentUser!;
+  final user = FirebaseAuth.instance.currentUser;
+
+  
 
   //sign out user
   void signUserOut() async {
@@ -20,7 +23,13 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final firstName = (user.displayName ?? user.email!).firstName.capitalized;
+  final firstName = (user?.displayName ?? user?.email!)?.firstName.capitalized;
+  
+  if(user == null){
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      context.go("/login");
+    });
+  }
     return Scaffold(
       backgroundColor: Colors.grey[300],
       body: SafeArea(
@@ -166,6 +175,7 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+      bottomNavigationBar: const CustomBottomNavigationBar(),
       //stats
       //cards
       //footer
