@@ -84,6 +84,7 @@ final router = GoRouter(
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
         return Scaffold(
+          extendBody: true,
           body: navigationShell,
           bottomNavigationBar: const CustomBottomNavigationBar(),
         );

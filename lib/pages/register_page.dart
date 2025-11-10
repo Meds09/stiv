@@ -166,6 +166,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: AppColors.textPrimary,
+                      fontFamily: 'Inter',
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -175,6 +176,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     style: TextStyle(
                       fontSize: 16,
                       color: AppColors.textSecondary,
+                      fontFamily: 'Inter',
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -286,6 +288,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             style: TextStyle(
                               color: AppColors.textSecondary,
                               fontWeight: FontWeight.bold,
+                              fontFamily: 'Inter'
                             ),
                           ),
                         ),
@@ -322,7 +325,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     children: [
                       Text(
                         "¿Ya tienes una cuenta?",
-                        style: TextStyle(color: AppColors.textSecondary),
+                        style: TextStyle(color: AppColors.textSecondary, fontFamily: 'Inter'),
                       ),
                       const SizedBox(width: 8),
                       GestureDetector(
@@ -333,6 +336,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             color: AppColors.primary,
                             fontWeight: FontWeight.bold,
                             decoration: TextDecoration.underline,
+                            fontFamily: 'Inter'
                           ),
                         ),
                       ),

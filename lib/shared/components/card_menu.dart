@@ -36,7 +36,7 @@ class CardMenu extends StatelessWidget {
                   width: 40,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: AppColors.surface.withValues(alpha: 0.6),
+                    color: Colors.white12,
                   ),
                   child: icon,
                 ),
@@ -48,6 +48,7 @@ class CardMenu extends StatelessWidget {
                     color: Colors.white,
                     fontSize: 15,
                     fontWeight: FontWeight.w500,
+                     fontFamily: 'Inter'
                   ),
                 ),
               ],

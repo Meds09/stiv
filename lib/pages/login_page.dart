@@ -64,6 +64,7 @@ void signUserIn() async {
           content: const Text(
             textAlign: TextAlign.center,
             'Usuario o contraseña invalidas.',
+            style: TextStyle(fontFamily: 'Inter'),
           ),
           actions: [
             TextButton(
@@ -104,13 +105,17 @@ void signUserIn() async {
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: AppColors.textPrimary,
+                  fontFamily: 'Inter'
                 ),
               ),
               const SizedBox(height: 10),
               // Subtítulo
-              Text(
-                "Tu asistente de diagnostico técnico inteligente",
-                style: TextStyle(fontSize: 16, color: AppColors.textSecondary),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  "Tu asistente de diagnostico inteligente",
+                  style: TextStyle(fontSize: 16, color: AppColors.textSecondary, fontFamily: 'Inter'),
+                ),
               ),
               const SizedBox(height: 20),
 
@@ -155,8 +160,9 @@ void signUserIn() async {
                       "¿Olvidaste tu contraseña?",
                       style: TextStyle(
                         fontSize: 14,
-                        color: AppColors.primary,
-                        decoration: TextDecoration.underline,
+                        fontFamily: 'Inter',
+                        color: AppColors.primary
+                        
                       ),
                     ),
                   ],
@@ -184,6 +190,7 @@ void signUserIn() async {
                         style: TextStyle(
                           color: AppColors.textSecondary,
                           fontWeight: FontWeight.bold,
+                          fontFamily: 'Inter'
                         ),
                       ),
                     ),
@@ -219,7 +226,7 @@ void signUserIn() async {
                 children: [
                   Text(
                     "¿No tienes una cuenta?",
-                    style: TextStyle(color: AppColors.textSecondary),
+                    style: TextStyle(color: AppColors.textSecondary, fontFamily: 'Inter'),
                   ),
                   const SizedBox(width: 8),
                   GestureDetector(
@@ -227,9 +234,10 @@ void signUserIn() async {
                     child: Text(
                       "Registrate ahora",
                       style: TextStyle(
+                        fontFamily: 'Inter',
                         color: AppColors.primary,
                         fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
+                        
                       ),
                     ),
                   ),

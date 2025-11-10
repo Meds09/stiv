@@ -32,7 +32,11 @@ class StivTextField extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
 
       child: TextFormField(
-        style: TextStyle(color: AppColors.textPrimary),
+        style: TextStyle(
+          color: AppColors.textPrimary,
+          fontFamily: 'Inter'
+      
+        ),
         controller: controller,
         obscureText: obscureText,
         textInputAction: textInputAction,

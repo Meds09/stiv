@@ -30,6 +30,7 @@ class _HomePageState extends State<HomePage> {
       });
     }
     return Scaffold(
+      extendBody: true,
       backgroundColor: Colors.grey[300],
       body: SafeArea(
         //appbar
@@ -52,6 +53,7 @@ class _HomePageState extends State<HomePage> {
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
                           color: AppColors.textPrimary,
+                          fontFamily: 'Rubik',
                         ),
                       ),
                     ],
@@ -89,8 +91,9 @@ class _HomePageState extends State<HomePage> {
                       Text(
                         '¡Bienvenido de nuevo!',
                         style: TextStyle(
-                          color: AppColors.textSecondary,
+                          color: AppColors.textPrimary.withValues(alpha: 0.8),
                           fontSize: 16,
+                          fontFamily: 'Inter',
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -102,6 +105,7 @@ class _HomePageState extends State<HomePage> {
                             color: AppColors.textPrimary,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
+                            fontFamily: 'Inter',
                           ),
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -114,11 +118,12 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
-                    'Analicemos tus equipos en segundos 🧠',
+                    'Analicemos tus equipos en segundos',
                     style: TextStyle(
                       color: AppColors.textPrimary,
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
+                      fontFamily: 'Inter',
                     ),
                   ),
                 ),
@@ -146,7 +151,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Expanded(
                   child: CardMenu(
-                    title: "Equipos / Dispositivos",
+                    title: "Dispositivos",
                     icon: const Icon(Icons.devices),
                     onTap: (){},
                   ),

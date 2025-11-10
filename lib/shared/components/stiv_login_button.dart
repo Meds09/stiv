@@ -33,6 +33,7 @@ class LoginButton extends StatelessWidget {
                color: disabled ? Colors.grey[200] : Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
+                  fontFamily: 'Rubik'
               ),
             ),
           ),

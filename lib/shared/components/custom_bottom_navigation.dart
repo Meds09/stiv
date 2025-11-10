@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stiv/shared/theme/theme_data.dart';
@@ -36,21 +38,55 @@ class CustomBottomNavigationBar extends StatelessWidget {
     }
   }
 
-   @override
+  @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      currentIndex: getCurrentIndex(context),
-      elevation: 8,
-      backgroundColor: AppColors.textSecondary,
-      selectedItemColor: AppColors.primary,
-      unselectedItemColor: AppColors.textPrimary.withOpacity(0.6),
-      onTap: (index) => onItemTapped(context, index),
-      type: BottomNavigationBarType.fixed,
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
-        BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Diagnóstico'),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
-      ],
+    return ClipRRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10), // desenfoque suave
+        child: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color(0xCCF5F7FA), // fondo claro semi-transparente
+                Color(0xE6FFFFFF),
+              ],
+            ),
+          ),
+          child: BottomNavigationBar(
+            backgroundColor:
+                Colors.transparent, // 👈 dejamos el fondo transparente
+            elevation: 0,
+            type: BottomNavigationBarType.fixed,
+            currentIndex: getCurrentIndex(context),
+            onTap: (index) => onItemTapped(context, index),
+            selectedItemColor: AppColors.primary,
+            unselectedItemColor: AppColors.textPrimary.withValues(alpha: 0.8),
+            selectedLabelStyle: const TextStyle(
+              fontFamily: 'Inter',
+              fontWeight: FontWeight.w600,
+              fontSize: 12,
+            ),
+            unselectedLabelStyle: const TextStyle(
+              fontFamily: 'Inter',
+              fontWeight: FontWeight.w500,
+              fontSize: 12,
+            ),
+            items: const [
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.search),
+                label: 'Diagnóstico',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: 'Perfil',
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

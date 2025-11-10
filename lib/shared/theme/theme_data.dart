@@ -1,4 +1,3 @@
-
 // ===== Colores de marca y semánticos =====
 import 'package:flutter/material.dart';
 
@@ -21,8 +20,8 @@ class AppColors {
   // Semánticos
   static const Color success = Color(0xFF22C55E);
   static const Color warning = Color(0xFFF59E0B);
-  static const Color danger  = Color(0xFFEF4444);
-  static const Color info    = Color(0xFF3B82F6);
+  static const Color danger = Color(0xFFEF4444);
+  static const Color info = Color(0xFF3B82F6);
 }
 
 // ===== Espaciados, radios, sombras, duraciones =====
@@ -60,35 +59,47 @@ class AppDurations {
   static const slow = Duration(milliseconds: 400);
 }
 
-// ===== Tipografías (usa Material defaults o agrega GoogleFonts si quieres) =====
+// ===== Tipografías Rubik / Inter =====
 class AppTextStyles {
+  // Titulares (Rubik)
   static const TextStyle h1 = TextStyle(
-    fontSize: 28,
+    fontFamily: 'Rubik',
     fontWeight: FontWeight.w700,
+    fontSize: 28,
     height: 1.2,
     letterSpacing: -0.2,
     color: AppColors.textPrimary,
   );
+
   static const TextStyle h2 = TextStyle(
-    fontSize: 22,
+    fontFamily: 'Rubik',
     fontWeight: FontWeight.w700,
+    fontSize: 22,
     height: 1.25,
-    letterSpacing: -0.1,
     color: AppColors.textPrimary,
   );
+
+  // Subtítulos (Inter)
   static const TextStyle subtitle = TextStyle(
-    fontSize: 16,
+    fontFamily: 'Inter',
     fontWeight: FontWeight.w600,
+    fontSize: 16,
     color: AppColors.textPrimary,
   );
+
+  // Texto normal (Inter)
   static const TextStyle body = TextStyle(
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.w500,
     fontSize: 14,
-    fontWeight: FontWeight.w500,
-    color: Color.fromARGB(255, 54, 61, 72),
+    color: Color(0xFF363D48),
   );
+
+  // Texto pequeño (Inter)
   static const TextStyle caption = TextStyle(
-    fontSize: 12,
+    fontFamily: 'Inter',
     fontWeight: FontWeight.w500,
+    fontSize: 12,
     color: AppColors.textSecondary,
   );
 }
@@ -104,7 +115,11 @@ class AppButtonStyles {
       horizontal: AppSpacing.lg,
       vertical: AppSpacing.md,
     ),
-    textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+    textStyle: const TextStyle(
+      fontFamily: 'Rubik',
+      fontSize: 16,
+      fontWeight: FontWeight.w700,
+    ),
   );
 
   static final ButtonStyle tonal = FilledButton.styleFrom(
@@ -115,7 +130,11 @@ class AppButtonStyles {
       horizontal: AppSpacing.lg,
       vertical: AppSpacing.md,
     ),
-    textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+    textStyle: const TextStyle(
+      fontFamily: 'Rubik',
+      fontSize: 16,
+      fontWeight: FontWeight.w700,
+    ),
   );
 
   static final ButtonStyle outline = OutlinedButton.styleFrom(
@@ -126,7 +145,11 @@ class AppButtonStyles {
       horizontal: AppSpacing.lg,
       vertical: AppSpacing.md,
     ),
-    textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+    textStyle: const TextStyle(
+      fontFamily: 'Rubik',
+      fontSize: 16,
+      fontWeight: FontWeight.w700,
+    ),
   );
 }
 
@@ -145,6 +168,7 @@ class AppTheme {
       outline: AppColors.outline,
       error: AppColors.danger,
     ),
+    fontFamily: 'Inter', // Fuente base
     textTheme: const TextTheme(
       displaySmall: AppTextStyles.h1,
       headlineSmall: AppTextStyles.h2,
@@ -175,7 +199,6 @@ class AppTheme {
       hintStyle: AppTextStyles.body,
       labelStyle: AppTextStyles.body,
     ),
-   
     dividerColor: AppColors.border,
   );
 
@@ -185,23 +208,39 @@ class AppTheme {
     scaffoldBackgroundColor: const Color(0xFF0D1526),
     colorScheme: const ColorScheme.dark().copyWith(
       primary: AppColors.primary,
-      surface: const Color(0xFF0F1B33),
+      surface: Color(0xFF0F1B33),
       onSurface: Colors.white,
       secondary: AppColors.info,
-      outline: const Color(0xFF23314D),
+      outline: Color(0xFF23314D),
       error: AppColors.danger,
     ),
+    fontFamily: 'Inter', // Fuente base
     textTheme: const TextTheme(
       displaySmall: TextStyle(
-        fontSize: 28, fontWeight: FontWeight.w700, height: 1.2, letterSpacing: -0.2, color: Colors.white),
+        fontFamily: 'Rubik',
+        fontWeight: FontWeight.w700,
+        fontSize: 28,
+        color: Colors.white),
       headlineSmall: TextStyle(
-        fontSize: 22, fontWeight: FontWeight.w700, height: 1.25, letterSpacing: -0.1, color: Colors.white),
+        fontFamily: 'Rubik',
+        fontWeight: FontWeight.w700,
+        fontSize: 22,
+        color: Colors.white),
       titleMedium: TextStyle(
-        fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
+        fontFamily: 'Inter',
+        fontWeight: FontWeight.w600,
+        fontSize: 16,
+        color: Colors.white),
       bodyMedium: TextStyle(
-        fontSize: 14, fontWeight: FontWeight.w500, color: Color(0xFFB7C2D6)),
+        fontFamily: 'Inter',
+        fontWeight: FontWeight.w500,
+        fontSize: 14,
+        color: Color(0xFFB7C2D6)),
       bodySmall: TextStyle(
-        fontSize: 12, fontWeight: FontWeight.w500, color: Color(0xFF8FA0BF)),
+        fontFamily: 'Inter',
+        fontWeight: FontWeight.w500,
+        fontSize: 12,
+        color: Color(0xFF8FA0BF)),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(style: AppButtonStyles.primary),
     filledButtonTheme: FilledButtonThemeData(style: AppButtonStyles.tonal),
@@ -223,15 +262,18 @@ class AppTheme {
         borderRadius: AppRadii.brMd,
         borderSide: BorderSide(color: AppColors.primary, width: 1.4),
       ),
-      hintStyle: TextStyle(color: Color(0xFF8FA0BF)),
-      labelStyle: TextStyle(color: Color(0xFF8FA0BF)),
+      hintStyle: TextStyle(
+        fontFamily: 'Inter',
+        color: Color(0xFF8FA0BF)),
+      labelStyle: TextStyle(
+        fontFamily: 'Inter',
+        color: Color(0xFF8FA0BF)),
     ),
-   
     dividerColor: const Color(0xFF23314D),
   );
 }
 
-// ===== Extensiones útiles para acortar código =====
+// ===== Extensiones útiles =====
 extension BuildContextThemeX on BuildContext {
   ThemeData get theme => Theme.of(this);
   TextTheme get text => Theme.of(this).textTheme;
@@ -246,7 +288,6 @@ extension NameFormatter on String {
     return first[0].toUpperCase() + first.substring(1);
   }
 
-  // opcional: para formatear nombres completos (capitaliza cada palabra)
   String get capitalized {
     return split(' ')
         .where((word) => word.isNotEmpty)
