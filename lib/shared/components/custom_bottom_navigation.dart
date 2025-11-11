@@ -42,16 +42,15 @@ class CustomBottomNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10), // desenfoque suave
+        filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15), // desenfoque suave
         child: Container(
-          decoration: const BoxDecoration(
+          decoration:  BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Color(0xCCF5F7FA), // fondo claro semi-transparente
-                Color(0xE6FFFFFF),
-              ],
+              Colors.white.withValues(alpha: 0.4),
+              Colors.white.withValues(alpha: 0.6),],
             ),
           ),
           child: BottomNavigationBar(

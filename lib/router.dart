@@ -85,6 +85,7 @@ final router = GoRouter(
       builder: (context, state, navigationShell) {
         return Scaffold(
           extendBody: true,
+          extendBodyBehindAppBar: true,
           body: navigationShell,
           bottomNavigationBar: const CustomBottomNavigationBar(),
         );
