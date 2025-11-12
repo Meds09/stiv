@@ -162,22 +162,13 @@ class _RegisterPageState extends State<RegisterPage> {
                   // title
                   Text(
                     'Bienvenido a Stiv',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary,
-                      fontFamily: 'Inter',
-                    ),
+                    style: AppTextStyles.h1
                   ),
                   const SizedBox(height: 10),
                   // subtitle
                   Text(
                     "Crea una cuenta para continuar",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: AppColors.textSecondary,
-                      fontFamily: 'Inter',
-                    ),
+                    style: AppTextStyles.subtitle
                   ),
                   const SizedBox(height: 20),
 

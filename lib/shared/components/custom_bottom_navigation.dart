@@ -1,11 +1,16 @@
 import 'dart:ui';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stiv/shared/theme/theme_data.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
-  const CustomBottomNavigationBar({super.key});
+ 
+ final user = FirebaseAuth.instance.currentUser;
+ 
+
+   CustomBottomNavigationBar({super.key});
 
   int getCurrentIndex(BuildContext context) {
     final String location = GoRouterState.of(context).matchedLocation;
@@ -40,6 +45,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return ClipRRect(
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15), // desenfoque suave
@@ -49,8 +55,8 @@ class CustomBottomNavigationBar extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-              Colors.white.withValues(alpha: 0.4),
-              Colors.white.withValues(alpha: 0.6),],
+              AppColors.background.withValues(alpha: 0.4),
+               AppColors.background.withValues(alpha: 0.6),],
             ),
           ),
           child: BottomNavigationBar(
@@ -72,14 +78,14 @@ class CustomBottomNavigationBar extends StatelessWidget {
               fontWeight: FontWeight.w500,
               fontSize: 12,
             ),
-            items: const [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
-              BottomNavigationBarItem(
+            items: [
+              const BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
+              const BottomNavigationBarItem(
                 icon: Icon(Icons.search),
                 label: 'Diagnóstico',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.person),
+                icon: user?.photoURL != null ? CircleAvatar(radius: 13, backgroundImage: NetworkImage(user!.photoURL!)) : Icon(Icons.person),
                 label: 'Perfil',
               ),
             ],

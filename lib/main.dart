@@ -9,7 +9,7 @@ import 'app.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  //BORRAR SHARRED PREFERENCES PARA PRUEBAS POR PRIMERA EJECUCION
+//BORRAR SHARRED PREFERENCES PARA PRUEBAS POR PRIMERA EJECUCION
 
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -19,6 +19,7 @@ void main() async {
     ProviderScope(
       overrides: [storageServiceProvider.overrideWithValue(storage)],
       child: const StivApp(),
+
     ),
   );
 }

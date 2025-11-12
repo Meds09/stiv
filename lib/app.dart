@@ -1,5 +1,6 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:stiv/shared/theme/theme_data.dart';
 import 'router.dart';
 
 class StivApp extends StatefulWidget {
@@ -29,10 +30,14 @@ class _StivAppState extends State<StivApp> {
     final dark = FlexThemeData.dark(scheme: FlexScheme.deepBlue);
     if (!_initialized) {
       return MaterialApp(
-        theme: light, 
         debugShowCheckedModeBanner: false,
         home: const Scaffold(
-          body: Center(child: CircularProgressIndicator(),),
+          body: Center(
+            child: CircularProgressIndicator.adaptive(
+              backgroundColor:  AppColors.primary,
+            ),
+          
+          ),
         ),
         );
       

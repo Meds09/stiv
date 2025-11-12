@@ -101,12 +101,7 @@ void signUserIn() async {
               // Título
               Text(
                 'Bienvenido a Stiv',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimary,
-                  fontFamily: 'Inter'
-                ),
+                style: AppTextStyles.h1,
               ),
               const SizedBox(height: 10),
               // Subtítulo
@@ -114,7 +109,7 @@ void signUserIn() async {
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Text(
                   "Tu asistente de diagnostico inteligente",
-                  style: TextStyle(fontSize: 16, color: AppColors.textSecondary, fontFamily: 'Inter'),
+                  style: AppTextStyles.subtitle,
                 ),
               ),
               const SizedBox(height: 20),
@@ -162,7 +157,6 @@ void signUserIn() async {
                         fontSize: 14,
                         fontFamily: 'Inter',
                         color: AppColors.primary
-                        
                       ),
                     ),
                   ],

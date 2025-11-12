@@ -87,7 +87,7 @@ final router = GoRouter(
           extendBody: true,
           extendBodyBehindAppBar: true,
           body: navigationShell,
-          bottomNavigationBar: const CustomBottomNavigationBar(),
+          bottomNavigationBar:  CustomBottomNavigationBar(),
         );
       },
       branches: [
@@ -114,7 +114,7 @@ final router = GoRouter(
     ),
   ],
 
-  // 🔁 Redirecciones inteligentes (mantiene tu lógica actual)
+  // Redirecciones
   redirect: (context, state) {
     final user = FirebaseAuth.instance.currentUser;
     final onboarding = onboardingState;

@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   // Marca
-  static const Color primary = Color(0xFF055EF4); // Azul STIV
+  static const Color primary = Color(0xFF0663EF); // Azul STIV
   static const Color primaryDark = Color(0xFF0A1E3A);
-  static const Color background = Color(0xFFF5F7FA);
+  static const Color background = Color(0xFFEFEAE3);
   static const Color surface = Colors.white;
 
   // Texto

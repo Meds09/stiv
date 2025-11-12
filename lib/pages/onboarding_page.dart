@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stiv/models/onboarding_data.dart';
 import 'package:stiv/router.dart';
+import 'package:stiv/shared/theme/theme_data.dart';
 
 class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({super.key});
@@ -71,7 +72,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                           contentData[index].description,
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 14.0,
+                            fontSize: 15.0,
                             fontWeight: FontWeight.normal,
                             color: Color.fromARGB(255, 36, 38, 44),
                             height: 1.5,
@@ -80,6 +81,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                       ],
                     );
                   },
+
                 ),
               ),
               Expanded(

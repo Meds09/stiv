@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
     }
     return Scaffold(
       extendBody: true,
-      backgroundColor: Colors.grey[300],
+      backgroundColor: AppColors.background,
       body: SafeArea(
         //appbar
         child: Column(
@@ -49,12 +49,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       Text(
                         'Stiv',
-                        style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.textPrimary,
-                          fontFamily: 'Rubik',
-                        ),
+                        style: AppTextStyles.h2,
                       ),
                     ],
                   ),
@@ -119,18 +114,13 @@ class _HomePageState extends State<HomePage> {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
                     'Analicemos tus equipos en segundos',
-                    style: TextStyle(
-                      color: AppColors.textPrimary,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Inter',
-                    ),
+                    style: AppTextStyles.h2,
                   ),
                 ),
-                const SizedBox(height: 34),
+                const SizedBox(height: 24),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                  child: Divider(color: Colors.grey[350], thickness: 4),
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Divider(color: Colors.grey[350], thickness: 3),
                 ),
                 const SizedBox(height: 15),
               ],
@@ -171,7 +161,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Expanded(
                   child: CardMenu(
-                    title: "Manuales / Guías técnicas",
+                    title: "Manuales",
                     icon: const Icon(Icons.menu_book_rounded),
                     onTap: (){},
                   ),

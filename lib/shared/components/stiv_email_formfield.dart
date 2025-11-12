@@ -57,7 +57,7 @@ class StivEmailTextField extends StatelessWidget {
             borderRadius: borderRadius,
             borderSide: const BorderSide(color: errorColor, width: 1.0),
           ),
-          fillColor: AppColors.surface,
+          fillColor: AppColors.surface.withValues(alpha: 0.8),
           filled: true,
           hintText: hintText,
           hintStyle: TextStyle(color: AppColors.textSecondary),

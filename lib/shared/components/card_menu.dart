@@ -22,7 +22,7 @@ class CardMenu extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
-        color: AppColors.info,
+        color: AppColors.primary,
         child: InkWell(
           splashColor: Colors.white.withAlpha(30),
           onTap: onTap,
@@ -36,7 +36,7 @@ class CardMenu extends StatelessWidget {
                   width: 40,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.white12,
+                    color: Colors.white30,
                   ),
                   child: icon,
                 ),
