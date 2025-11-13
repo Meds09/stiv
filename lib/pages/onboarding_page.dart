@@ -3,7 +3,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stiv/models/onboarding_data.dart';
 import 'package:stiv/router.dart';
-import 'package:stiv/shared/theme/theme_data.dart';
 
 class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({super.key});
@@ -70,10 +69,10 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                         const SizedBox(height: 20),
                         Text(
                           contentData[index].description,
-                          textAlign: TextAlign.center,
+                          textAlign:  TextAlign.center,
                           style: TextStyle(
                             fontSize: 15.0,
-                            fontWeight: FontWeight.normal,
+                            fontWeight:  FontWeight.normal,
                             color: Color.fromARGB(255, 36, 38, 44),
                             height: 1.5,
                           ),
@@ -144,7 +143,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
 
   AnimatedContainer buildDot(int index, BuildContext context) {
     return AnimatedContainer(
-      duration: Duration(milliseconds: 250),
+      duration: const Duration(milliseconds: 250),
       curve: Curves.easeInOut,
       height: 6,
       width: currentIndex == index ? 24 : 6,

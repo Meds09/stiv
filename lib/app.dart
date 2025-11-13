@@ -1,4 +1,3 @@
-import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:stiv/shared/theme/theme_data.dart';
 import 'router.dart';
@@ -26,8 +25,6 @@ class _StivAppState extends State<StivApp> {
 
   @override
   Widget build(BuildContext context) {
-    final light = FlexThemeData.light(scheme: FlexScheme.deepBlue);
-    final dark = FlexThemeData.dark(scheme: FlexScheme.deepBlue);
     if (!_initialized) {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -45,8 +42,6 @@ class _StivAppState extends State<StivApp> {
 
     return MaterialApp.router(
       title: 'Stiv',
-      theme: light,
-      darkTheme: dark,
       debugShowCheckedModeBanner: false,
       routerConfig: router,
     );

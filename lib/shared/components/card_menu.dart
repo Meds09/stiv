@@ -34,7 +34,7 @@ class CardMenu extends StatelessWidget {
                 Container(
                   height: 40,
                   width: 40,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.white30,
                   ),

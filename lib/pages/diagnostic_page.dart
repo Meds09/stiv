@@ -5,6 +5,6 @@ class DiagnosticPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: Text('Diagnostico')));
+    return Scaffold(body: Center(child: const Text('Diagnostico')));
   }
 }

@@ -153,20 +153,20 @@ class _RegisterPageState extends State<RegisterPage> {
                 children: [
                   const SizedBox(height: 10),
                   // aplication icon
-                  Image(
-                    image: const AssetImage('assets/images/stiv-logo-blue.png'),
+                 const Image(
+                    image: AssetImage('assets/images/stiv-logo-blue.png'),
                     height: 100,
                     width: 160,
                   ),
 
                   // title
-                  Text(
+                  const Text(
                     'Bienvenido a Stiv',
                     style: AppTextStyles.h1
                   ),
                   const SizedBox(height: 10),
                   // subtitle
-                  Text(
+                  const Text(
                     "Crea una cuenta para continuar",
                     style: AppTextStyles.subtitle
                   ),
@@ -201,7 +201,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     obscureText: true,
                     controller: passwordController,
                     suffixIcon: IconButton(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.visibility_off,
                         color: AppColors.textSecondary,
                       ),
@@ -222,7 +222,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         obscureText: true,
                         controller: confirmPasswordController,
                         suffixIcon: IconButton(
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.visibility_off,
                             color: AppColors.textSecondary,
                           ),
@@ -274,7 +274,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Text(
+                          child: const Text(
                             " O regístrate con ",
                             style: TextStyle(
                               color: AppColors.textSecondary,
@@ -314,14 +314,14 @@ class _RegisterPageState extends State<RegisterPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         "¿Ya tienes una cuenta?",
                         style: TextStyle(color: AppColors.textSecondary, fontFamily: 'Inter'),
                       ),
                       const SizedBox(width: 8),
                       GestureDetector(
                         onTap: widget.onTap,
-                        child: Text(
+                        child: const Text(
                           "Inicia sesión ahora",
                           style: TextStyle(
                             color: AppColors.primary,

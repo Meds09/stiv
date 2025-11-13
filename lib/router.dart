@@ -74,13 +74,13 @@ final router = GoRouter(
   refreshListenable: routerNotifier,
 
   routes: [
-    // 🔹 Onboarding
+    // Onboarding
     GoRoute(path: '/onboarding', builder: (_, _) => const OnBoardingPage()),
 
-    // 🔹 Login (fuera del shell)
+    // Login (fuera del shell)
     GoRoute(path: '/login', builder: (_, _) => const AuthPage()),
 
-    // 🔹 Shell persistente con BottomNavigationBar
+    // Shell persistente con BottomNavigationBar
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
         return Scaffold(
@@ -91,20 +91,20 @@ final router = GoRouter(
         );
       },
       branches: [
-        // 🏠 Home
+        // Home
         StatefulShellBranch(
           navigatorKey: _shellNavigatorKey,
           routes: [
             GoRoute(path: '/home', builder: (_, _) => const HomePage()),
           ],
         ),
-        // 🔍 Diagnóstico
+        //  Diagnóstico
         StatefulShellBranch(
           routes: [
             GoRoute(path: '/diag', builder: (_, _) => const DiagnosticPage()),
           ],
         ),
-        // 👤 Perfil
+        //  Perfil
         StatefulShellBranch(
           routes: [
             GoRoute(path: '/profile', builder: (_, _) => const ProfilePage()),
@@ -123,22 +123,23 @@ final router = GoRouter(
 
     final atOnboarding = state.matchedLocation == '/onboarding';
     final atLogin = state.matchedLocation == '/login';
+    // ignore: unused_local_variable
     final inShell =
         state.matchedLocation.startsWith('/home') ||
         state.matchedLocation.startsWith('/diag') ||
         state.matchedLocation.startsWith('/profile');
 
-    // 🚫 Onboarding no completado
+    //  Onboarding no completado
     if (!onboarding.done) {
       return atOnboarding ? null : '/onboarding';
     }
 
-    // ✅ Onboarding hecho pero sin login
+    // Onboarding hecho pero sin login
     if (onboarding.done && user == null) {
       return atLogin ? null : '/login';
     }
 
-    // ✅ Onboarding hecho + login → entra al shell
+    //  Onboarding hecho + login → entra al shell
     if (onboarding.done && user != null) {
       if (atOnboarding || atLogin) return '/home';
     }

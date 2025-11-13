@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment:  MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
                     children: [
@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
                         'assets/images/stiv-logo-blue.png',
                         height: 50,
                       ),
-                      Text(
+                      const Text(
                         'Stiv',
                         style: AppTextStyles.h2,
                       ),
@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       GestureDetector(
                         onTap: signUserOut,
-                        child: Icon(
+                        child: const Icon(
                           Icons.settings,
                           color: AppColors.textPrimary,
                         ),
@@ -67,7 +67,7 @@ class _HomePageState extends State<HomePage> {
                       //Logout button
                       GestureDetector(
                         onTap: signUserOut,
-                        child: Icon(Icons.logout, color: AppColors.textPrimary),
+                        child: const Icon(Icons.logout, color: AppColors.textPrimary),
                       ),
                     ],
                   ),
@@ -112,7 +112,7 @@ class _HomePageState extends State<HomePage> {
                 //Message banner
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Text(
+                  child: const Text(
                     'Analicemos tus equipos en segundos',
                     style: AppTextStyles.h2,
                   ),
@@ -135,7 +135,6 @@ class _HomePageState extends State<HomePage> {
                     title: "Diagnóstico Rápido",
                     icon: const Icon(Icons.import_contacts_rounded),
                     onTap: () {
-                      print('card tapped ');
                     },
                   ),
                 ),

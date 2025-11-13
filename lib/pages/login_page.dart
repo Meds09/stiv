@@ -99,7 +99,7 @@ void signUserIn() async {
               ),
 
               // Título
-              Text(
+              const Text(
                 'Bienvenido a Stiv',
                 style: AppTextStyles.h1,
               ),
@@ -107,7 +107,7 @@ void signUserIn() async {
               // Subtítulo
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Text(
+                child: const Text(
                   "Tu asistente de diagnostico inteligente",
                   style: AppTextStyles.subtitle,
                 ),
@@ -121,7 +121,7 @@ void signUserIn() async {
                 hintText: 'Usuario o Correo electrónico',
                 obscureText: false,
                 controller: emailController,
-                suffixIcon: IconButton(
+                suffixIcon:  IconButton(
                   icon: Icon(Icons.person, color: AppColors.textSecondary),
                   onPressed: () {},
                 ),
@@ -151,7 +151,7 @@ void signUserIn() async {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text(
+                    const Text(
                       "¿Olvidaste tu contraseña?",
                       style: TextStyle(
                         fontSize: 14,
@@ -163,7 +163,7 @@ void signUserIn() async {
                 ),
               ),
 
-              SizedBox(height: 25),
+              const SizedBox(height: 25),
               // Botón de inicio de sesión
               LoginButton(onTap: signUserIn, buttonText: 'Iniciar sesión'),
 
@@ -179,12 +179,12 @@ void signUserIn() async {
 
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Text(
+                      child: const Text(
                         " O inicia sesión con ",
                         style: TextStyle(
                           color: AppColors.textSecondary,
                           fontWeight: FontWeight.bold,
-                          fontFamily: 'Inter'
+                          fontFamily: 'Inter',
                         ),
                       ),
                     ),
@@ -218,14 +218,14 @@ void signUserIn() async {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     "¿No tienes una cuenta?",
                     style: TextStyle(color: AppColors.textSecondary, fontFamily: 'Inter'),
                   ),
                   const SizedBox(width: 8),
                   GestureDetector(
                     onTap: widget.onTap,
-                    child: Text(
+                    child: const Text(
                       "Registrate ahora",
                       style: TextStyle(
                         fontFamily: 'Inter',

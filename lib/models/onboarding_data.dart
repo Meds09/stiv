@@ -21,7 +21,7 @@ List<OnboardingContent> contentData = [
     image: 'assets/images/onboarding_pages/onboarding-2.png',
     title: "Detecta y analiza fallas al instante",
     description:
-        "Stiv identifica problemas en cámaras, redes PoE o sensores mediante análisis guiado paso a paso.",
+        "Stiv identifica problemas en tus dispositivos mediante análisis guiado paso a paso.",
   ),
   OnboardingContent(
     image: 'assets/images/onboarding_pages/onboarding-3.png',
