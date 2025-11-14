@@ -133,7 +133,7 @@ class _HomePageState extends State<HomePage> {
                 Expanded(
                   child: CardMenu(
                     title: "Diagnóstico Rápido",
-                    icon: const Icon(Icons.import_contacts_rounded),
+                    icon: const Icon(Icons.import_contacts_rounded, ),
                     onTap: () {
                     },
                   ),
@@ -154,7 +154,7 @@ class _HomePageState extends State<HomePage> {
                 Expanded(
                   child: CardMenu(
                     title: "Historial de reportes",
-                    icon: const Icon(Icons.history),
+                    icon: const Icon(Icons.history, ),
                     onTap: (){},
                   ),
                 ),

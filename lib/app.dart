@@ -42,6 +42,7 @@ class _StivAppState extends State<StivApp> {
 
     return MaterialApp.router(
       title: 'Stiv',
+      theme: ThemeData.dark(),
       debugShowCheckedModeBanner: false,
       routerConfig: router,
     );
