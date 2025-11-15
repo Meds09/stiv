@@ -281,12 +281,6 @@ extension BuildContextThemeX on BuildContext {
 }
 
 extension NameFormatter on String {
-  String get firstName {
-    final parts = trim().split(' ');
-    if (parts.isEmpty) return '';
-    final first = parts.first.toLowerCase();
-    return first[0].toUpperCase() + first.substring(1);
-  }
 
   String get capitalized {
     return split(' ')

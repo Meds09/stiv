@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final firstName =
-        (user?.displayName ?? user?.email!)?.firstName.capitalized;
+        (user?.displayName ?? 'Amigo');
 
     if (user == null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
