@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:stiv/shared/theme/theme_data.dart';
 
-class CardMenu extends StatelessWidget {
+class CardMenu extends StatefulWidget {
   final String title;
   final Widget icon;
-  final VoidCallback? onTap;
+  final VoidCallback onTap;
 
   const CardMenu({
     super.key,
@@ -14,41 +14,88 @@ class CardMenu extends StatelessWidget {
   });
 
   @override
+  State<CardMenu> createState() => _CardMenuState();
+}
+
+class _CardMenuState extends State<CardMenu> {
+  bool _pressed = false;
+
+  void _onTapDown(_) {
+    setState(() => _pressed = true);
+  }
+
+  void _onTapUp(_) {
+    setState(() => _pressed = false);
+    widget.onTap();
+  }
+
+  void _onTapCancel() {
+    setState(() => _pressed = false);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(5.0),
-      child: Card(
-        clipBehavior: Clip.hardEdge,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        color: AppColors.primary,
-        child: InkWell(
-          splashColor: Colors.white.withAlpha(30),
-          onTap: onTap,
-          child: SizedBox(
+      padding: const EdgeInsets.all(6.0),
+      child: GestureDetector(
+        onTapDown: _onTapDown,
+        onTapUp: _onTapUp,
+        onTapCancel: _onTapCancel,
+        child: AnimatedScale(
+          scale: _pressed ? 0.96 : 1.0,
+          duration: const Duration(milliseconds: 120),
+          curve: Curves.easeOut,
+          child: Container(
             height: 160,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              gradient: LinearGradient(
+                colors: [
+                  AppColors.primary,
+                  AppColors.primary.withOpacity(0.90),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.primary.withOpacity(0.30),
+                  blurRadius: 18,
+                  offset: const Offset(0, 8),
+                ),
+              ],
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                // ICONO
                 Container(
-                  height: 40,
-                  width: 40,
-                  decoration: const BoxDecoration(
+                  height: 50,
+                  width: 50,
+                  decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.white30,
+                    color: Colors.white.withOpacity(0.20),
                   ),
-                  child: icon,
+                  child: Center(
+                    child: IconTheme(
+                      data: const IconThemeData(size: 28, color: Colors.white),
+                      child: widget.icon,
+                    ),
+                  ),
                 ),
-                const SizedBox(height: 10),
+
+                const SizedBox(height: 14),
+
+                // TEXTO
                 Text(
-                  title,
+                  widget.title,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                     fontFamily: 'Inter'
+                    fontSize: 16,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0.2,
                   ),
                 ),
               ],

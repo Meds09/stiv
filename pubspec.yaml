@@ -36,6 +36,7 @@ dependencies:
   flex_color_scheme: ^8.0.0
   flutter:
     sdk: flutter
+  flutter_animate: ^4.5.2
   flutter_native_splash: ^2.4.7
   flutter_riverpod: ^2.5.1
   flutter_svg: ^2.2.1
@@ -99,16 +100,15 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-     - family: Rubik
-       fonts:
-         - asset: assets/fonts/Rubik/Rubik-Regular.ttf
-         - asset: assets/fonts/Rubik/Rubik-Bold.ttf
-           weight: 400 
-     - family: Inter
-       fonts:
-         - asset: assets/fonts/Inter/Inter-Regular.ttf
-         - asset: assets/fonts/Inter/Inter-Medium.ttf
-           weight: 500
-  #
+    - family: Rubik
+      fonts:
+        - asset: assets/fonts/Rubik/Rubik-Regular.ttf
+        - asset: assets/fonts/Rubik/Rubik-Bold.ttf
+          weight: 400
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter/Inter-Regular.ttf
+        - asset: assets/fonts/Inter/Inter-Medium.ttf
+          weight: 500
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
