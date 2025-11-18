@@ -154,16 +154,16 @@ class HomePage extends ConsumerWidget {
             ),
           ),
 
-          // ✅ Overlay que cubre todo cuando está cerrando sesión
+          // Overlay que cubre todo cuando está cerrando sesión
           if (isSigningOut)
             Container(
               color:
-                  AppColors.background, // Fondo opaco (mismo color que tu app)
+                  AppColors.background, // Fondo opaco
               child: Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Logo (opcional)
+                    // Logo
                     Image.asset('assets/images/stiv-logo-blue.png', height: 80),
                     const SizedBox(height: 32),
                     const CircularProgressIndicator(

@@ -5,29 +5,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stiv/shared/providers/auth_provider.dart';
 import 'package:stiv/core/theme/theme_data.dart';
+import 'package:stiv/shared/providers/bottom_nav_bar_provider.dart';
 
 class CustomBottomNavigationBar extends ConsumerWidget {
   const CustomBottomNavigationBar({super.key});
 
-  int getCurrentIndex(BuildContext context) {
-    final String location = GoRouterState.of(context).matchedLocation;
-
-    switch (location) {
-      case '/home':
-        return 0;
-      case '/diag':
-        return 1;
-      case '/profile':
-        return 2;
-      default:
-        return 0;
-    }
-  }
-
-  void onItemTapped(BuildContext context, int index) {
+  void onItemTapped(BuildContext context, WidgetRef ref) {
     final router = GoRouter.of(context);
+    final indexProvider = ref.read(menuIndexProvider);
 
-    switch (index) {
+    switch (indexProvider) {
       case 0:
         router.go('/home');
         break;
@@ -42,6 +29,7 @@ class CustomBottomNavigationBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final indexProvider = ref.read(menuIndexProvider.notifier);
     final user = ref.watch(currentUserProvider);
 
     return ClipRRect(
@@ -59,12 +47,14 @@ class CustomBottomNavigationBar extends ConsumerWidget {
             ),
           ),
           child: BottomNavigationBar(
-            backgroundColor:
-                Colors.transparent, 
+            backgroundColor: Colors.transparent,
             elevation: 0,
             type: BottomNavigationBarType.fixed,
-            currentIndex: getCurrentIndex(context),
-            onTap: (index) => onItemTapped(context, index),
+            currentIndex: indexProvider.state,
+            onTap: (value) {
+              indexProvider.state = value;
+              onItemTapped(context, ref);
+            },
             selectedItemColor: AppColors.primary,
             unselectedItemColor: AppColors.textPrimary.withValues(alpha: 0.8),
             selectedLabelStyle: const TextStyle(
