@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:stiv/shared/theme/theme_data.dart';
-import 'router.dart';
+import 'package:stiv/core/theme/theme_data.dart';
+import 'core/router/router.dart';
 
 class StivApp extends StatefulWidget {
   const StivApp({super.key});

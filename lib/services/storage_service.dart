@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:stiv/models/failure_case.dart';
+import 'package:stiv/features/diagnostic/data/models/failure_case.dart';
 
 final storageServiceProvider = Provider<StorageService>((ref) => StorageService());
 

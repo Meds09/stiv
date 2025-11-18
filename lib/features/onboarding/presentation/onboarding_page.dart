@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:stiv/models/onboarding_data.dart';
-import 'package:stiv/router.dart';
+import 'package:stiv/features/onboarding/data/models/onboarding_data.dart';
+import 'package:stiv/core/router/router.dart';
 
 class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({super.key});

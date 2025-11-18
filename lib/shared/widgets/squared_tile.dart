@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stiv/shared/theme/theme_data.dart';
+import 'package:stiv/core/theme/theme_data.dart';
 
 class SquareTile extends StatelessWidget {
   final Function()? onTap;

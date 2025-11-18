@@ -1,4 +1,4 @@
-import '../models/failure_case.dart';
+import '../features/diagnostic/data/models/failure_case.dart';
 
 
 class SearchService {

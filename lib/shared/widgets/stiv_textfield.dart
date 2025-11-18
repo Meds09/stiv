@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:stiv/features/email_validator.dart';
-import 'package:stiv/shared/theme/theme_data.dart';
+import 'package:stiv/core/theme/theme_data.dart';
 
-class StivEmailTextField extends StatelessWidget {
+class StivTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final String label;
+  final TextInputType keyboardType;
   final bool obscureText;
   final TextInputAction? textInputAction;
   final IconButton? suffixIcon;
   final Color? borderColor;
 
-  const StivEmailTextField({
+  const StivTextField({
     super.key,
+    required this.keyboardType,
     required this.hintText,
     required this.label,
     this.textInputAction,
@@ -30,14 +30,17 @@ class StivEmailTextField extends StatelessWidget {
     const errorColor = Colors.redAccent;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
+
       child: TextFormField(
-        style: TextStyle(color: AppColors.textPrimary
-        ,fontFamily: 'Inter'),
+        style: TextStyle(
+          color: AppColors.textPrimary,
+          fontFamily: 'Inter'
+      
+        ),
         controller: controller,
         obscureText: obscureText,
         textInputAction: textInputAction,
-        keyboardType: TextInputType.emailAddress,
-        autofillHints: const [AutofillHints.email],
+        keyboardType: keyboardType,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
           labelText: label,
@@ -63,8 +66,6 @@ class StivEmailTextField extends StatelessWidget {
           hintStyle: TextStyle(color: AppColors.textSecondary),
           suffixIcon: suffixIcon,
         ),
-        inputFormatters: [FilteringTextInputFormatter.deny(RegExp(r'\s'))],
-        validator: (v) => EmailValidatorX.validate(v, fieldName: label),
       ),
     );
   }

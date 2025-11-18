@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:stiv/services/auth_service.dart';
-import 'package:stiv/shared/components/squared_tile.dart';
-import 'package:stiv/shared/components/stiv_login_button.dart';
-import 'package:stiv/shared/components/stiv_textfield.dart';
-import 'package:stiv/shared/theme/theme_data.dart';
+import 'package:stiv/shared/widgets/squared_tile.dart';
+import 'package:stiv/shared/widgets/stiv_login_button.dart';
+import 'package:stiv/shared/widgets/stiv_textfield.dart';
+import 'package:stiv/core/theme/theme_data.dart';
 
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
@@ -23,12 +24,11 @@ class _LoginPageState extends State<LoginPage> {
   final passwordController = TextEditingController();
 
 void signUserIn() async {
-  // Mostrar loader
+  // Mostrar indicador de carga
   showDialog(
     context: context,
     barrierDismissible: false,
-    builder: (_) => const Center(child: CircularProgressIndicator()),
-    useRootNavigator: true,
+    builder: (context) => const Center(child: CircularProgressIndicator()),
   );
 
   try {
@@ -36,22 +36,43 @@ void signUserIn() async {
       email: emailController.text.trim(),
       password: passwordController.text.trim(),
     );
-    // No navegues aquí, GoRouter lo hace automáticamente
+
+    if (!mounted) return;
+    Navigator.of(context).pop(); // Cerrar indicador
+
+    context.go('/home');
+
   } on FirebaseAuthException catch (e) {
-    if (mounted) {
-      if (e.code == 'invalid-credential') {
-        wrongCredentialsMessage();
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.message ?? 'Error al iniciar sesión')),
-        );
-      }
+    Navigator.of(context).pop(); 
+
+    String message = '';
+
+    // Mensajes de error específicos
+    if (e.code == 'invalid-email') {
+      message = 'Formato de correo inválido.';
+    } else if (e.code == 'user-not-found') {
+      message = 'No existe un usuario con este email.';
+    } else if (e.code == 'wrong-password') {
+      message = 'Contraseña incorrecta.';
+    } else {
+      message = 'Usuario o contraseña incorrectos.';
     }
-  } finally {
-    // Siempre cierra el loader
-    if (mounted) Navigator.of(context, rootNavigator: true).pop();
+
+    // Mostrar el error al usuario
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message, style: const TextStyle(fontFamily: 'Inter', color: Colors.white),),
+      backgroundColor: AppColors.danger,),
+    );
+
+  } catch (e) {
+    Navigator.of(context).pop(); // cerrar sí o sí
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Error desconocido')),
+    );
   }
 }
+
 
 
   void wrongCredentialsMessage() {
