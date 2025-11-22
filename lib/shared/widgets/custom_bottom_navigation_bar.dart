@@ -22,7 +22,7 @@ class CustomBottomNavigationBar extends ConsumerWidget {
         router.go('/diag');
         break;
       case 2:
-        router.go('/profile');
+        router.push('/profile');
         break;
     }
   }
