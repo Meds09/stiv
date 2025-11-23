@@ -23,6 +23,7 @@ class CustomBottomNavigationBar extends ConsumerWidget {
         break;
       case 2:
         router.push('/profile');
+        
         break;
     }
   }
