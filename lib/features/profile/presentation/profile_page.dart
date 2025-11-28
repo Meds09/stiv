@@ -13,11 +13,21 @@ class ProfilePage extends ConsumerWidget {
     final user = ref.watch(currentUserProvider);
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: _profileAppbar(),
+      appBar: AppBar(
+        centerTitle: true,
+        iconTheme: const IconThemeData(color: AppColors.primary),
+        backgroundColor: AppColors.background,
+        titleTextStyle: const TextStyle(
+          fontFamily: 'Inter',
+          fontSize: 20,
+          color: AppColors.textPrimary,
+        ),
+        title: Text('Perfil'),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            customAvatar(user),
+            CustomAvatar(user: user),
             const SizedBox(height: 20),
             Center(
               child: Text(
@@ -66,8 +76,15 @@ class ProfilePage extends ConsumerWidget {
       ),
     );
   }
+}
 
-  Center customAvatar(User? user) {
+class CustomAvatar extends StatelessWidget {
+  const CustomAvatar({super.key, required this.user});
+
+  final User? user;
+
+  @override
+  Widget build(BuildContext context) {
     return Center(
       child: Container(
         margin: const EdgeInsets.only(top: 30),
@@ -84,20 +101,6 @@ class ProfilePage extends ConsumerWidget {
               : const AssetImage('assets/images/avatar.png') as ImageProvider,
         ),
       ),
-    );
-  }
-
-  AppBar _profileAppbar() {
-    return AppBar(
-      centerTitle: true,
-      iconTheme: const IconThemeData(color: AppColors.primary),
-      backgroundColor: AppColors.background,
-      titleTextStyle: const TextStyle(
-        fontFamily: 'Inter',
-        fontSize: 20,
-        color: AppColors.textPrimary,
-      ),
-      title: Text('Perfil'),
     );
   }
 }
