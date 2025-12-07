@@ -15,7 +15,6 @@ void main() async {
     ProviderScope(
       overrides: [storageServiceProvider.overrideWithValue(storage)],
       child: const StivApp(),
-
     ),
   );
 }

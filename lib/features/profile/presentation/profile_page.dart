@@ -2,104 +2,80 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stiv/core/theme/theme_data.dart';
+import 'package:stiv/features/profile/presentation/widgets/widgets.dart';
 import 'package:stiv/shared/providers/auth_provider.dart';
-import 'package:stiv/shared/widgets/stiv_text_container.dart';
 
+/// Página principal del perfil de usuario
 class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(currentUserProvider);
+    final authController = ref.read(authControllerProvider);
+    final isSigningOut = ref.watch(isSigningOutProvider);
+
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
-        centerTitle: true,
-        iconTheme: const IconThemeData(color: AppColors.primary),
-        backgroundColor: AppColors.background,
-        titleTextStyle: const TextStyle(
-          fontFamily: 'Inter',
-          fontSize: 20,
-          color: AppColors.textPrimary,
-        ),
-        title: Text('Perfil'),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            CustomAvatar(user: user),
-            const SizedBox(height: 20),
-            Center(
-              child: Text(
-                user?.displayName ?? 'Stiver',
-                style: AppTextStyles.h1,
-              ),
+      appBar: _buildAppBar(),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                ProfileHeader(user: user),
+                const SizedBox(height: AppSpacing.xl),
+                _buildContent(user, authController, isSigningOut),
+              ],
             ),
-            Center(
-              child: Text(user?.email ?? ' ', style: AppTextStyles.subtitle),
-            ),
-            const SizedBox(height: 40),
-            StivTextContainer(
-              suffixIcon: const Icon(
-                Icons.badge_outlined,
-                color: AppColors.primary,
-              ),
-              text: user?.email,
-              title: 'Cargo',
-            ),
-            const SizedBox(height: 20),
-            StivTextContainer(
-              suffixIcon: const Icon(Icons.phone, color: AppColors.primary),
-              text: user?.phoneNumber,
-              title: 'Numero de telefono',
-            ),
-            const SizedBox(height: 20),
-
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20.0,
-                vertical: 10.0,
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    textAlign: TextAlign.center,
-                    'Configuración',
-                    style: AppTextStyles.h2,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+          LoadingOverlay(isLoading: isSigningOut),
+        ],
       ),
     );
   }
-}
 
-class CustomAvatar extends StatelessWidget {
-  const CustomAvatar({super.key, required this.user});
+  PreferredSizeWidget _buildAppBar() {
+    return AppBar(
+      centerTitle: true,
+      elevation: 0,
+      iconTheme: const IconThemeData(color: AppColors.primary),
+      backgroundColor: AppColors.background,
+      titleTextStyle: const TextStyle(
+        fontFamily: 'Inter',
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
+        color: AppColors.textPrimary,
+      ),
+      title: const Text('Perfil'),
+    );
+  }
 
-  final User? user;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        margin: const EdgeInsets.only(top: 30),
-        padding: const EdgeInsets.all(2),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(color: AppColors.primary, width: 4),
-        ),
-        child: CircleAvatar(
-          radius: 65,
-          backgroundColor: Colors.grey.shade300,
-          backgroundImage: user?.photoURL != null
-              ? NetworkImage(user!.photoURL!)
-              : const AssetImage('assets/images/avatar.png') as ImageProvider,
-        ),
+  Widget _buildContent(
+    User? user,
+    AuthController authController,
+    bool isSigningOut,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SectionTitle(title: 'Información Personal'),
+          const SizedBox(height: AppSpacing.md),
+          ProfileInfoSection(user: user),
+          const SizedBox(height: AppSpacing.xl),
+          const SectionTitle(title: 'Configuración'),
+          const SizedBox(height: AppSpacing.md),
+          const SettingsSection(),
+          const SizedBox(height: AppSpacing.xl),
+          LogoutButton(
+            onTap: () => authController.signOut(),
+            isLoading: isSigningOut,
+          ),
+          const SizedBox(height: AppSpacing.xl),
+        ],
       ),
     );
   }
