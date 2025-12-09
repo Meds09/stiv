@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stiv/features/home/data/models/recent_diagnostic.dart';
+import 'package:stiv/features/home/models/recent_diagnostic.dart';
 
 /// Provider para los diagnósticos recientes
 /// TODO: Reemplazar con llamada real a Firebase/BD

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:stiv/core/theme/theme_data.dart';
-import 'package:stiv/features/home/data/models/recent_diagnostic.dart';
+import 'package:stiv/features/home/models/recent_diagnostic.dart';
 import 'package:stiv/features/home/presentation/providers/recent_diagnostics_provider.dart';
 
 /// Sección que muestra los diagnósticos recientes

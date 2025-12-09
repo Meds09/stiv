@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stiv/core/theme/theme_data.dart';
-import 'package:stiv/features/home/data/models/home_stats.dart';
+import 'package:stiv/features/home/models/home_stats.dart';
 import 'package:stiv/features/home/presentation/providers/home_stats_provider.dart';
 import 'package:stiv/features/home/presentation/widgets/device_stat_card.dart';
 

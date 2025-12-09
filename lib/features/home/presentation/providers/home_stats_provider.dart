@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stiv/features/home/data/models/home_stats.dart';
+import 'package:stiv/features/home/models/home_stats.dart';
 
 /// Provider para las estadísticas del home
 /// TODO: Reemplazar con llamada real a Firebase/BD
