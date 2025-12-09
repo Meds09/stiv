@@ -42,8 +42,6 @@ class HomePage extends ConsumerWidget {
                     const SizedBox(height: AppSpacing.lg),
                     WelcomeSection(firstName: firstName),
                     const SizedBox(height: AppSpacing.xl),
-                    const ReadinessChartSection(),
-                    const SizedBox(height: AppSpacing.xl),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: AppSpacing.md,
@@ -63,6 +61,7 @@ class HomePage extends ConsumerWidget {
                     MenuGridSection(options: menuOptions),
                     const SizedBox(height: AppSpacing.xl),
                     const StatsSection(),
+                     const SizedBox(height: AppSpacing.xl),
                     const SizedBox(height: 100), // Padding para que el contenido se vea detrás del nav bar
                   ],
                 ),

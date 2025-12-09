@@ -27,18 +27,23 @@ class ProfilePage extends ConsumerWidget {
                 ProfileHeader(user: user),
                 const SizedBox(height: AppSpacing.xl),
                 _buildContent(user, authController, isSigningOut),
+                
               ],
+              
             ),
           ),
           LoadingOverlay(isLoading: isSigningOut),
+          
+          
+          
         ],
+        
       ),
     );
   }
 
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
-      centerTitle: true,
       elevation: 0,
       iconTheme: const IconThemeData(color: AppColors.primary),
       backgroundColor: AppColors.background,
@@ -48,7 +53,6 @@ class ProfilePage extends ConsumerWidget {
         fontWeight: FontWeight.w600,
         color: AppColors.textPrimary,
       ),
-      title: const Text('Perfil'),
     );
   }
 
@@ -74,9 +78,13 @@ class ProfilePage extends ConsumerWidget {
             onTap: () => authController.signOut(),
             isLoading: isSigningOut,
           ),
-          const SizedBox(height: AppSpacing.xl),
+          const SizedBox(height: 200),
+          
         ],
+        
+        
       ),
+      
     );
   }
 }
