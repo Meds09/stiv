@@ -6,7 +6,7 @@ import 'package:stiv/features/diagnostic/models/device.dart';
 class CatalogRepositoryImpl implements CatalogRepository {
   @override
   Future<List<Category>> getCategories() async {
-    //simulando llamada asyn a la BD
+    //simulando llamada async a la BD
     await Future.delayed(const Duration(milliseconds: 200));
     return mockCategories;
   }

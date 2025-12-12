@@ -1,12 +1,18 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stiv/core/theme/theme_data.dart';
+import 'package:stiv/features/diagnostic/presentation/providers/catalog_providers.dart';
 
 
-class DiagnosticPage extends StatelessWidget {
+class DiagnosticPage extends ConsumerWidget {
   const DiagnosticPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final categoriesAsyncValue = ref.watch(categoriesProvider);
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: _buildAppBar(),
@@ -34,7 +40,15 @@ class DiagnosticPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: AppSpacing.xl),
-                
+                categoriesAsyncValue.when(
+                  data: (categories){
+                    return Column(
+                      children: categories.map((category) => Text(category.name, style: AppTextStyles.h1,)).toList(),
+                    );
+                  }, 
+                  error: (e, _) => Center(child: Text('Error: $e')), 
+                  loading: () => const Center(child: CircularProgressIndicator()),
+                  )
 
                 // Aquí puedes agregar más widgets relacionados con el diagnóstico
               ],
