@@ -4,6 +4,9 @@ import 'package:stiv/features/diagnostic/models/catalog_repository.dart';
 import 'package:stiv/features/diagnostic/models/category.dart';
 
 //Proveedor del repositorio
+
+final isExpandedCategoryIdProvider = StateProvider<Set<int?>>((ref)=> <int>{});
+
 final catalogRepositoryProvider = Provider<CatalogRepository>((ref) {
   return CatalogRepositoryImpl();
 });

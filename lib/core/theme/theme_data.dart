@@ -79,6 +79,14 @@ class AppTextStyles {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle h3 = TextStyle(
+    fontFamily: 'Rubik',
+    fontWeight: FontWeight.w700,
+    fontSize: 18,
+    height: 1.3,
+    color: AppColors.textPrimary,
+  );
+
   // Subtítulos (Inter)
   static const TextStyle subtitle = TextStyle(
     fontFamily: 'Inter',
