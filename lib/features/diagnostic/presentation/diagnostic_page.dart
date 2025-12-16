@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stiv/core/theme/theme_data.dart';
+import 'package:stiv/features/diagnostic/presentation/widgets/button_without_device.dart';
 import 'package:stiv/features/diagnostic/presentation/widgets/categories_list.dart';
 
 class DiagnosticPage extends StatelessWidget {
@@ -44,6 +45,16 @@ class DiagnosticPage extends StatelessWidget {
 
                     CategoriesList(),
                     const SizedBox(height: AppSpacing.xl),
+                    Padding(
+                      padding: const EdgeInsets.all(
+                       12
+                      ),
+                      child: SizedBox(
+                        height: 52,
+                        
+                        child: ButtonWithoutDevice()),
+                    ),
+                    const SizedBox(height: AppSpacing.xl),
                   ],
                 ),
               ),
@@ -51,7 +62,9 @@ class DiagnosticPage extends StatelessWidget {
           ),
         ],
       ),
+      
     );
+
   }
 }
 

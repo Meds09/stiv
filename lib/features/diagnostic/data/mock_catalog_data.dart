@@ -8,7 +8,7 @@ const mockCategories = <Category>[
   Category(id: 2, name: 'Red y Conectividad', emoji: '🌐'),
   Category(id: 3, name: 'Energía y Respaldo', emoji: '⚡'),
   Category(id: 4, name: 'Control de Acceso', emoji: '🔐'),
-  Category(id: 5, name: 'Dispositivos personales (beta)', emoji: '📱'),
+
 ];
 
 final mockDevices = <Device>[
