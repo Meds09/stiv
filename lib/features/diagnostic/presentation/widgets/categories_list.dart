@@ -22,7 +22,7 @@ class CategoriesList extends ConsumerWidget {
         return ListView.builder(
           itemCount: categories.length,
           shrinkWrap: true,
-       
+          physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
             final category = categories[index];
             final isExpanded = expandedIds.contains(category.id);
@@ -146,9 +146,17 @@ class _DevicesBlock extends StatelessWidget {
         ...devices.map(
           (devices) => Padding(
             padding: const EdgeInsets.only(left: 16),
-            child: ListTile(
+            child: ListTile( 
               dense: true,
-              title: Text(devices.name, style: AppTextStyles.h3,),
+              title: Text(devices.name, style:  TextStyle(
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18,
+                                height: 1.5,
+                                color: AppColors.textPrimary,
+                              ),
+              
+               ),
               leading: const Icon(Icons.memory, color: AppColors.primary),
               onTap: () {},
             ),

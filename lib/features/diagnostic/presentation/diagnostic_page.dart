@@ -9,62 +9,108 @@ class DiagnosticPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
       backgroundColor: AppColors.background,
       appBar: _buildAppBar(),
-
-      body: Stack(
-        children: [
-          SafeArea(
-            bottom: false,
-            child: RefreshIndicator(
-              onRefresh: () async {
-                // Refrescar datos al hacer pull to refresh
-                await Future.delayed(const Duration(milliseconds: 500));
-              },
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Center(
-                        child: Text(
-                          'Selecciona un dispositivo para iniciar el diagnóstico',
-                          style: TextStyle(
-                            fontFamily: 'Rubik',
-                            fontWeight: FontWeight.w700,
-                            fontSize: 32,
-                            height: 1.2,
-                            letterSpacing: -0.2,
-                            color: AppColors.primary,
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  // Refrescar datos al hacer pull to refresh
+                  await Future.delayed(const Duration(milliseconds: 500));
+                },
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(
+                    parent: AlwaysScrollableScrollPhysics(),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: const Center(
+                          child: Text(
+                            'Selecciona un dispositivo para iniciar el diagnóstico',
+                            style: TextStyle(
+                              fontFamily: 'Rubik',
+                              fontWeight: FontWeight.w700,
+                              fontSize: 32,
+                              height: 1.2,
+                              letterSpacing: -0.2,
+                              color: AppColors.primary,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-
-                    CategoriesList(),
-                    const SizedBox(height: AppSpacing.xl),
-                    Padding(
-                      padding: const EdgeInsets.all(
-                       12
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Row(
+                          children: [
+                            const Text(
+                              'O pulsa ',
+                              style: TextStyle(
+                                fontFamily: 'Rubik',
+                                fontWeight: FontWeight.w400,
+                                fontSize: 19,
+                                height: 1.5,
+                                color: AppColors.textPrimary,
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                
+                              },
+                              child: const Text(
+                                'Aqui',
+                                style: TextStyle(
+                                  fontFamily: 'Rubik',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 19,
+                                  height: 1.5,
+                                  color: AppColors.primary,
+                                ),
+                              ),
+                            ),
+                            const Expanded(
+                              child: Text(
+                                ' para agregar un nuevo dispostivo.',
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: TextStyle(
+                                  fontFamily: 'Rubik',
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 18,
+                                  height: 1.5,
+                                  color: AppColors.textPrimary,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      child: SizedBox(
-                        height: 52,
-                        
-                        child: ButtonWithoutDevice()),
-                    ),
-                    const SizedBox(height: AppSpacing.xl),
-                  ],
+                      const SizedBox(height: AppSpacing.lg),
+                      const CategoriesList(),
+                      const SizedBox(height: AppSpacing.xl),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+            SafeArea(
+              top: false,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: const [ButtonWithoutDevice()],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
-      
     );
-
   }
 }
 
@@ -72,7 +118,6 @@ PreferredSizeWidget _buildAppBar() {
   return AppBar(
     elevation: 0,
     iconTheme: const IconThemeData(color: AppColors.primary),
-
     backgroundColor: AppColors.background,
     titleTextStyle: const TextStyle(
       fontFamily: 'Inter',
@@ -80,7 +125,6 @@ PreferredSizeWidget _buildAppBar() {
       fontWeight: FontWeight.w600,
       color: AppColors.textPrimary,
     ),
-
     title: Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
