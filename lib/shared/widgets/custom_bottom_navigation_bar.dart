@@ -74,7 +74,7 @@ class _CustomBottomNavigationBarState
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -90,12 +90,12 @@ class _CustomBottomNavigationBarState
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  AppColors.surface.withOpacity(0.85),
-                  AppColors.surface.withOpacity(0.75),
+                  AppColors.surface.withValues(alpha: 0.85),
+                  AppColors.surface.withValues(alpha: 0.75),
                 ],
               ),
               border: Border.all(
-                color: Colors.white.withOpacity(0.2),
+                color: Colors.white.withValues(alpha: 0.2),
                 width: 1.5,
               ),
               borderRadius: AppRadii.brLg,
@@ -211,12 +211,12 @@ class _NavItemState extends State<_NavItem>
               ),
               decoration: BoxDecoration(
                 color: widget.isSelected
-                    ? AppColors.primary.withOpacity(0.15)
+                    ? AppColors.primary.withValues(alpha: 0.15)
                     : Colors.transparent,
                 borderRadius: AppRadii.brMd,
                 border: widget.isSelected
                     ? Border.all(
-                        color: AppColors.primary.withOpacity(0.3),
+                        color: AppColors.primary.withValues(alpha: 0.3),
                         width: 1,
                       )
                     : null,
@@ -230,7 +230,7 @@ class _NavItemState extends State<_NavItem>
                           widget.icon,
                           color: widget.isSelected
                               ? AppColors.primary
-                              : AppColors.textSecondary.withOpacity(0.6),
+                              : AppColors.textSecondary.withValues(alpha: 0.6),
                           size: 24,
                         ),
                   const SizedBox(height: 4),
@@ -244,7 +244,7 @@ class _NavItemState extends State<_NavItem>
                           : FontWeight.w500,
                       color: widget.isSelected
                           ? AppColors.primary
-                          : AppColors.textSecondary.withOpacity(0.7),
+                          : AppColors.textSecondary.withValues(alpha: 0.7),
                     ),
                   ),
                 ],
@@ -265,7 +265,7 @@ class _NavItemState extends State<_NavItem>
         border: Border.all(
           color: widget.isSelected
               ? AppColors.primary
-              : AppColors.textSecondary.withOpacity(0.3),
+              : AppColors.textSecondary.withValues(alpha: 0.3),
           width: widget.isSelected ? 2 : 1.5,
         ),
       ),
@@ -280,7 +280,7 @@ class _NavItemState extends State<_NavItem>
                     size: 16,
                     color: widget.isSelected
                         ? AppColors.primary
-                        : AppColors.textSecondary.withOpacity(0.6),
+                        : AppColors.textSecondary.withValues(alpha: 0.6),
                   );
                 },
               )
@@ -289,7 +289,7 @@ class _NavItemState extends State<_NavItem>
                 size: 16,
                 color: widget.isSelected
                     ? AppColors.primary
-                    : AppColors.textSecondary.withOpacity(0.6),
+                    : AppColors.textSecondary.withValues(alpha: 0.6),
               ),
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:stiv/core/theme/theme_data.dart';
 import 'package:stiv/features/diagnostic/models/category.dart';
 import 'package:stiv/features/diagnostic/models/device.dart';
@@ -115,10 +116,7 @@ class _DeviceTypeListState extends ConsumerState<DeviceTypeList>
                       key: ValueKey('expanded-${widget.category.id}'),
                       devices: widget.devices,
                     )
-                  : const SizedBox(
-                      key: ValueKey('collapsed'),
-                      height: 0,
-                    ),
+                  : const SizedBox(key: ValueKey('collapsed'), height: 0),
             ),
           ),
         ],
@@ -144,21 +142,27 @@ class _DevicesBlock extends StatelessWidget {
       children: [
         const SizedBox(height: 6),
         ...devices.map(
-          (devices) => Padding(
+          (device) => Padding(
             padding: const EdgeInsets.only(left: 16),
-            child: ListTile( 
+            child: ListTile(
               dense: true,
-              title: Text(devices.name, style:  TextStyle(
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w500,
-                                fontSize: 18,
-                                height: 1.5,
-                                color: AppColors.textPrimary,
-                              ),
-              
-               ),
+              title: Text(
+                device.name,
+                style: TextStyle(
+                  fontFamily: 'Inter',
+                  fontWeight: FontWeight.w500,
+                  fontSize: 18,
+                  height: 1.5,
+                  color: AppColors.textPrimary,
+                ),
+              ),
               leading: const Icon(Icons.memory, color: AppColors.primary),
-              onTap: () {},
+              onTap: () {
+                context.pushNamed(
+                  'diagnosticChat',
+                  pathParameters: {'deviceId': device.id.toString()},
+                );
+              },
             ),
           ),
         ),

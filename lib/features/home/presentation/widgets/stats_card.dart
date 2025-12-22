@@ -107,7 +107,7 @@ class _StatsCardState extends State<StatsCard>
                 Container(
                   padding: const EdgeInsets.all(AppSpacing.sm),
                   decoration: BoxDecoration(
-                    color: widget.data.color.withOpacity(0.1),
+                    color: widget.data.color.withValues(alpha: 0.1),
                     borderRadius: AppRadii.brSm,
                   ),
                   child: Icon(

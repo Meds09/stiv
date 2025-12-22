@@ -148,7 +148,7 @@ class _DeviceStatCardState extends State<DeviceStatCard>
     if (widget.data.onActionTap == null) return const SizedBox.shrink();
 
     return Material(
-      color: widget.data.color.withOpacity(0.1),
+      color: widget.data.color.withValues(alpha: 0.1),
       borderRadius: AppRadii.brSm,
       child: InkWell(
         onTap: widget.data.onActionTap,

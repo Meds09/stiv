@@ -1,4 +1,3 @@
-/// Exportación centralizada de widgets del home
 export 'device_stat_card.dart';
 export 'home_header.dart';
 export 'menu_grid_section.dart';

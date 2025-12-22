@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stiv/features/diagnostic/presentation/diagnostis_chat_page.dart';
 
 // Importa tus páginas
 import 'package:stiv/features/onboarding/presentation/onboarding_page.dart';
@@ -73,7 +74,26 @@ final router = GoRouter(
   initialLocation: '/onboarding',
   refreshListenable: routerNotifier,
 
+
+
   routes: [
+
+    // Ruta con parámetro: Chat de diagnóstico por dispositivo
+    GoRoute(
+      path: '/diagnostic/chat/:deviceId',
+      name: 'diagnosticChat',
+      builder: (context, state) {
+        final raw = state.pathParameters['deviceId'];
+        final deviceId = int.tryParse( raw ?? '');
+        if (deviceId == null) {
+          return const Scaffold(
+            body: Center(child: Text('ID de dispositivo inválido')),
+          );
+        }
+        return DiagnosticChatPage(deviceId: deviceId);
+      },
+    ),
+
     // Onboarding
     GoRoute(path: '/onboarding', builder: (_, _) => const OnBoardingPage()),
 
@@ -87,16 +107,14 @@ final router = GoRouter(
           extendBody: true,
           extendBodyBehindAppBar: true,
           body: navigationShell,
-          bottomNavigationBar:  CustomBottomNavigationBar(),
+          bottomNavigationBar: CustomBottomNavigationBar(),
         );
       },
       branches: [
         // Home
         StatefulShellBranch(
           navigatorKey: _shellNavigatorKey,
-          routes: [
-            GoRoute(path: '/home', builder: (_, _) => const HomePage()),
-          ],
+          routes: [GoRoute(path: '/home', builder: (_, _) => const HomePage())],
         ),
         //  Diagnóstico
         StatefulShellBranch(

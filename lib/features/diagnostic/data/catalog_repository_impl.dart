@@ -18,4 +18,14 @@ class CatalogRepositoryImpl implements CatalogRepository {
         .where((device) => device.categoryId == categoryId)
         .toList();
   }
+  
+  @override
+  Future<Device?> getDeviceById(int deviceId) async{
+    for (final device in mockDevices) {
+      if (device.id == deviceId) {
+        return Future.value(device);
+      }
+    }
+    throw Exception('Device not found');
+  }
 }

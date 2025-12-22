@@ -52,14 +52,14 @@ class _CardMenuState extends State<CardMenu> {
               gradient: LinearGradient(
                 colors: [
                   AppColors.primary,
-                  AppColors.primary.withOpacity(0.90),
+                  AppColors.primary.withValues(alpha: 0.9),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.primary.withOpacity(0.30),
+                  color: AppColors.primary.withValues(alpha: 0.3),
                   blurRadius: 18,
                   offset: const Offset(0, 8),
                 ),
@@ -74,7 +74,7 @@ class _CardMenuState extends State<CardMenu> {
                   width: 50,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.white.withOpacity(0.20),
+                    color: Colors.white.withValues(alpha: 0.2),
                   ),
                   child: Center(
                     child: IconTheme(

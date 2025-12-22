@@ -1,4 +1,3 @@
-/// Exportación centralizada de widgets del perfil
 export 'loading_overlay.dart';
 export 'logout_button.dart';
 export 'profile_avatar.dart';
