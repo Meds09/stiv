@@ -1,0 +1,27 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stiv/features/diagnostic/models/device.dart';
+import 'package:stiv/features/diagnostic/presentation/device_page/widgets/diagnostic_header.dart';
+import 'package:stiv/features/diagnostic/presentation/providers/catalog_providers.dart';
+
+class DiagnosticChatPage extends ConsumerWidget {
+
+
+  const DiagnosticChatPage({super.key, required this.deviceId, required this.device});
+
+  final int deviceId;
+  final Device? device;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+   final deviceAsyncValue = ref.watch(deviceByIdProvider(deviceId));
+
+    return Scaffold(
+      body: deviceAsyncValue.when(
+        data: (device) => device != null ? DiagnosticHeader(device: device) : const SizedBox(),
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stackTrace) => Center(child: Text('Error: $error')),
+      ),
+    );
+  }
+}

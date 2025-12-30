@@ -27,6 +27,7 @@ final mockDevices = <Device>[
     brand: 'Hikvision',
     model: 'DS-2DEXXXX',
     ip: '192.168.2.128',
+    image: 'assets/images/devices/axis_camera.jfif',
   ),
 
   Device(
@@ -54,6 +55,7 @@ final mockDevices = <Device>[
     brand: 'Dahua',
     model: 'Dahua fenix',
     ip: '192.168.1.5',
+    image: 'assets/images/devices/router.jfif',
   ),
 
 ];
