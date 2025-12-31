@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:stiv/core/theme/theme_data.dart';
-import 'package:stiv/shared/widgets/stiv_text_container.dart';
+import 'package:stiv/features/login_register/widgets/stiv_text_container.dart';
+
 
 /// Sección que muestra la información personal del usuario
 class ProfileInfoSection extends StatelessWidget {

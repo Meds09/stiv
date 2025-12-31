@@ -2,8 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stiv/core/theme/theme_data.dart';
+import 'package:stiv/features/login_register/providers/auth_provider.dart';
 import 'package:stiv/features/profile/presentation/widgets/widgets.dart';
-import 'package:stiv/shared/providers/auth_provider.dart';
+
 
 /// Página principal del perfil de usuario
 class ProfilePage extends ConsumerWidget {

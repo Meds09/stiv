@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stiv/core/theme/theme_data.dart';
-import 'package:stiv/shared/widgets/card_menu.dart';
+import 'package:stiv/features/login_register/widgets/card_menu.dart';
 
 /// Modelo para las opciones del menú
 class MenuOption {

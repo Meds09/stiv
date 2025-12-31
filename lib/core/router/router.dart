@@ -5,17 +5,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stiv/features/diagnostic/presentation/device_page/diagnostis_chat_page.dart';
 import 'package:stiv/features/diagnostic/presentation/diagnostic_page/diagnostic_page.dart';
+import 'package:stiv/features/login_register/widgets/custom_bottom_navigation_bar.dart';
 
 
-// Importa tus páginas
+
 import 'package:stiv/features/onboarding/presentation/onboarding_page.dart';
 import 'package:stiv/features/auth/presentation/auth_page.dart';
 import 'package:stiv/features/home/presentation/home_page.dart';
 import 'package:stiv/features/profile/presentation/profile_page.dart';
 
-import 'package:stiv/shared/widgets/custom_bottom_navigation_bar.dart';
 
-/// Estado del Onboarding (usa SharedPreferences)
+
+/// Estado del Onboarding (con SharedPreferences)
 class OnboardingState extends ChangeNotifier {
   bool _done = false;
   bool _loaded = false;

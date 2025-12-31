@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:stiv/features/login_register/widgets/squared_tile.dart';
+import 'package:stiv/features/login_register/widgets/stiv_login_button.dart';
+import 'package:stiv/features/login_register/widgets/stiv_textfield.dart';
 import 'package:stiv/services/auth_service.dart';
-import 'package:stiv/shared/widgets/squared_tile.dart';
-import 'package:stiv/shared/widgets/stiv_login_button.dart';
-import 'package:stiv/shared/widgets/stiv_textfield.dart';
 import 'package:stiv/core/theme/theme_data.dart';
 
 class LoginPage extends StatefulWidget {
