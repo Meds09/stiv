@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stiv/core/theme/theme_data.dart';
 import 'package:stiv/features/diagnostic/models/device.dart';
 import 'package:stiv/features/diagnostic/presentation/device_page/widgets/diagnostic_header.dart';
 import 'package:stiv/features/diagnostic/presentation/providers/catalog_providers.dart';
@@ -18,7 +19,22 @@ class DiagnosticChatPage extends ConsumerWidget {
 
     return Scaffold(
       body: deviceAsyncValue.when(
-        data: (device) => device != null ? DiagnosticHeader(device: device) : const SizedBox(),
+        data: (device) => device != null 
+        ? Scaffold(
+          backgroundColor: AppColors.background,
+          body: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+
+            child: Column(
+              children: [
+                DiagnosticHeader(device: device),
+           
+                                  
+              ],
+            ),
+          ),
+        )
+        : const SizedBox(),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stackTrace) => Center(child: Text('Error: $error')),
       ),
