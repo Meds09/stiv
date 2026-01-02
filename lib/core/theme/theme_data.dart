@@ -70,6 +70,15 @@ class AppTextStyles {
     letterSpacing: -0.2,
     color: AppColors.textPrimary,
   );
+    // titular en azul
+   static const TextStyle t1 = TextStyle(
+    fontFamily: 'Rubik',
+    fontWeight: FontWeight.w700,
+    fontSize: 26,
+    height: 1.2,
+    letterSpacing: -0.2,
+    color: AppColors.primary,
+  );
 
   static const TextStyle h2 = TextStyle(
     fontFamily: 'Rubik',

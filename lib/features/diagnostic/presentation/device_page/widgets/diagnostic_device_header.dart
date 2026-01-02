@@ -115,7 +115,7 @@ class DiagnosticHeader extends StatelessWidget {
                 Text(
                   device.location != null
                       ? 'Ubicación: ${device.location}'
-                      : 'Ubicación: No disponible',
+                      : 'Ubicación: No disponible ',
                   style: const TextStyle(
                     fontFamily: 'Rubik',
                     fontSize: 16,
