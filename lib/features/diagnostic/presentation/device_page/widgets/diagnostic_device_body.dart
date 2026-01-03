@@ -8,8 +8,14 @@ class DiagnosticDeviceBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal:30.0),
-      child: const Text('¿Que problema presenta el dispositivo?',
-      style: AppTextStyles.t1)
+      child: Column(
+        children: [
+          const Text('¿Que problema presenta el dispositivo?',
+          style: AppTextStyles.t1),
+          const SizedBox(height:20),
+         
+        ],
+      )
 
     );
   }

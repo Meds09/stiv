@@ -24,7 +24,7 @@ class HomePage extends ConsumerWidget {
       body: Stack(
         children: [
           SafeArea(
-            bottom: false,
+            bottom: false,  
             child: RefreshIndicator(
               onRefresh: () async {
                 // Refrescar datos al hacer pull to refresh
