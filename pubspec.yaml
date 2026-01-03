@@ -69,13 +69,16 @@ dev_dependencies:
   json_serializable: ^6.8.0
 
 flutter_native_splash:
-  color: "#0663EF"
+  color: "#0663E4"
   image: assets/images/stiv-logo-white.png
+
   android: true
-  ios: true
-  web: false
   android_gravity: center
-  ios_content_mode: scaleAspectFill
+
+  android_12:
+    color: "#0663E4"
+    image: assets/images/stiv-logo-white.png
+    icon_background_color: "#0663E4"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
