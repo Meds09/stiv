@@ -27,4 +27,14 @@ class ProblemRepositotyImp implements ProblemRepository {
     .toList();
 
   }
+  
+  @override
+  Future<List<Problem>> getProblemsByCategory(int categoryId)async {
+    await Future.delayed(const Duration(milliseconds: 300));
+    return mockProblems
+    .where((problem) => problem.appliedCategoryIds.contains(categoryId))
+    .toList();
+  }
+
+
 }

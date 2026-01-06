@@ -5,7 +5,8 @@ const mockProblems = <Problem> [
     id: 1,
     title: 'Fallas de energía',
     description: 'El dispositivo no recibe energía eléctrica',
-    appliedCategoryIds: {1, 2, 3, 4}, // CCTV, Red, Energía y Control acceso
+    appliedCategoryIds: {1, 2, 3, 4},
+     // CCTV, Red, Energía y Control acceso
   ),
   Problem(
     id: 2,

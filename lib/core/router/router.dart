@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stiv/features/diagnostic/presentation/device_page/diagnostis_chat_page.dart';
+import 'package:stiv/features/diagnostic/presentation/device_page/select_device_problem_page.dart';
 import 'package:stiv/features/diagnostic/presentation/diagnostic_page/diagnostic_page.dart';
 import 'package:stiv/features/login_register/widgets/custom_bottom_navigation_bar.dart';
 
@@ -93,7 +93,7 @@ final router = GoRouter(
             body: Center(child: Text('ID de dispositivo inválido')),
           );
         }
-        return DiagnosticChatPage(deviceId: deviceId, device: null);
+        return SelectDevicePage(deviceId: deviceId, device: null);
       },
     ),
 

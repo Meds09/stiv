@@ -6,10 +6,10 @@ import 'package:stiv/features/diagnostic/presentation/device_page/widgets/diagno
 import 'package:stiv/features/diagnostic/presentation/device_page/widgets/diagnostic_device_header.dart';
 import 'package:stiv/features/diagnostic/presentation/providers/catalog_providers.dart';
 
-class DiagnosticChatPage extends ConsumerWidget {
+class SelectDevicePage extends ConsumerWidget {
 
 
-  const DiagnosticChatPage({super.key, required this.deviceId, required this.device});
+  const SelectDevicePage({super.key, required this.deviceId, required this.device});
 
   final int deviceId;
   final Device? device;

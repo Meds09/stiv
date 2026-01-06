@@ -79,7 +79,7 @@ class _DeviceTypeListState extends ConsumerState<DeviceTypeList>
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: .stretch,
         children: [
           ListTile(
             title: Text(widget.category.name, style: AppTextStyles.h2),
@@ -106,7 +106,7 @@ class _DeviceTypeListState extends ConsumerState<DeviceTypeList>
           AnimatedSize(
             duration: const Duration(milliseconds: 250),
             curve: Curves.easeInOut,
-            alignment: Alignment.topCenter,
+            alignment: .topCenter,
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 200),
               switchInCurve: Curves.easeOut,
