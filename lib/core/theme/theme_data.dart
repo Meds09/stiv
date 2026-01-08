@@ -80,6 +80,16 @@ class AppTextStyles {
     color: AppColors.primary,
   );
 
+    // titular en azul
+   static const TextStyle t2 = TextStyle(
+    fontFamily: 'Rubik',
+    fontWeight: FontWeight.w700,
+    fontSize: 22,
+    height: 1.2,
+    letterSpacing: -0.2,
+    color: AppColors.primary,
+  );
+
   static const TextStyle h2 = TextStyle(
     fontFamily: 'Rubik',
     fontWeight: FontWeight.w700,
@@ -99,7 +109,7 @@ class AppTextStyles {
   // Subtítulos (Inter)
   static const TextStyle subtitle = TextStyle(
     fontFamily: 'Inter',
-    fontWeight: FontWeight.w600,
+    fontWeight: FontWeight.w700,
     fontSize: 16,
     color: AppColors.textPrimary,
   );

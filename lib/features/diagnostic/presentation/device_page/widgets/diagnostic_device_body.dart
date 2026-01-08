@@ -15,18 +15,18 @@ class DiagnosticDeviceBody extends ConsumerWidget {
       child: Column(
         children: [
           const Text(
-            '¿Que problema presenta el dispositivo?',
+            '¿Que está ocurriendo con el dispositivo?',
             style: AppTextStyles.t1,
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           
           problemsAsync.when(
-            error: (e, _) => const Text('Error al cargar los problemas'),
+            error: (e, _) => const Text('Error al cargar las fallas del dispositivo.'),
             loading: () => const Center(child: CircularProgressIndicator()),
             data: (problems) {
               if (problems.isEmpty) {
                 return const Text(
-                  'No hay problemas disponibles para este dispositivo.',
+                  'No hay fallas disponibles para este dispositivo.',
                   style: AppTextStyles.h1,
                 );
               }
@@ -39,9 +39,13 @@ class DiagnosticDeviceBody extends ConsumerWidget {
                   return ListTile(
                     title: Text(
                       problem.title,
-                      style: AppTextStyles.h1,
-                    ),
+                      style: AppTextStyles.t2,
+                    ),    
                     trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                    subtitle: Text(
+                      problem.description,
+                      style: AppTextStyles.subtitle,
+                    ),
                     onTap: () {
                       // Acción al seleccionar un problema
                     },

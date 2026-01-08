@@ -1,3 +1,12 @@
+
+ enum DeviceStatus{
+    online,
+    offline,
+    maintenance,
+  }
+
+
+
 class Device {
   final int id;
   final String name;
@@ -7,6 +16,7 @@ class Device {
   final String ip;
   final String? location;
   final int categoryId;
+  final DeviceStatus status;
 
   Device({
     required this.id,
@@ -16,7 +26,7 @@ class Device {
     required this.ip,
     this.image,
     this.location,
-    required this.categoryId,
+    required this.categoryId, required this.status,
   });
 
   factory Device.fromJson(Map<String, dynamic> json) {
@@ -28,7 +38,10 @@ class Device {
       brand: json['brand'],
       ip: json['ip'],
       location: json['location'],
-      categoryId: json['category'],
+      categoryId: json['category'], 
+      status: DeviceStatus.values.firstWhere((e) => e.name == json['status']),
     );
   }
+
+ 
 }

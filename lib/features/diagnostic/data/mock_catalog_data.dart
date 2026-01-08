@@ -18,7 +18,8 @@ final mockDevices = <Device>[
     categoryId: 1,
     brand: 'Dahua',
     model: 'HFW-XXX',
-    ip: '192.168.19.129',
+    ip: '192.168.19.129', 
+    status: DeviceStatus.online,
   ),
   Device(
     id: 2,
@@ -27,7 +28,8 @@ final mockDevices = <Device>[
     brand: 'Hikvision',
     model: 'DS-2DEXXXX',
     ip: '192.168.2.128',
-    image: 'assets/images/devices/axis_camera.jfif',
+    image: 'assets/images/devices/axis_camera.jfif', 
+    status: DeviceStatus.offline,
   ),
 
   Device(
@@ -36,7 +38,8 @@ final mockDevices = <Device>[
     categoryId: 3,
     brand: 'APC',
     model: 'APC',
-    ip: '172.120.124.12',
+    ip: '172.120.124.12', 
+    status: DeviceStatus.maintenance,
   ),
 
   Device(
@@ -45,7 +48,8 @@ final mockDevices = <Device>[
     categoryId: 4,
     brand: 'ZKTeco',
     model: 'Zkteco 1',
-    ip: '192.168.1.2',
+    ip: '192.168.1.2', 
+    status: DeviceStatus.online,
   ),
 
   Device(
@@ -55,7 +59,8 @@ final mockDevices = <Device>[
     brand: 'Dahua',
     model: 'Dahua fenix',
     ip: '192.168.1.5',
-    image: 'assets/images/devices/router.jfif',
+    image: 'assets/images/devices/router.jfif', 
+    status: DeviceStatus.offline,
   ),
 
 ];
