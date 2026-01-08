@@ -6,6 +6,9 @@ import 'package:stiv/features/diagnostic/models/device.dart';
 
 //Proveedor del repositorio
 
+final selectedDeviceProvider =
+    StateProvider<Device?>((ref) => null);
+
 final isExpandedCategoryIdProvider = StateProvider<Set<int>>((ref) => <int>{});
 
 final catalogRepositoryProvider = Provider<CatalogRepository>((ref) {

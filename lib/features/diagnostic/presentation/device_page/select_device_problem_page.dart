@@ -30,7 +30,7 @@ class SelectDevicePage extends ConsumerWidget {
             child: Column(
               children: [
                 DiagnosticHeader(device: device),
-                const DiagnosticDeviceBody(),
+                DiagnosticDeviceBody(),
            
                                   
               ],

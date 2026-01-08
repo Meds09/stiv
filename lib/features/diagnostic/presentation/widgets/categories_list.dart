@@ -125,12 +125,12 @@ class _DeviceTypeListState extends ConsumerState<DeviceTypeList>
   }
 }
 
-class _DevicesBlock extends StatelessWidget {
+class _DevicesBlock extends ConsumerWidget  {
   const _DevicesBlock({super.key, required this.devices});
   final List<Device> devices;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     if (devices.isEmpty) {
       return const Padding(
         padding: EdgeInsets.only(left: 16, bottom: 8),
@@ -157,12 +157,17 @@ class _DevicesBlock extends StatelessWidget {
                 ),
               ),
               leading: const Icon(Icons.memory, color: AppColors.primary),
-              onTap: () {
-                context.pushNamed(
-                  'diagnosticChat',
-                  pathParameters: {'deviceId': device.id.toString()},
-                );
-              },
+             onTap: () {
+                 
+                  ref.read(selectedDeviceProvider.notifier).state = device;
+
+                  
+
+                  context.pushNamed(
+                    'diagnosticChat',
+                    pathParameters: {'deviceId': device.id.toString()},
+                  );
+                },
             ),
           ),
         ),
