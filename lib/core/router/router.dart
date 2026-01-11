@@ -6,9 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stiv/features/diagnostic/presentation/device_page/select_device_problem_page.dart';
 import 'package:stiv/features/diagnostic/presentation/diagnostic_page/diagnostic_page.dart';
 import 'package:stiv/features/login_register/widgets/custom_bottom_navigation_bar.dart';
-
-
-
 import 'package:stiv/features/onboarding/presentation/onboarding_page.dart';
 import 'package:stiv/features/auth/presentation/auth_page.dart';
 import 'package:stiv/features/home/presentation/home_page.dart';

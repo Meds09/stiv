@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stiv/features/login_register/providers/bottom_nav_bar_provider.dart';
 
 final authStateProvider = StreamProvider<User?>((ref) {
   return FirebaseAuth.instance.authStateChanges();
@@ -51,8 +52,10 @@ class AuthController {
   
   Future<void> signOut() async {
     ref.read(isSigningOutProvider.notifier).state = true;
-    await Future.delayed(const Duration(milliseconds: 50));
+    await Future.delayed(const Duration(milliseconds: 1000));
     await FirebaseAuth.instance.signOut();
+    ref.read(menuIndexProvider.notifier).state = 0;
+    
   }
   
   bool get isAuthenticated {

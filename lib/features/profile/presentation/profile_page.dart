@@ -78,6 +78,7 @@ class ProfilePage extends ConsumerWidget {
           LogoutButton(
             onTap: () => authController.signOut(),
             isLoading: isSigningOut,
+            //TODO COPIAR EL LOGOUT DEL HOMEPAGE YA QUE ESE TIENE LA IMAGEN DE DESPEDIDA, DESDE LA PAGINA DE PERFIL NO.
           ),
           const SizedBox(height: 200),
           
