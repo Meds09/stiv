@@ -7,6 +7,7 @@ class AppColors {
   static const Color primaryDark = Color(0xFF0A1E3A);
   static const Color background = Color(0xFFEFEAE3);
   static const Color surface = Colors.white;
+  static const Color card = Color.fromARGB(255, 237, 231, 223);
 
   // Texto
   static const Color textPrimary = Color(0xFF0B1220);
@@ -70,8 +71,8 @@ class AppTextStyles {
     letterSpacing: -0.2,
     color: AppColors.textPrimary,
   );
-    // titular en azul
-   static const TextStyle t1 = TextStyle(
+  // titular en azul
+  static const TextStyle t1 = TextStyle(
     fontFamily: 'Rubik',
     fontWeight: FontWeight.w700,
     fontSize: 26,
@@ -80,8 +81,8 @@ class AppTextStyles {
     color: AppColors.primary,
   );
 
-    // titular en azul
-   static const TextStyle t2 = TextStyle(
+  // titular en azul
+  static const TextStyle t2 = TextStyle(
     fontFamily: 'Rubik',
     fontWeight: FontWeight.w700,
     fontSize: 22,
@@ -104,6 +105,14 @@ class AppTextStyles {
     fontSize: 18,
     height: 1.3,
     color: AppColors.textPrimary,
+  );
+
+  static const TextStyle h4 = TextStyle(
+    fontFamily: 'Rubik',
+    fontWeight: FontWeight.w700,
+    fontSize: 16,
+    height: 1.3,
+    color: AppColors.primary,
   );
 
   // Subtítulos (Inter)
@@ -203,14 +212,20 @@ class AppTheme {
       bodyMedium: AppTextStyles.body,
       bodySmall: AppTextStyles.caption,
     ),
-    elevatedButtonTheme: ElevatedButtonThemeData(style: AppButtonStyles.primary),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: AppButtonStyles.primary,
+    ),
     filledButtonTheme: FilledButtonThemeData(style: AppButtonStyles.tonal),
-    outlinedButtonTheme: OutlinedButtonThemeData(style: AppButtonStyles.outline),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: AppButtonStyles.outline,
+    ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: Colors.white,
       contentPadding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.md, vertical: AppSpacing.md),
+        horizontal: AppSpacing.md,
+        vertical: AppSpacing.md,
+      ),
       border: OutlineInputBorder(
         borderRadius: AppRadii.brMd,
         borderSide: const BorderSide(color: AppColors.outline),
@@ -247,36 +262,47 @@ class AppTheme {
         fontFamily: 'Rubik',
         fontWeight: FontWeight.w700,
         fontSize: 28,
-        color: Colors.white),
+        color: Colors.white,
+      ),
       headlineSmall: TextStyle(
         fontFamily: 'Rubik',
         fontWeight: FontWeight.w700,
         fontSize: 22,
-        color: Colors.white),
+        color: Colors.white,
+      ),
       titleMedium: TextStyle(
         fontFamily: 'Inter',
         fontWeight: FontWeight.w600,
         fontSize: 16,
-        color: Colors.white),
+        color: Colors.white,
+      ),
       bodyMedium: TextStyle(
         fontFamily: 'Inter',
         fontWeight: FontWeight.w500,
         fontSize: 14,
-        color: Color(0xFFB7C2D6)),
+        color: Color(0xFFB7C2D6),
+      ),
       bodySmall: TextStyle(
         fontFamily: 'Inter',
         fontWeight: FontWeight.w500,
         fontSize: 12,
-        color: Color(0xFF8FA0BF)),
+        color: Color(0xFF8FA0BF),
+      ),
     ),
-    elevatedButtonTheme: ElevatedButtonThemeData(style: AppButtonStyles.primary),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: AppButtonStyles.primary,
+    ),
     filledButtonTheme: FilledButtonThemeData(style: AppButtonStyles.tonal),
-    outlinedButtonTheme: OutlinedButtonThemeData(style: AppButtonStyles.outline),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: AppButtonStyles.outline,
+    ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: const Color(0xFF0F1B33),
       contentPadding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.md, vertical: AppSpacing.md),
+        horizontal: AppSpacing.md,
+        vertical: AppSpacing.md,
+      ),
       border: OutlineInputBorder(
         borderRadius: AppRadii.brMd,
         borderSide: const BorderSide(color: Color(0xFF23314D)),
@@ -289,12 +315,8 @@ class AppTheme {
         borderRadius: AppRadii.brMd,
         borderSide: BorderSide(color: AppColors.primary, width: 1.4),
       ),
-      hintStyle: TextStyle(
-        fontFamily: 'Inter',
-        color: Color(0xFF8FA0BF)),
-      labelStyle: TextStyle(
-        fontFamily: 'Inter',
-        color: Color(0xFF8FA0BF)),
+      hintStyle: TextStyle(fontFamily: 'Inter', color: Color(0xFF8FA0BF)),
+      labelStyle: TextStyle(fontFamily: 'Inter', color: Color(0xFF8FA0BF)),
     ),
     dividerColor: const Color(0xFF23314D),
   );
@@ -308,12 +330,10 @@ extension BuildContextThemeX on BuildContext {
 }
 
 extension NameFormatter on String {
-
   String get capitalized {
     return split(' ')
         .where((word) => word.isNotEmpty)
-        .map((word) =>
-            word[0].toUpperCase() + word.substring(1).toLowerCase())
+        .map((word) => word[0].toUpperCase() + word.substring(1).toLowerCase())
         .join(' ');
   }
 }

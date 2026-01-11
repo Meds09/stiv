@@ -127,7 +127,7 @@ _DeviceStatusConfig _statusConfig(DeviceStatus status) {
       );
     case DeviceStatus.online:
       return _DeviceStatusConfig(
-        'Operativo',
+        'Registrado',
         Colors.lightGreenAccent
       );
     default:

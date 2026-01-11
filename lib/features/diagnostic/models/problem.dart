@@ -1,18 +1,19 @@
+import 'package:flutter/widgets.dart';
+
 class Problem {
   final int id;
   final String title;
   final String description;
+  final Icon? icon;
 
   // Para UI
   final Set<int> appliedCategoryIds;
-
 
   const Problem({
     required this.id,
     required this.title,
     required this.description,
-    required this.appliedCategoryIds,
- 
+    required this.appliedCategoryIds,  this.icon,
   });
 
   factory Problem.fromJson(Map<String, dynamic> json) {
@@ -20,9 +21,8 @@ class Problem {
       id: json['id'] as int,
       title: json['title'] as String,
       description: json['description'] as String,
-      appliedCategoryIds:
-          Set<int>.from(json['appliedCategoryIds'] ?? []),
-   
+      appliedCategoryIds: Set<int>.from(json['appliedCategoryIds'] ?? []),
+      icon: json['icon'] as Icon,
     );
   }
 
@@ -32,7 +32,7 @@ class Problem {
       'title': title,
       'description': description,
       'appliedCategoryIds': appliedCategoryIds.toList(),
+      'icon': icon,
     };
   }
 }
-
