@@ -2,9 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stiv/core/theme/theme_data.dart';
+import 'package:stiv/features/home/presentation/widgets/sign_out_overlay.dart';
 import 'package:stiv/features/login_register/providers/auth_provider.dart';
 import 'package:stiv/features/profile/presentation/widgets/widgets.dart';
-
 
 /// Página principal del perfil de usuario
 class ProfilePage extends ConsumerWidget {
@@ -15,6 +15,7 @@ class ProfilePage extends ConsumerWidget {
     final user = ref.watch(currentUserProvider);
     final authController = ref.read(authControllerProvider);
     final isSigningOut = ref.watch(isSigningOutProvider);
+ 
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -28,17 +29,13 @@ class ProfilePage extends ConsumerWidget {
                 ProfileHeader(user: user),
                 const SizedBox(height: AppSpacing.xl),
                 _buildContent(user, authController, isSigningOut),
-                
               ],
-              
             ),
           ),
-          LoadingOverlay(isLoading: isSigningOut),
-          
-          
+       
+          SignOutOverlay(isVisible: isSigningOut),
           
         ],
-        
       ),
     );
   }
@@ -76,17 +73,14 @@ class ProfilePage extends ConsumerWidget {
           const SettingsSection(),
           const SizedBox(height: AppSpacing.xl),
           LogoutButton(
-            onTap: () => authController.signOut(),
-            isLoading: isSigningOut,
-            //TODO COPIAR EL LOGOUT DEL HOMEPAGE YA QUE ESE TIENE LA IMAGEN DE DESPEDIDA, DESDE LA PAGINA DE PERFIL NO.
+            onTap: () {
+              authController.signOut();
+            },
+  
           ),
           const SizedBox(height: 200),
-          
         ],
-        
-        
       ),
-      
     );
   }
 }

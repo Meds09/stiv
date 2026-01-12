@@ -7,43 +7,47 @@ import 'package:stiv/features/diagnostic/presentation/device_page/widgets/diagno
 import 'package:stiv/features/diagnostic/presentation/providers/catalog_providers.dart';
 
 class SelectDevicePage extends ConsumerWidget {
-
-
-  const SelectDevicePage({super.key, required this.deviceId, required this.device});
+  const SelectDevicePage({
+    super.key,
+    required this.deviceId,
+    required this.device,
+  });
 
   final int deviceId;
   final Device? device;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-   final deviceAsyncValue = ref.watch(deviceByIdProvider(deviceId));
+    final deviceAsyncValue = ref.watch(deviceByIdProvider(deviceId));
 
     return Scaffold(
+      backgroundColor: AppColors.background,
+      appBar: _buildAppBar(),
       body: deviceAsyncValue.when(
-        data: (device) => device != null 
-        ? Scaffold(
-          appBar: _buildAppBar(),
-          backgroundColor: AppColors.background,
-          body: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
+        loading: () => const Center(
+          child: CircularProgressIndicator(),
+        ),
+        error: (error, _) => Center(
+          child: Text('Error: $error'),
+        ),
+        data: (device) {
+          if (device == null) return const SizedBox();
 
+          return SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
                 DiagnosticHeader(device: device),
                 DiagnosticDeviceBody(),
-           
-                                  
               ],
             ),
-          ),
-        )
-        : const SizedBox(),
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stackTrace) => Center(child: Text('Error: $error')),
+          );
+        },
       ),
     );
   }
 }
+
 
 PreferredSizeWidget _buildAppBar() {
   return AppBar(

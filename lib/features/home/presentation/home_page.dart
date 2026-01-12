@@ -38,7 +38,10 @@ class HomePage extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     HomeHeader(
-                      onLogoutTap: () => authController.signOut(),
+                      onLogoutTap: () {
+                        authController.signOut();
+                        
+                      }
                     ),
                     const SizedBox(height: AppSpacing.lg),
                     WelcomeSection(firstName: firstName),
@@ -68,6 +71,7 @@ class HomePage extends ConsumerWidget {
                 ),
               ),
             ),
+            
           ),
           SignOutOverlay(isVisible: isSigningOut),
         ],

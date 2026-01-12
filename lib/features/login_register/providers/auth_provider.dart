@@ -7,13 +7,11 @@ final authStateProvider = StreamProvider<User?>((ref) {
 });
 
 final currentUserProvider = Provider<User?>((ref) {
-  final authState = ref.watch(authStateProvider);
-  return authState.when(
-    data: (user) => user,
-    loading: () => null,
-    error: (_, _) => null,
+  return ref.watch(
+    authStateProvider.select((state) => state.valueOrNull),
   );
 });
+
 
 final userFirstNameProvider = Provider<String>((ref) {
   final user = ref.watch(currentUserProvider);
@@ -52,7 +50,7 @@ class AuthController {
   
   Future<void> signOut() async {
     ref.read(isSigningOutProvider.notifier).state = true;
-    await Future.delayed(const Duration(milliseconds: 1000));
+    await Future.delayed(const Duration(milliseconds: 800));
     await FirebaseAuth.instance.signOut();
     ref.read(menuIndexProvider.notifier).state = 0;
     

@@ -4,12 +4,12 @@ import 'package:stiv/core/theme/theme_data.dart';
 /// Botón de cerrar sesión con estado de carga
 class LogoutButton extends StatelessWidget {
   final VoidCallback onTap;
-  final bool isLoading;
+
 
   const LogoutButton({
     super.key,
     required this.onTap,
-    required this.isLoading,
+
   });
 
   @override
@@ -23,7 +23,7 @@ class LogoutButton extends StatelessWidget {
         color: AppColors.surface,
         borderRadius: AppRadii.brMd,
         child: InkWell(
-          onTap: isLoading ? null : onTap,
+          onTap: onTap,
           borderRadius: AppRadii.brMd,
           child: Container(
             padding: const EdgeInsets.symmetric(
@@ -33,16 +33,6 @@ class LogoutButton extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (isLoading)
-                  const SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator.adaptive(
-                      strokeWidth: 2,
-                      backgroundColor: AppColors.danger,
-                    ),
-                  )
-                else
                   const Icon(
                     Icons.logout,
                     color: AppColors.danger,
