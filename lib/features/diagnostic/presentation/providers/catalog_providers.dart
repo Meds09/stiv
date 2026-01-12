@@ -3,6 +3,7 @@ import 'package:stiv/features/diagnostic/data/catalog_repository_impl.dart';
 import 'package:stiv/features/diagnostic/models/catalog_repository.dart';
 import 'package:stiv/features/diagnostic/models/category.dart';
 import 'package:stiv/features/diagnostic/models/device.dart';
+import 'package:stiv/features/home/presentation/providers/recent_diagnostics_provider.dart';
 
 //Proveedor del repositorio
 
@@ -30,4 +31,12 @@ final deviceByIdProvider = FutureProvider.family<Device?, int>((ref, int deviceI
 final repo = ref.read(catalogRepositoryProvider);
   return repo.getDeviceById(deviceId);
 },
+
+
 );
+
+
+final recentDiagnosticIdsProvider = Provider<List<String>>((ref) {
+  final list = ref.watch(recentDiagnosticsProvider).value ?? [];
+  return list.map((d) => d.id).toList();
+});

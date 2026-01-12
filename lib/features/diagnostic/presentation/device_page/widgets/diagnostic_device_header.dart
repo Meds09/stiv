@@ -109,7 +109,7 @@ class DiagnosticHeader extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: AppSpacing.sm),
-                    DeviceStatusIndicator(status: device.status),
+                    DeviceStatusIndicator(deviceId: device.id),
                   ],
                 ),
 

@@ -1,27 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stiv/features/diagnostic/models/device.dart';
+import 'package:stiv/features/diagnostic/presentation/providers/catalog_providers.dart';
 
-class DeviceStatusIndicator extends StatefulWidget {
-  final DeviceStatus status;
+
+class DeviceStatusIndicator extends ConsumerStatefulWidget {
+  final int deviceId;
 
   const DeviceStatusIndicator({
     super.key,
-    required this.status,
+    required this.deviceId,
   });
 
   @override
-  State<DeviceStatusIndicator> createState() =>
+  ConsumerState<DeviceStatusIndicator> createState() =>
       _DeviceStatusIndicatorState();
 }
 
-class _DeviceStatusIndicatorState extends State<DeviceStatusIndicator>
+class _DeviceStatusIndicatorState
+    extends ConsumerState<DeviceStatusIndicator>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late final Animation<double> _scale;
   late final Animation<double> _opacity;
 
-  bool get _shouldAnimate =>
-      widget.status == DeviceStatus.online || widget.status == DeviceStatus.offline || widget.status == DeviceStatus.maintenance;
+  DeviceStatus? _lastStatus;
 
   @override
   void initState() {
@@ -33,29 +36,35 @@ class _DeviceStatusIndicatorState extends State<DeviceStatusIndicator>
     );
 
     _scale = Tween<double>(begin: 1.0, end: 1.25).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeInOut,
-      ),
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
 
     _opacity = Tween<double>(begin: 1.0, end: 0.6).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeInOut,
-      ),
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
+  }
 
-    if (_shouldAnimate) {
-      _controller.repeat(reverse: true);
-    }
+  bool _shouldAnimate(DeviceStatus status) {
+    return status == DeviceStatus.online ||
+        status == DeviceStatus.offline ||
+        status == DeviceStatus.maintenance;
   }
 
   @override
-  void didUpdateWidget(covariant DeviceStatusIndicator oldWidget) {
-    super.didUpdateWidget(oldWidget);
+ @override
+Widget build(BuildContext context) {
+  final status = ref.watch(
+    deviceByIdProvider(widget.deviceId)
+        .select((async) => async.value?.status),
+  );
 
-    if (_shouldAnimate) {
+  if (status == null) {
+    return const SizedBox.shrink();
+  }
+
+  if (_lastStatus != status) {
+    _lastStatus = status;
+    if (_shouldAnimate(status)) {
       _controller.repeat(reverse: true);
     } else {
       _controller.stop();
@@ -63,51 +72,50 @@ class _DeviceStatusIndicatorState extends State<DeviceStatusIndicator>
     }
   }
 
+  final config = _statusConfig(status);
+
+  Widget dot = Container(
+    width: 10,
+    height: 10,
+    decoration: BoxDecoration(
+      color: config.color,
+      shape: BoxShape.circle,
+    ),
+  );
+
+  if (_shouldAnimate(status)) {
+    dot = FadeTransition(
+      opacity: _opacity,
+      child: ScaleTransition(
+        scale: _scale,
+        child: dot,
+      ),
+    );
+  }
+
+  return Row(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      dot,
+      const SizedBox(width: 6),
+      Text(
+        config.label,
+        style: const TextStyle(
+          fontFamily: 'Rubik',
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+        ),
+      ),
+    ],
+  );
+}
+
+
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final config = _statusConfig(widget.status);
-
-    Widget dot = Container(
-      width: 10,
-      height: 10,
-      decoration: BoxDecoration(
-        color: config.color,
-        shape: BoxShape.circle,
-      ),
-    );
-
-    if (_shouldAnimate) {
-      dot = FadeTransition(
-        opacity: _opacity,
-        child: ScaleTransition(
-          scale: _scale,
-          child: dot,
-        ),
-      );
-    }
-
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        dot,
-        const SizedBox(width: 6),
-        Text(
-          config.label,
-          style: const TextStyle(
-            fontFamily: 'Rubik',
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-          ),
-        ),
-      ],
-    );
   }
 }
 
@@ -126,14 +134,14 @@ _DeviceStatusConfig _statusConfig(DeviceStatus status) {
         Colors.redAccent,
       );
     case DeviceStatus.online:
-      return _DeviceStatusConfig(
+      return const _DeviceStatusConfig(
         'Registrado',
-        Colors.lightGreenAccent
+        Colors.lightGreenAccent,
       );
-    default:
-      return _DeviceStatusConfig(
+    case DeviceStatus.maintenance:
+      return const _DeviceStatusConfig(
         'Mantenimiento',
-        Colors.yellowAccent
+        Colors.yellowAccent,
       );
   }
 }
