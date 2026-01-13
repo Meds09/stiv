@@ -9,31 +9,28 @@ final menuOptionsProvider = Provider<List<MenuOption>>((ref) {
     MenuOption(
       title: 'Diagnóstico Rápido',
       icon: Icons.import_contacts_rounded,
-      onTap: () {
-        // TODO: Navegar a diagnóstico rápido
-      },
+      route: '/diag',
+      menuIndex: 1,
+   
     ),
     MenuOption(
       title: 'Dispositivos',
-      icon: Icons.devices,
-      onTap: () {
-        // TODO: Navegar a dispositivos
-      },
+      icon: Icons.devices, 
+      route: '/devices',
+      menuIndex: 2,
+      
     ),
     MenuOption(
       title: 'Historial de reportes',
       icon: Icons.history,
-      onTap: () {
-        // TODO: Navegar a historial
-      },
+      route: '/reports',
+      menuIndex: 3,
     ),
     MenuOption(
       title: 'Manuales',
-      icon: Icons.menu_book_rounded,
-      onTap: () {
-        // TODO: Navegar a manuales
-      },
+      icon: Icons.menu_book_rounded, 
+      route: '/manuals',
+      menuIndex: 4,
     ),
   ];
 });
-

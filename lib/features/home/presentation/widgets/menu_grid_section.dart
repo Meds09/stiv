@@ -1,34 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stiv/core/router/router.dart';
 import 'package:stiv/core/theme/theme_data.dart';
+import 'package:stiv/features/login_register/providers/bottom_nav_bar_provider.dart';
 import 'package:stiv/features/login_register/widgets/card_menu.dart';
 
 /// Modelo para las opciones del menú
 class MenuOption {
   final String title;
   final IconData icon;
-  final VoidCallback onTap;
+  final int menuIndex;
+  final String route;
 
   const MenuOption({
     required this.title,
     required this.icon,
-    required this.onTap,
+
+    required this.route, required this.menuIndex,
   });
 }
 
 /// Sección de grid de menú con animación escalonada
-class MenuGridSection extends StatefulWidget {
+class MenuGridSection extends ConsumerStatefulWidget {
   final List<MenuOption> options;
 
-  const MenuGridSection({
-    super.key,
-    required this.options,
-  });
+  const MenuGridSection({super.key, required this.options});
 
   @override
-  State<MenuGridSection> createState() => _MenuGridSectionState();
+  ConsumerState<MenuGridSection> createState() => _MenuGridSectionState();
 }
 
-class _MenuGridSectionState extends State<MenuGridSection>
+class _MenuGridSectionState extends ConsumerState<MenuGridSection>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
@@ -49,7 +51,7 @@ class _MenuGridSectionState extends State<MenuGridSection>
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
       child: _buildMenuGrid(),
@@ -59,10 +61,7 @@ class _MenuGridSectionState extends State<MenuGridSection>
   Widget _buildMenuGrid() {
     return Column(
       children: [
-        _buildMenuRow(
-          startIndex: 0,
-          items: widget.options.take(2).toList(),
-        ),
+        _buildMenuRow(startIndex: 0, items: widget.options.take(2).toList()),
         const SizedBox(height: AppSpacing.sm),
         _buildMenuRow(
           startIndex: 2,
@@ -94,7 +93,10 @@ class _MenuGridSectionState extends State<MenuGridSection>
             child: CardMenu(
               title: entry.value.title,
               icon: Icon(entry.value.icon),
-              onTap: entry.value.onTap,
+              onTap:  () {
+                router.go(entry.value.route);
+                ref.read(menuIndexProvider.notifier).state = entry.value.menuIndex;
+              },
             ),
           ),
         );
@@ -108,10 +110,7 @@ class _AnimatedMenuCard extends StatelessWidget {
   final Animation<double> animation;
   final Widget child;
 
-  const _AnimatedMenuCard({
-    required this.animation,
-    required this.child,
-  });
+  const _AnimatedMenuCard({required this.animation, required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -130,4 +129,3 @@ class _AnimatedMenuCard extends StatelessWidget {
     );
   }
 }
-
