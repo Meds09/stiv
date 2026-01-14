@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stiv/core/router/router.dart';
 import 'package:stiv/core/theme/theme_data.dart';
 
 class DevicePage extends StatelessWidget {
@@ -8,6 +9,12 @@ class DevicePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            router.go( '/home');
+          },
+        ),
         elevation: 0,
     iconTheme: const IconThemeData(color: AppColors.primary),
     backgroundColor: AppColors.background,

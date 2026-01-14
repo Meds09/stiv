@@ -48,8 +48,7 @@ class DiagnosticDeviceBody extends ConsumerWidget {
                   );
                 }
                 return ListView.builder(
-                  shrinkWrap: true,
-                 
+                  shrinkWrap: true,  
                   itemCount: problems.length,
                   itemBuilder: (context, index) {
                     final problem = problems[index];

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stiv/core/theme/theme_data.dart';
 import 'package:stiv/features/diagnostic/models/device.dart';
 import 'package:stiv/features/diagnostic/presentation/device_page/widgets/diagnostic_device_body.dart';
+import 'package:stiv/features/diagnostic/presentation/device_page/widgets/diagnostic_device_footer.dart';
 import 'package:stiv/features/diagnostic/presentation/device_page/widgets/diagnostic_device_header.dart';
 import 'package:stiv/features/diagnostic/presentation/providers/catalog_providers.dart';
 
@@ -10,10 +11,11 @@ class SelectDevicePage extends ConsumerWidget {
   const SelectDevicePage({
     super.key,
     required this.deviceId,
-    required this.device,
+    required this.device,  
   });
 
   final int deviceId;
+ 
   final Device? device;
 
   @override
@@ -39,6 +41,7 @@ class SelectDevicePage extends ConsumerWidget {
               children: [
                 DiagnosticHeader(device: device),
                 DiagnosticDeviceBody(),
+                DiagnosticDeviceFooter(problemId: 5, onTapped: () {},) 
               ],
             ),
           );
