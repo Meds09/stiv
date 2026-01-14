@@ -3,14 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stiv/features/diagnostic/presentation/device_page/select_device_problem_page.dart';
-import 'package:stiv/features/diagnostic/presentation/diagnostic_page/diagnostic_page.dart';
-import 'package:stiv/features/login_register/widgets/custom_bottom_navigation_bar.dart';
-import 'package:stiv/features/onboarding/presentation/onboarding_page.dart';
-import 'package:stiv/features/auth/presentation/auth_page.dart';
-import 'package:stiv/features/home/presentation/home_page.dart';
-import 'package:stiv/features/profile/presentation/profile_page.dart';
-
+import 'package:stiv/features/features.dart';
 
 
 /// Estado del Onboarding (con SharedPreferences)
@@ -95,8 +88,11 @@ final router = GoRouter(
     ),
 
     // Onboarding
-    GoRoute(path: '/onboarding', builder: (_, _) => const OnBoardingPage()),
+    GoRoute(path: '/onboarding', name: 'onboarding', builder: (_, _) => const OnBoardingPage()),
 
+    
+    // Devices
+    GoRoute(path: '/devices', name: 'devices', builder: (_, _) => const DevicePage()),
     // Login (fuera del shell)
     GoRoute(path: '/login', builder: (_, _) => const AuthPage()),
 
@@ -119,7 +115,10 @@ final router = GoRouter(
         //  Diagnóstico
         StatefulShellBranch(
           routes: [
-            GoRoute(path: '/diag', builder: (_, _) => const DiagnosticPage()),
+            GoRoute(path: '/diag', name: 'diag', builder: (_, _) => const DiagnosticPage(), 
+              // Reiniciar el índice del BottomNavBar al entrar a Diagnóstico
+         
+             ),
           ],
         ),
         //  Perfil

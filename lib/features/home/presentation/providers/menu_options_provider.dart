@@ -9,15 +9,15 @@ final menuOptionsProvider = Provider<List<MenuOption>>((ref) {
     MenuOption(
       title: 'Diagnóstico Rápido',
       icon: Icons.import_contacts_rounded,
-      route: '/diag',
+      route: 'diag',
       menuIndex: 1,
    
     ),
     MenuOption(
       title: 'Dispositivos',
       icon: Icons.devices, 
-      route: '/devices',
-      menuIndex: 2,
+      route: 'devices',
+      menuIndex: 1,
       
     ),
     MenuOption(

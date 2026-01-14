@@ -94,7 +94,7 @@ class _MenuGridSectionState extends ConsumerState<MenuGridSection>
               title: entry.value.title,
               icon: Icon(entry.value.icon),
               onTap:  () {
-                router.go(entry.value.route);
+                router.pushNamed(entry.value.route);
                 ref.read(menuIndexProvider.notifier).state = entry.value.menuIndex;
               },
             ),
