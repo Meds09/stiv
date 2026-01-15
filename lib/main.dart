@@ -7,9 +7,6 @@ import 'app.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(
-    ProviderScope(
-      child: const StivApp(),
-    ),
-  );
+  runApp(ProviderScope(child: const StivApp()));
+
 }

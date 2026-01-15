@@ -74,6 +74,10 @@ flutter_native_splash:
 
   android: true
   android_gravity: center
+  web: false
+  ios: true
+  
+  
 
   android_12:
     color: "#0663E4"
