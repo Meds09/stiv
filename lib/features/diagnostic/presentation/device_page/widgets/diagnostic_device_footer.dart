@@ -1,4 +1,4 @@
-
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:stiv/core/theme/theme_data.dart';
 import 'package:stiv/features/diagnostic/data/mock_problem.dart';
@@ -17,43 +17,47 @@ class DiagnosticDeviceFooter extends StatelessWidget {
   Widget build(BuildContext context) {
     final problem = mockProblems.firstWhere((p) => p.id == problemId);
 
-    //TODO: MEJORAR UI Y UX DE ESTE WIDGET
-
     return Card(
-      color: AppColors.card,
+      color: AppColors.background,
       elevation: 4,
-    
+
       margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      
-      ),
-    
+
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+
       borderOnForeground: true,
-      child: ListTile(
-        title: Text(problem.title, style: AppTextStyles.h3),
-        subtitle: Text(problem.description, style: AppTextStyles.h4),
-        trailing: const Icon(
-          Icons.arrow_forward_ios,
-          size: 16,
+      child: DottedBorder(
+        options: RoundedRectDottedBorderOptions(
           color: AppColors.primary,
+          strokeWidth: 2,
+          dashPattern: [10, ],
+          radius: const Radius.circular(12),
         ),
-        leading: Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(
-            color: AppColors.primary.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(8),
+        child: ListTile(
+          title: Text(problem.title, style: AppTextStyles.h3),
+          subtitle: Text(problem.description, style: AppTextStyles.h4),
+          trailing: const Icon(
+            Icons.arrow_forward_ios,
+            size: 16,
+            color: AppColors.primary,
           ),
-          child:
-              problem.icon ??
-              const Icon(
-                Icons.question_mark_rounded,
-                color: AppColors.primary,
-                size: 24,
-              ),
+          leading: Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: AppColors.primary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child:
+                problem.icon ??
+                const Icon(
+                  Icons.question_mark_rounded,
+                  color: AppColors.primary,
+                  size: 24,
+                ),
+          ),
+          onTap: onTapped,
         ),
-        onTap: onTapped,
       ),
     );
   }

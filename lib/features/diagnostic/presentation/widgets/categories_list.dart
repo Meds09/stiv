@@ -11,10 +11,14 @@ class CategoriesList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final categoriesAsyncValue = ref.watch(categoriesProvider);
+    final categoriesAsync = ref.watch(categoriesProvider);
     final expandedIds = ref.watch(isExpandedCategoryIdProvider);
 
-    return categoriesAsyncValue.when(
+    return categoriesAsync.when(
+      loading: () => const Center(
+        child: CircularProgressIndicator(color: AppColors.primary),
+      ),
+      error: (e, _) => Center(child: Text('Error: $e')),
       data: (categories) {
         if (categories.isEmpty) {
           return const Center(child: Text('No hay categorías disponibles'));
@@ -27,31 +31,26 @@ class CategoriesList extends ConsumerWidget {
           itemBuilder: (context, index) {
             final category = categories[index];
             final isExpanded = expandedIds.contains(category.id);
+            final AsyncValue<List<Device>> devicesAsync = ref.watch(
+              deviceByCategoryProvider(category.id),
+            );
 
-            // Solo consulto dispositivos si está expandida
-            final devicesAsyncValue = isExpanded
-                ? ref.watch(deviceByCategoryProvider(category.id))
-                : const AsyncValue.data(<Device>[]);
+            final devices = isExpanded
+                ? devicesAsync.when(
+                    data: (d) => d,
+                    loading: () => const <Device>[],
+                    error: (_, _) => const <Device>[],
+                  )
+                : const <Device>[];
 
-            return devicesAsyncValue.when(
-              data: (devices) => DeviceTypeList(
-                category: category,
-                isExpanded: isExpanded,
-                devices: devices,
-              ),
-              loading: () => const Padding(
-                padding: EdgeInsets.all(12),
-                child: CircularProgressIndicator(color: AppColors.primary),
-              ),
-              error: (e, _) => Text('Error: $e'),
+            return DeviceTypeList(
+              category: category,
+              isExpanded: isExpanded,
+              devices: devices,
             );
           },
         );
       },
-      loading: () => const Center(
-        child: CircularProgressIndicator(color: AppColors.primary),
-      ),
-      error: (e, _) => Center(child: Text('Error: $e')),
     );
   }
 }
@@ -79,13 +78,13 @@ class _DeviceTypeListState extends ConsumerState<DeviceTypeList>
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Column(
-        crossAxisAlignment: .stretch,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           ListTile(
             title: Text(widget.category.name, style: AppTextStyles.h2),
             leading: Text(widget.category.emoji, style: AppTextStyles.h2),
             trailing: AnimatedRotation(
-              turns: widget.isExpanded ? 0.5 : 0.0, // rota el icono
+              turns: widget.isExpanded ? 0.5 : 0.0,
               duration: const Duration(milliseconds: 200),
               child: const Icon(Icons.expand_more, color: AppColors.primary),
             ),
@@ -98,26 +97,18 @@ class _DeviceTypeListState extends ConsumerState<DeviceTypeList>
               } else {
                 next.add(widget.category.id);
               }
+
               notifier.state = next;
             },
           ),
 
-          // Animación de altura (expand/close)
           AnimatedSize(
-            duration: const Duration(milliseconds: 250),
+            duration: const Duration(milliseconds: 220),
             curve: Curves.easeInOut,
-            alignment: .topCenter,
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 200),
-              switchInCurve: Curves.easeOut,
-              switchOutCurve: Curves.easeIn,
-              child: widget.isExpanded
-                  ? _DevicesBlock(
-                      key: ValueKey('expanded-${widget.category.id}'),
-                      devices: widget.devices,
-                    )
-                  : const SizedBox(key: ValueKey('collapsed'), height: 0),
-            ),
+            alignment: Alignment.topCenter,
+            child: widget.isExpanded
+                ? _DevicesBlock(devices: widget.devices)
+                : const SizedBox(height: 0),
           ),
         ],
       ),
@@ -125,17 +116,16 @@ class _DeviceTypeListState extends ConsumerState<DeviceTypeList>
   }
 }
 
-class _DevicesBlock extends ConsumerWidget  {
-  const _DevicesBlock({super.key, required this.devices});
+class _DevicesBlock extends ConsumerWidget {
+  const _DevicesBlock({required this.devices});
+
   final List<Device> devices;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     if (devices.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.only(left: 16, bottom: 8),
-        child: Text('No hay dispositivos en esta categoría'),
-      );
+      // No loader, no texto, no parpadeo
+      return const SizedBox(height: 8);
     }
 
     return Column(
@@ -146,9 +136,10 @@ class _DevicesBlock extends ConsumerWidget  {
             padding: const EdgeInsets.only(left: 16),
             child: ListTile(
               dense: true,
+              leading: const Icon(Icons.memory, color: AppColors.primary),
               title: Text(
                 device.name,
-                style: TextStyle(
+                style: const TextStyle(
                   fontFamily: 'Inter',
                   fontWeight: FontWeight.w500,
                   fontSize: 18,
@@ -156,18 +147,14 @@ class _DevicesBlock extends ConsumerWidget  {
                   color: AppColors.textPrimary,
                 ),
               ),
-              leading: const Icon(Icons.memory, color: AppColors.primary),
-             onTap: () {
-                 
-                  ref.read(selectedDeviceProvider.notifier).state = device;
+              onTap: () {
+                ref.read(selectedDeviceProvider.notifier).state = device;
 
-                  
-
-                  context.pushNamed(
-                    'diagnosticChat',
-                    pathParameters: {'deviceId': device.id.toString()},
-                  );
-                },
+                context.pushNamed(
+                  'diagnosticChat',
+                  pathParameters: {'deviceId': device.id.toString()},
+                );
+              },
             ),
           ),
         ),

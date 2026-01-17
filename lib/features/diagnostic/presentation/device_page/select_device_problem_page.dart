@@ -41,7 +41,8 @@ class SelectDevicePage extends ConsumerWidget {
               children: [
                 DiagnosticHeader(device: device),
                 DiagnosticDeviceBody(),
-                DiagnosticDeviceFooter(problemId: 5, onTapped: () {},) 
+                DiagnosticDeviceFooter(problemId: 5, onTapped: () {},) ,
+                const SizedBox(height: 40),
               ],
             ),
           );

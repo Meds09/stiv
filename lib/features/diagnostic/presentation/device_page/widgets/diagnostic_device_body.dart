@@ -50,6 +50,7 @@ class DiagnosticDeviceBody extends ConsumerWidget {
                 return ListView.builder(
                   shrinkWrap: true,  
                   itemCount: problems.length,
+                  physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     final problem = problems[index];
                     return CardProblem(

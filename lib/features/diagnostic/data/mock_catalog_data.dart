@@ -63,4 +63,5 @@ final mockDevices = <Device>[
     status: DeviceStatus.offline,
   ),
 
+
 ];

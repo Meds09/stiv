@@ -35,7 +35,7 @@ const mockProblems = <Problem> [
     Problem(
     id: 5,
     title: 'No estoy seguro del problema',
-    description: 'Deseo especificar el problema mediante texto libre e imágenes',
+    description: 'Deseo especificar el problema mediante texto e imágenes',
     appliedCategoryIds: {5}, // OTROS
   ),
   
