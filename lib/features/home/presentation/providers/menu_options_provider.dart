@@ -17,7 +17,7 @@ final menuOptionsProvider = Provider<List<MenuOption>>((ref) {
       title: 'Dispositivos',
       icon: Icons.devices, 
       route: 'devices',
-      menuIndex: 1,
+      menuIndex: 2,
       
     ),
     MenuOption(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stiv/core/router/router.dart';
 import 'package:stiv/core/theme/theme_data.dart';
+import 'package:stiv/features/devices/presentation/device_list_page.dart';
 
 class DevicePage extends StatelessWidget {
   const DevicePage({super.key});
@@ -8,6 +9,7 @@ class DevicePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -26,15 +28,14 @@ class DevicePage extends StatelessWidget {
     ),
     title: Row(
       mainAxisAlignment: MainAxisAlignment.start,
-      children: [
+        children: [
         Image.asset('assets/images/stiv-logo-blue.png', height: 50),
         const SizedBox(width: AppSpacing.sm),
         const Text('Stiv', style: AppTextStyles.h2),
       ],
       )),
-      body: const Center(
-        child: Text('Página de Dispositivos'),
-      ),
+      body: 
+      DeviceListPage(),
     );
   }
 }

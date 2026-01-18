@@ -5,17 +5,14 @@ import 'package:stiv/features/diagnostic/presentation/providers/catalog_provider
 
 class DeviceStatusIndicator extends ConsumerWidget {
   final int deviceId;
+  final Color color;
 
-  const DeviceStatusIndicator({
-    super.key,
-    required this.deviceId,
-  });
+  const DeviceStatusIndicator(this.color, {super.key, required this.deviceId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final status = ref.watch(
-      deviceByIdProvider(deviceId)
-          .select((async) => async.value?.status),
+      deviceByIdProvider(deviceId).select((async) => async.value?.status),
     );
 
     if (status == null) {
@@ -38,11 +35,11 @@ class DeviceStatusIndicator extends ConsumerWidget {
         const SizedBox(width: 6),
         Text(
           config.label,
-          style: const TextStyle(
+          style:  TextStyle(
             fontFamily: 'Rubik',
             fontSize: 16,
             fontWeight: FontWeight.w600,
-            color: Colors.white,
+            color: color
           ),
         ),
       ],
@@ -60,19 +57,10 @@ class _DeviceStatusConfig {
 _DeviceStatusConfig _statusConfig(DeviceStatus status) {
   switch (status) {
     case DeviceStatus.offline:
-      return const _DeviceStatusConfig(
-        'Falla registrada',
-        Colors.redAccent,
-      );
+      return const _DeviceStatusConfig('Falla registrada', Colors.redAccent);
     case DeviceStatus.online:
-      return const _DeviceStatusConfig(
-        'Registrado',
-        Colors.lightGreenAccent,
-      );
+      return const _DeviceStatusConfig('Registrado', Colors.lightGreenAccent);
     case DeviceStatus.maintenance:
-      return const _DeviceStatusConfig(
-        'Mantenimiento',
-        Colors.yellowAccent,
-      );
+      return const _DeviceStatusConfig('Mantenimiento', Colors.yellowAccent);
   }
 }
