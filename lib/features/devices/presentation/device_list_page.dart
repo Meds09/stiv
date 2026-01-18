@@ -146,6 +146,9 @@ class _DevicesBlock extends ConsumerWidget {
               color: AppColors.card,
               child: ListTile(
                 dense: true,
+                contentPadding: EdgeInsets.all(10),
+                
+                
 
                 leading: CircleAvatar(
                         radius: 20,
