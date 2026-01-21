@@ -4,6 +4,7 @@ import 'package:stiv/core/router/router.dart';
 import 'package:stiv/core/theme/theme_data.dart';
 import 'package:stiv/features/devices/presentation/device_list_page.dart';
 import 'package:stiv/features/devices/providers/devices_providers.dart';
+import 'package:stiv/features/devices/widgets/device_floating_action_button.dart';
 
 class DevicePage extends ConsumerWidget {
   const DevicePage({super.key});
@@ -40,6 +41,12 @@ class DevicePage extends ConsumerWidget {
       )),
       body: 
       DeviceListPage(),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.symmetric( vertical: 25.0),
+        child: DeviceFloatingActionButton(onPressed: () {
+          router.go('/devices/add');
+        },)
+      )
     );
   }
 }

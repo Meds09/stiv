@@ -40,7 +40,7 @@ class _CustomBottomNavigationBarState
   void onItemTapped(BuildContext context, WidgetRef ref, int index) {
     final router = GoRouter.of(context);
     final indexProvider = ref.read(menuIndexProvider.notifier);
-    
+
     _animationController.forward(from: 0.0).then((_) {
       _animationController.reverse();
     });
@@ -50,12 +50,16 @@ class _CustomBottomNavigationBarState
     switch (index) {
       case 0:
         router.go('/home');
+       
         break;
       case 1:
         router.go('/diag');
+      
+
         break;
       case 2:
         router.go('/profile');
+
         break;
     }
   }
@@ -173,12 +177,10 @@ class _NavItemState extends State<_NavItem>
       duration: const Duration(milliseconds: 200),
       vsync: this,
     );
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.9).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeInOut,
-      ),
-    );
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 0.9,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override
