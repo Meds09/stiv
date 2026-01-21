@@ -17,20 +17,16 @@ final menuOptionsProvider = Provider<List<MenuOption>>((ref) {
       title: 'Dispositivos',
       icon: Icons.devices, 
       route: 'devices',
-      menuIndex: 2,
-      
     ),
     MenuOption(
       title: 'Historial de reportes',
       icon: Icons.history,
-      route: '/reports',
-      menuIndex: 3,
+      route: '/reports',  
     ),
     MenuOption(
       title: 'Manuales',
       icon: Icons.menu_book_rounded, 
       route: '/manuals',
-      menuIndex: 4,
     ),
   ];
 });

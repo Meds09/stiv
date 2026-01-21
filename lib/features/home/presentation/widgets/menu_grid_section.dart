@@ -9,14 +9,14 @@ import 'package:stiv/features/login_register/widgets/card_menu.dart';
 class MenuOption {
   final String title;
   final IconData icon;
-  final int menuIndex;
+  final int? menuIndex;
   final String route;
 
   const MenuOption({
     required this.title,
     required this.icon,
-
-    required this.route, required this.menuIndex,
+    required this.route,
+    this.menuIndex,
   });
 }
 
@@ -95,7 +95,7 @@ class _MenuGridSectionState extends ConsumerState<MenuGridSection>
               icon: Icon(entry.value.icon),
               onTap:  () {
                 router.goNamed(entry.value.route);
-                ref.read(menuIndexProvider.notifier).state = entry.value.menuIndex;
+                ref.read(menuIndexProvider.notifier).state = entry.value.menuIndex ?? 0;
               },
             ),
           ),

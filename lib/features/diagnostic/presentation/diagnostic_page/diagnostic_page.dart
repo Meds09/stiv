@@ -74,7 +74,7 @@ class DiagnosticPage extends StatelessWidget {
                             ),
                             const Expanded(
                               child: Text(
-                                ' para agregar uno nuevo',
+                                ' para agregar un dispositivo nuevo',
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
                                 style: TextStyle(

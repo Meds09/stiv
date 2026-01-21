@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stiv/core/router/router.dart';
 import 'package:stiv/core/theme/theme_data.dart';
 import 'package:stiv/features/devices/presentation/device_list_page.dart';
+import 'package:stiv/features/devices/providers/devices_providers.dart';
 
-class DevicePage extends StatelessWidget {
+class DevicePage extends ConsumerWidget {
   const DevicePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final expandedIds = ref.watch(isExpandedCategoryIdProviderFromDevicesPage);
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -15,6 +18,7 @@ class DevicePage extends StatelessWidget {
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
             router.go( '/home');
+            expandedIds.clear();
           },
         ),
         elevation: 0,

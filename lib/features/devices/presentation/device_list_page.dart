@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stiv/core/theme/theme_data.dart';
+import 'package:stiv/features/devices/providers/devices_providers.dart';
 import 'package:stiv/features/devices/widgets/status_indicator.dart';
 import 'package:stiv/features/diagnostic/models/category.dart';
 import 'package:stiv/features/diagnostic/models/device.dart';
@@ -13,7 +14,7 @@ class DeviceListPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final categoriesAsync = ref.watch(categoriesProvider);
-    final expandedIds = ref.watch(isExpandedCategoryIdProvider);
+    final expandedIds = ref.watch(isExpandedCategoryIdProviderFromDevicesPage);
 
     return categoriesAsync.when(
       loading: () => const Center(
@@ -93,7 +94,7 @@ class _DeviceTypeListState extends ConsumerState<DeviceTypeList>
               ),
               onTap: () {
                 final notifier = ref.read(
-                  isExpandedCategoryIdProvider.notifier,
+                  isExpandedCategoryIdProviderFromDevicesPage.notifier,
                 );
                 final next = {...notifier.state};
 
