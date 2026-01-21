@@ -8,6 +8,7 @@ class AppColors {
   static const Color background = Color(0xFFEFEAE3);
   static const Color surface = Colors.white;
   static const Color card = Color.fromARGB(255, 237, 231, 223);
+  static const Color card2 =   Color.fromARGB(255, 244, 239, 231);
 
   // Texto
   static const Color textPrimary = Color(0xFF0B1220);

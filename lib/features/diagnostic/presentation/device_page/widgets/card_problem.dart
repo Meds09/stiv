@@ -13,7 +13,7 @@ class CardProblem extends StatelessWidget {
     return Column(
       children: [
         Card(
-          color: AppColors.card,
+          color: AppColors.card2,
           elevation: 3,
           margin: const EdgeInsets.symmetric(vertical: 6.0),
           borderOnForeground: true,

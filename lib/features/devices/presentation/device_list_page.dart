@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stiv/core/theme/theme_data.dart';
+import 'package:stiv/features/devices/widgets/status_indicator.dart';
 import 'package:stiv/features/diagnostic/models/category.dart';
 import 'package:stiv/features/diagnostic/models/device.dart';
-import 'package:stiv/features/diagnostic/presentation/device_page/widgets/device_status_indicator.dart';
 import 'package:stiv/features/diagnostic/presentation/providers/catalog_providers.dart';
 
 class DeviceListPage extends ConsumerWidget {
@@ -28,7 +28,7 @@ class DeviceListPage extends ConsumerWidget {
         return ListView.builder(
           itemCount: categories.length,
           shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           itemBuilder: (context, index) {
             final category = categories[index];
             final isExpanded = expandedIds.contains(category.id);
@@ -142,49 +142,75 @@ class _DevicesBlock extends ConsumerWidget {
             padding: const EdgeInsets.only(left: 20),
             child: Card(
               elevation: 2,
-              
-              color: AppColors.card,
+    
+              color:AppColors.card2,
               child: ListTile(
                 dense: true,
                 contentPadding: EdgeInsets.all(10),
-                
-                
 
+                //boton de accion
+                trailing: IconButton(
+                  icon: const Icon(
+                    Icons.arrow_forward_ios,
+                    color: AppColors.primary,
+                    size: 16,
+                  ),
+                  onPressed: () {
+                   
+                  },
+                ),
+                //icono del dispositivo
                 leading: CircleAvatar(
-                        radius: 20,
-                        backgroundColor: Colors.white,
-                        backgroundImage: device.image != null
-                            ? AssetImage(device.image!)
-                            : null,
-                        child: device.image == null
-                            ? Icon(
-                                Icons.devices,
-                                size: 25,
-                                color: AppColors.primary,
-                              )
-                            : null,
-                      ),
+
+                  radius: 20,
+                  backgroundColor: Colors.white,
+                  backgroundImage: device.image != null
+                      ? AssetImage(device.image!)
+                      : null,
+                  child: device.image == null
+                      ? Icon(Icons.devices, size: 25, color: AppColors.primary)
+                      : null,
+                ),
+                //texto del dispositivo
                 title: Text(
                   device.name,
                   style: const TextStyle(
                     fontFamily: 'Inter',
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w700,
                     fontSize: 18,
                     height: 1.5,
                     color: AppColors.textPrimary,
                   ),
                 ),
-                subtitle:    Row(
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(width: AppSpacing.sm),
-                    DeviceStatusIndicator(
-                      AppColors.primary,
-                      deviceId: device.id),
+                    StatusIndicator(AppColors.primary, deviceId: device.id),
+                    Text(
+                      'IP: ${device.ip}',
+                      style: const TextStyle(
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14,
+                        height: 1.5,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                    Text(
+                      'Ubicación: ${device.location ?? 'Sin ubicación'}',
+                      style: const TextStyle(
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14,
+                        height: 1.5,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
                   ],
                 ),
                 onTap: () {
                   ref.read(selectedDeviceProvider.notifier).state = device;
-              
+    
                   context.pushNamed(
                     'diagnosticChat',
                     pathParameters: {'deviceId': device.id.toString()},
