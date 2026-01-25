@@ -26,29 +26,35 @@ class DeviceListPage extends ConsumerWidget {
           return const Center(child: Text('No hay categorías disponibles'));
         }
 
+        final searchQuery = ref.watch(deviceSearchQueryProvider);
+        final isSearching = searchQuery.trim().isNotEmpty;
+
         return ListView.builder(
           itemCount: categories.length,
-          shrinkWrap: true,
           physics: const BouncingScrollPhysics(),
           itemBuilder: (context, index) {
             final category = categories[index];
             final isExpanded = expandedIds.contains(category.id);
-            final AsyncValue<List<Device>> devicesAsync = ref.watch(
-              deviceByCategoryProvider(category.id),
+
+            final devicesAsync = ref.watch(
+              filteredDeviceByCategoryProvider(category.id),
             );
 
-            final devices = isExpanded
-                ? devicesAsync.when(
-                    data: (d) => d,
-                    loading: () => const <Device>[],
-                    error: (_, _) => const <Device>[],
-                  )
-                : const <Device>[];
+            final devices = devicesAsync.when(
+              data: (d) => d,
+              loading: () => const <Device>[],
+              error: (_, _) => const <Device>[],
+            );
+
+            //ocultar categoría vacía SOLO si hay búsqueda
+            if (isSearching && devices.isEmpty) {
+              return const SizedBox.shrink();
+            }
 
             return DeviceTypeList(
               category: category,
               isExpanded: isExpanded,
-              devices: devices,
+              devices: isExpanded ? devices : const <Device>[],
             );
           },
         );
@@ -143,8 +149,8 @@ class _DevicesBlock extends ConsumerWidget {
             padding: const EdgeInsets.only(left: 20),
             child: Card(
               elevation: 2,
-    
-              color:AppColors.card2,
+
+              color: AppColors.card2,
               child: ListTile(
                 dense: true,
                 contentPadding: EdgeInsets.all(10),
@@ -156,13 +162,10 @@ class _DevicesBlock extends ConsumerWidget {
                     color: AppColors.primary,
                     size: 16,
                   ),
-                  onPressed: () {
-                   
-                  },
+                  onPressed: () {},
                 ),
                 //icono del dispositivo
                 leading: CircleAvatar(
-
                   radius: 20,
                   backgroundColor: Colors.white,
                   backgroundImage: device.image != null
@@ -211,7 +214,7 @@ class _DevicesBlock extends ConsumerWidget {
                 ),
                 onTap: () {
                   ref.read(selectedDeviceProvider.notifier).state = device;
-    
+
                   context.pushNamed(
                     'diagnosticChat',
                     pathParameters: {'deviceId': device.id.toString()},

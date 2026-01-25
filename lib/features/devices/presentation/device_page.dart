@@ -45,7 +45,7 @@ class DevicePage extends ConsumerWidget {
         children: [
           DeviceSearchBar(),
           const SizedBox(height: AppSpacing.lg),
-          DeviceListPage(),
+          Expanded(child: DeviceListPage()),
         ],
       ),
       floatingActionButton: Padding(
