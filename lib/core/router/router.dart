@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stiv/features/devices/presentation/add_new_device_page.dart';
 import 'package:stiv/features/features.dart';
-
+import 'package:stiv/features/reports/presentation/reports_history_page.dart';
+import 'package:stiv/features/manuals/presentation/manuals_page.dart';
 
 /// Estado del Onboarding (con SharedPreferences)
 class OnboardingState extends ChangeNotifier {
@@ -67,9 +69,28 @@ final router = GoRouter(
   initialLocation: '/onboarding',
   refreshListenable: routerNotifier,
 
-
-
   routes: [
+    // Onboarding
+    GoRoute(
+      path: '/onboarding',
+      builder: (_, _) => const OnBoardingPage(),
+      name: 'onboarding',
+    ),
+
+    //Menu principal
+    // Devices
+    GoRoute(
+      path: '/devices',
+      name: 'devices',
+      routes: [
+        GoRoute(
+          path: 'add',
+          name: 'device-add',
+          builder: (_, _) => const AddNewDevicePage(),
+        ),
+      ],
+      builder: (_, _) => const DevicePage(),
+    ),
 
     // Ruta con parámetro: Chat de diagnóstico por dispositivo
     GoRoute(
@@ -77,7 +98,7 @@ final router = GoRouter(
       name: 'diagnosticChat',
       builder: (context, state) {
         final raw = state.pathParameters['deviceId'];
-        final deviceId = int.tryParse( raw ?? '');
+        final deviceId = int.tryParse(raw ?? '');
         if (deviceId == null) {
           return const Scaffold(
             body: Center(child: Text('ID de dispositivo inválido')),
@@ -87,12 +108,19 @@ final router = GoRouter(
       },
     ),
 
-    // Onboarding
-    GoRoute(path: '/onboarding', name: 'onboarding', builder: (_, _) => const OnBoardingPage()),
+    //Manual
+    GoRoute(
+      path: '/manuals',
+      name: 'manuals',
+      builder: (_, _) => const ManualsPage(),
+    ),
+    // Historial de reportes
+    GoRoute(
+      path: '/reports',
+      name: 'reports',
+      builder: (_, _) => const ReportsHistoryPage(),
+    ),
 
-    
-    // Devices
-    GoRoute(path: '/devices', name: 'devices', builder: (_, _) => const DevicePage()),
     // Login (fuera del shell)
     GoRoute(path: '/login', builder: (_, _) => const AuthPage()),
 
@@ -115,10 +143,13 @@ final router = GoRouter(
         //  Diagnóstico
         StatefulShellBranch(
           routes: [
-            GoRoute(path: '/diag', name: 'diag', builder: (_, _) => const DiagnosticPage(), 
+            GoRoute(
+              path: '/diag',
+              name: 'diag',
+              builder: (_, _) => const DiagnosticPage(),
+
               // Reiniciar el índice del BottomNavBar al entrar a Diagnóstico
-         
-             ),
+            ),
           ],
         ),
         //  Perfil

@@ -21,12 +21,12 @@ final menuOptionsProvider = Provider<List<MenuOption>>((ref) {
     MenuOption(
       title: 'Historial de reportes',
       icon: Icons.history,
-      route: '/reports',  
+      route: 'reports',  
     ),
     MenuOption(
       title: 'Manuales',
       icon: Icons.menu_book_rounded, 
-      route: '/manuals',
+      route: 'manuals',
     ),
   ];
 });
