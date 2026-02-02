@@ -1,7 +1,7 @@
 //Esto vendria a ser como una fake BD para poder hacer implementaciones y pruebas en el codigo real sin tener que tener una BD creada en el momento que se esta desarrollando esto
 
 import 'package:stiv/features/diagnostic/models/category.dart';
-import 'package:stiv/features/diagnostic/models/device.dart';
+import 'package:stiv/features/devices/domain/models/device.dart';
 
 const mockCategories = <Category>[
   Category(id: 1, name: 'CCTV y Videovigilancia', emoji: '📷'),
@@ -13,7 +13,7 @@ const mockCategories = <Category>[
 
 final mockDevices = <Device>[
   Device(
-    id: 1,
+    id: '1',
     name: 'Cámara Bullet Dahua',
     categoryId: 1,
     brand: 'Dahua',
@@ -22,7 +22,7 @@ final mockDevices = <Device>[
     status: DeviceStatus.online,
   ),
   Device(
-    id: 2,
+    id: '2',
     name: 'Cámara PTZ Hikvision',
     categoryId: 1,
     brand: 'Hikvision',
@@ -33,7 +33,7 @@ final mockDevices = <Device>[
   ),
 
   Device(
-    id: 4,
+    id: '4',
     name: 'UPS Online 3 kVA',
     categoryId: 3,
     brand: 'APC',
@@ -43,7 +43,7 @@ final mockDevices = <Device>[
   ),
 
   Device(
-    id: 5,
+    id: '5',
     name: 'Controladora acceso ZKTeco',
     categoryId: 4,
     brand: 'ZKTeco',
@@ -53,7 +53,7 @@ final mockDevices = <Device>[
   ),
 
   Device(
-    id: 3,
+    id: '3',
     name: 'Switch PoE 24 puertos',
     categoryId: 2,
     brand: 'Dahua',

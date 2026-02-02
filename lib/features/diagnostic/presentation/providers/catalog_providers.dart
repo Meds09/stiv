@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stiv/features/diagnostic/data/catalog_repository_impl.dart';
 import 'package:stiv/features/diagnostic/models/catalog_repository.dart';
 import 'package:stiv/features/diagnostic/models/category.dart';
-import 'package:stiv/features/diagnostic/models/device.dart';
+import 'package:stiv/features/devices/domain/models/device.dart';
 import 'package:stiv/features/home/presentation/providers/recent_diagnostics_provider.dart';
 
 //Proveedor del repositorio
@@ -27,7 +27,7 @@ final deviceByCategoryProvider = FutureProvider.family((ref, int categoryId) {
   return repo.getDevicesByCategory(categoryId);
 });
 
-final deviceByIdProvider = FutureProvider.family<Device?, int>((ref, int deviceId) async {
+final deviceByIdProvider = FutureProvider.family<Device?, String>((ref, String deviceId) async {
 final repo = ref.read(catalogRepositoryProvider);
   return repo.getDeviceById(deviceId);
 },

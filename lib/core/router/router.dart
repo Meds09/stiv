@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stiv/features/devices/presentation/add_new_device_page.dart';
+import 'package:stiv/features/devices/presentation/edit_device_page.dart';
 import 'package:stiv/features/features.dart';
 import 'package:stiv/features/reports/presentation/reports_history_page.dart';
 import 'package:stiv/features/manuals/presentation/manuals_page.dart';
@@ -88,6 +89,15 @@ final router = GoRouter(
           name: 'device-add',
           builder: (_, _) => const AddNewDevicePage(),
         ),
+        GoRoute(
+          path: 'edit/:deviceId',
+          name: 'device-edit',
+          builder: (context, state) {
+             final deviceId = state.pathParameters['deviceId'];
+             // Validation if needed
+             return EditDevicePage(deviceId: deviceId ?? '');
+          },
+        ),
       ],
       builder: (_, _) => const DevicePage(),
     ),
@@ -97,9 +107,8 @@ final router = GoRouter(
       path: '/diagnostic/chat/:deviceId',
       name: 'diagnosticChat',
       builder: (context, state) {
-        final raw = state.pathParameters['deviceId'];
-        final deviceId = int.tryParse(raw ?? '');
-        if (deviceId == null) {
+        final deviceId = state.pathParameters['deviceId'];
+        if (deviceId == null || deviceId.isEmpty) {
           return const Scaffold(
             body: Center(child: Text('ID de dispositivo inválido')),
           );
