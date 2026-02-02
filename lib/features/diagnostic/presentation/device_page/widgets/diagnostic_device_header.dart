@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stiv/core/theme/theme_data.dart';
-import 'package:stiv/features/diagnostic/models/device.dart';
+import 'package:stiv/features/devices/domain/models/device.dart';
 import 'package:stiv/features/diagnostic/presentation/device_page/widgets/device_status_indicator.dart';
 
 class DiagnosticHeader extends StatelessWidget {

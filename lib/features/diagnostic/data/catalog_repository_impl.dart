@@ -1,7 +1,7 @@
 import 'package:stiv/features/diagnostic/data/mock_catalog_data.dart';
 import 'package:stiv/features/diagnostic/models/catalog_repository.dart';
 import 'package:stiv/features/diagnostic/models/category.dart';
-import 'package:stiv/features/diagnostic/models/device.dart';
+import 'package:stiv/features/devices/domain/models/device.dart';
 
 class CatalogRepositoryImpl implements CatalogRepository {
   @override
@@ -20,7 +20,7 @@ class CatalogRepositoryImpl implements CatalogRepository {
   }
   
   @override
-  Future<Device?> getDeviceById(int deviceId) async{
+  Future<Device?> getDeviceById(String deviceId) async{
     for (final device in mockDevices) {
       if (device.id == deviceId) {
         return Future.value(device);

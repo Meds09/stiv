@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stiv/features/diagnostic/models/device.dart';
+import 'package:stiv/features/devices/domain/models/device.dart';
 import 'package:stiv/features/diagnostic/presentation/providers/catalog_providers.dart';
 
 class DeviceStatusIndicator extends ConsumerWidget {
-  final int deviceId;
+  final String deviceId;
   final Color color;
 
   const DeviceStatusIndicator(this.color, {super.key, required this.deviceId});

@@ -1,33 +1,69 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stiv/features/diagnostic/models/device.dart';
-import 'package:stiv/features/diagnostic/presentation/providers/catalog_providers.dart';
+import 'package:stiv/features/devices/data/repositories/device_repository_impl.dart';
+import 'package:stiv/features/devices/domain/models/device.dart';
+import 'package:stiv/features/devices/domain/repositories/device_repository.dart';
 
-final isExpandedCategoryIdProviderFromDevicesPage = StateProvider<Set<int>>(
-  (ref) => <int>{},
-);
+// Firestore Instance Provider
+final firestoreProvider = Provider<FirebaseFirestore>((ref) {
+  return FirebaseFirestore.instance;
+});
+
+// Repository Provider
+final deviceRepositoryProvider = Provider<DeviceRepository>((ref) {
+  return DeviceRepositoryImpl(ref.watch(firestoreProvider));
+});
+
+// State Providers for UI
+final isExpandedCategoryIdProviderFromDevicesPage = StateProvider<Set<int>>((ref) => <int>{});
 final deviceSearchQueryProvider = StateProvider<String>((ref) => '');
-final deviceProvider = Provider<List<Device>>((ref) => []);
 
+// Stream of devices by category
+final deviceByCategoryStreamProvider = StreamProvider.family<List<Device>, int>((ref, categoryId) {
+  final repo = ref.watch(deviceRepositoryProvider);
+  return repo.getDevicesByCategory(categoryId);
+});
 
-// Proveedor para filtrar la lista de dispositivos
-final filteredDeviceByCategoryProvider =
-    Provider.family<AsyncValue<List<Device>>, int>((ref, categoryId) {
+// Filtered Stream
+final filteredDeviceByCategoryProvider = Provider.family<AsyncValue<List<Device>>, int>((ref, categoryId) {
   final query = ref.watch(deviceSearchQueryProvider).toLowerCase();
-  final devicesAsync = ref.watch(deviceByCategoryProvider(categoryId));
+  final devicesAsync = ref.watch(deviceByCategoryStreamProvider(categoryId));
 
   return devicesAsync.when(
-    loading: () => const AsyncLoading(),
-    error: (e, st) => AsyncError(e, st),
     data: (devices) {
       if (query.isEmpty) return AsyncData(devices);
-
       final filtered = devices.where((device) {
         return device.name.toLowerCase().contains(query) ||
                device.ip.toLowerCase().contains(query) ||
                (device.location ?? '').toLowerCase().contains(query);
       }).toList();
-
       return AsyncData(filtered);
     },
+    loading: () => const AsyncLoading(),
+    error: (e, st) => AsyncError(e, st),
   );
+});
+
+// Single Device Provider (Firestore)
+final deviceByIdProvider = StreamProvider.family<Device?, String>((ref, String id) {
+  final repo = ref.watch(deviceRepositoryProvider);
+  // We can return a Stream of single document if repository supports it.
+  // Repository has getDevices(). 
+  // Efficient way: repo.getDeviceById(id) returns Future.
+  // But for real-time edit updates, we might want stream.
+  // The repository currently has `Future<Device?> getDeviceById(String id)`.
+  // Let's us FutureProvider for now, or change repository to return Stream.
+  // FutureProvider is fine for "Edit" init.
+  return repo.getDevices().map((list) {
+    try {
+      return list.firstWhere((d) => d.id == id);
+    } catch (_) {
+      return null;
+    }
+  });
+}); 
+// Better: Add getDeviceStream(id) to Repository. But for now let's use FutureProvider wrapping the Future.
+final deviceByIdFutureProvider = FutureProvider.family<Device?, String>((ref, String id) async {
+  final repo = ref.watch(deviceRepositoryProvider);
+  return repo.getDeviceById(id);
 });
