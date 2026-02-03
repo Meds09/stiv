@@ -361,7 +361,7 @@ class _AddNewDevicePageState extends ConsumerState<AddNewDevicePage> {
           fontWeight: FontWeight.w500,
         ),
       ),
-      value: _selectedCategoryId,
+      initialValue: _selectedCategoryId,
       items: categories.map((c) {
         return DropdownMenuItem<int>(
           value: c.id,
