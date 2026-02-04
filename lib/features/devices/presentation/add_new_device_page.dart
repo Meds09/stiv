@@ -6,6 +6,9 @@ import 'package:stiv/features/devices/domain/models/device.dart';
 import 'package:stiv/features/devices/providers/devices_providers.dart';
 import 'package:stiv/features/diagnostic/models/category.dart';
 import 'package:stiv/features/diagnostic/presentation/providers/catalog_providers.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:stiv/features/devices/presentation/widgets/device_image_picker.dart';
+import 'package:stiv/features/devices/providers/image_upload_provider.dart';
 
 class AddNewDevicePage extends ConsumerStatefulWidget {
   const AddNewDevicePage({super.key});
@@ -36,6 +39,17 @@ class _AddNewDevicePageState extends ConsumerState<AddNewDevicePage> {
     super.dispose();
   }
 
+  XFile? _selectedImage;
+
+  Future<void> _pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    
+    if (image != null) {
+      setState(() => _selectedImage = image);
+    }
+  }
+
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
     if (_selectedCategoryId == null) {
@@ -48,18 +62,25 @@ class _AddNewDevicePageState extends ConsumerState<AddNewDevicePage> {
     setState(() => _isLoading = true);
 
     try {
+      String? imageUrl;
+      
+      // Upload image if selected
+      if (_selectedImage != null) {
+        // Use a temp ID for filename if new device, or just random
+        final tempId = DateTime.now().millisecondsSinceEpoch.toString();
+        imageUrl = await ref.read(imageUploadServiceProvider).uploadDeviceImage(_selectedImage!, tempId);
+      }
+
       final newDevice = Device(
-        id: '', // Firestore will assign/we let repo handle if empty, actually repo.create logic needs review
-        // Wait, repository impl checks "if id is empty, add()".
-        // So this is correct.
+        id: '', 
         name: _nameController.text.trim(),
         brand: _brandController.text.trim(),
         model: _modelController.text.trim(),
         ip: _ipController.text.trim(),
         location: _locationController.text.trim().isEmpty ? null : _locationController.text.trim(),
         categoryId: _selectedCategoryId!,
-        status: DeviceStatus.offline, // Default status
-        image: null, // No image upload for now
+        status: DeviceStatus.offline, 
+        image: imageUrl, 
       );
 
       await ref.read(deviceRepositoryProvider).createDevice(newDevice);
@@ -110,6 +131,12 @@ class _AddNewDevicePageState extends ConsumerState<AddNewDevicePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  DeviceImagePicker(
+                    localImage: _selectedImage,
+                    onEditTap: _pickImage,
+                  ),
+                  const SizedBox(height: AppSpacing.xl),
+
                   _buildTextField(
                     controller: _nameController,
                     label: 'Nombre del dispositivo',

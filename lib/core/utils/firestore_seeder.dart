@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:stiv/features/devices/domain/models/device.dart';
 import 'package:stiv/features/diagnostic/data/mock_catalog_data.dart';
 
 /// Utility class to seed Firestore with initial data
