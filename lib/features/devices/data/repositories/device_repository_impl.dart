@@ -51,6 +51,7 @@ class DeviceRepositoryImpl implements DeviceRepository {
     
     // For now, let's assume if ID is empty string, we add.
     if (device.id.isEmpty) {
+        // ignore: unused_local_variable
         final docRef = await _devicesCollection.add(device.toJson()..remove('id'));
         // If we needed to return the device with the new ID, we would do it here.
     } else {
