@@ -7,6 +7,7 @@ import 'package:stiv/features/devices/providers/devices_providers.dart';
 import 'package:stiv/features/devices/widgets/status_indicator.dart';
 import 'package:stiv/features/diagnostic/models/category.dart';
 import 'package:stiv/features/diagnostic/presentation/providers/catalog_providers.dart';
+import 'package:stiv/core/utils/image_utils.dart';
 
 class DeviceListPage extends ConsumerWidget {
   const DeviceListPage({super.key});
@@ -171,7 +172,7 @@ class _DevicesBlock extends ConsumerWidget {
                   radius: 20,
                   backgroundColor: Colors.white,
                   backgroundImage: device.image != null
-                      ? AssetImage(device.image!)
+                      ? device.image!.toImageProvider
                       : null,
                   child: device.image == null
                       ? Icon(Icons.devices, size: 25, color: AppColors.primary)
