@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:stiv/core/theme/theme_data.dart';
+import 'package:stiv/core/utils/image_utils.dart';
 
 class DeviceImagePicker extends StatelessWidget {
   final String? imageUrl;
@@ -27,7 +28,7 @@ class DeviceImagePicker extends StatelessWidget {
     if (localImage != null) {
       imageProvider = FileImage(File(localImage!.path));
     } else if (imageUrl != null && imageUrl!.isNotEmpty) {
-      imageProvider = NetworkImage(imageUrl!);
+      imageProvider = imageUrl!.toImageProvider;
     }
 
     return Center(

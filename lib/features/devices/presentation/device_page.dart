@@ -19,41 +19,52 @@ class DevicePage extends ConsumerWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            router.go( '/home');
+            router.go('/home');
             expandedIds.clear();
           },
         ),
         elevation: 0,
-    iconTheme: const IconThemeData(color: AppColors.primary),
-    backgroundColor: AppColors.background,
-    titleTextStyle: const TextStyle(
-      fontFamily: 'Inter',
-      fontSize: 20,
-      fontWeight: FontWeight.w600,
-      color: AppColors.textPrimary,
-    ),
-    title: Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+        iconTheme: const IconThemeData(color: AppColors.primary),
+        backgroundColor: AppColors.background,
+        titleTextStyle: const TextStyle(
+          fontFamily: 'Inter',
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+          color: AppColors.textPrimary,
+        ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Image.asset('assets/images/stiv-logo-blue.png', height: 50),
+            const SizedBox(width: AppSpacing.sm),
+            const Text('Stiv', style: AppTextStyles.h2),
+          ],
+        ),
+      ),
+      body: Column(
         children: [
-        Image.asset('assets/images/stiv-logo-blue.png', height: 50),
-        const SizedBox(width: AppSpacing.sm),
-        const Text('Stiv', style: AppTextStyles.h2),
-      ],
-      )),
-      body: 
-      Column(
-        children: [
+          const SizedBox(height: AppSpacing.md),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+            child: Text(
+              'Selecciona, edita y gestiona tus dispositivos',
+              style: AppTextStyles.t1,
+            ),
+          ),
+          const SizedBox(height: AppSpacing.md),
           DeviceSearchBar(),
-          const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: AppSpacing.md),
           Expanded(child: DeviceListPage()),
         ],
       ),
       floatingActionButton: Padding(
-        padding: const EdgeInsets.symmetric( vertical: 25.0),
-        child: DeviceFloatingActionButton(onPressed: () {
-          router.go('/devices/add');
-        },)
-      )
+        padding: const EdgeInsets.symmetric(vertical: 25.0),
+        child: DeviceFloatingActionButton(
+          onPressed: () {
+            router.go('/devices/add');
+          },
+        ),
+      ),
     );
   }
 }

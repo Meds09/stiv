@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stiv/core/theme/theme_data.dart';
 import 'package:stiv/features/devices/domain/models/device.dart';
 import 'package:stiv/features/diagnostic/presentation/device_page/widgets/device_status_indicator.dart';
+import 'package:stiv/core/utils/image_utils.dart';
 
 class DiagnosticHeader extends StatelessWidget {
   final Device device;
@@ -69,7 +70,7 @@ class DiagnosticHeader extends StatelessWidget {
                         radius: 50,
                         backgroundColor: Colors.white,
                         backgroundImage: device.image != null
-                            ? AssetImage(device.image!)
+                            ? device.image!.toImageProvider
                             : null,
                         child: device.image == null
                             ? Icon(
