@@ -155,7 +155,7 @@ class _DevicesBlock extends ConsumerWidget {
               child: ListTile(
                 dense: true,
                 contentPadding: EdgeInsets.all(10),
-          
+
                 //icono del dispositivo
                 leading: CircleAvatar(
                   radius: 20,
@@ -164,6 +164,12 @@ class _DevicesBlock extends ConsumerWidget {
                   child: device.image == null
                       ? Icon(Icons.devices, size: 25, color: AppColors.primary)
                       : null,
+                ),
+                trailing: Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  size: 15,
+
+                  color: AppColors.primary,
                 ),
                 //texto del dispositivo
                 title: Text(

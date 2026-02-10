@@ -14,7 +14,7 @@ class _DeviceSearchBarState extends ConsumerState<DeviceSearchBar> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(10),
       child: SearchBar(
         hintText: 'Buscar...',
         textStyle: WidgetStatePropertyAll(
