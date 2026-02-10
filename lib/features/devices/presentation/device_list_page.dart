@@ -155,25 +155,12 @@ class _DevicesBlock extends ConsumerWidget {
               child: ListTile(
                 dense: true,
                 contentPadding: EdgeInsets.all(10),
-
-                //boton de accion
-                trailing: IconButton(
-                  icon: const Icon(
-                    Icons.edit,
-                    color: AppColors.primary,
-                    size: 20,
-                  ),
-                  onPressed: () {
-                     context.pushNamed('device-edit', pathParameters: {'deviceId': device.id});
-                  },
-                ),
+          
                 //icono del dispositivo
                 leading: CircleAvatar(
                   radius: 20,
                   backgroundColor: Colors.white,
-                  backgroundImage: device.image != null
-                      ? device.image!.toImageProvider
-                      : null,
+                  backgroundImage: device.image?.toImageProvider,
                   child: device.image == null
                       ? Icon(Icons.devices, size: 25, color: AppColors.primary)
                       : null,
@@ -215,18 +202,12 @@ class _DevicesBlock extends ConsumerWidget {
                     ),
                   ],
                 ),
-                  onTap: () {
-                    // We need to update this provider or creating a selection provider in devices
-                    // For now, let's assume we want to navigate.
-                    // ref.read(selectedDeviceProvider.notifier).state = device;
-                    
-                    // Since diagnosticChat expects int ID maybe? Let's check router.
-                    // For now passing String.
-                    context.pushNamed(
-                      'diagnosticChat',
-                      pathParameters: {'deviceId': device.id},
-                    );
-                  },
+                onTap: () {
+                  context.pushNamed(
+                    'device-edit',
+                    pathParameters: {'deviceId': device.id},
+                  );
+                },
               ),
             ),
           ),
