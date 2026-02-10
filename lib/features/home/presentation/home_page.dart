@@ -4,7 +4,7 @@ import 'package:stiv/core/theme/theme_data.dart';
 import 'package:stiv/features/home/presentation/providers/home_stats_provider.dart';
 import 'package:stiv/features/home/presentation/providers/menu_options_provider.dart';
 import 'package:stiv/features/home/presentation/widgets/widgets.dart';
-import 'package:stiv/features/login_register/providers/auth_provider.dart';
+import 'package:stiv/features/auth/providers/auth_provider.dart';
 
 
 /// Página principal del home con diseño moderno y estadísticas

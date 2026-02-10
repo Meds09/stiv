@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stiv/features/login_register/providers/bottom_nav_bar_provider.dart';
+import 'package:stiv/features/auth/providers/bottom_nav_bar_provider.dart';
 
 final authStateProvider = StreamProvider<User?>((ref) {
   return FirebaseAuth.instance.authStateChanges();

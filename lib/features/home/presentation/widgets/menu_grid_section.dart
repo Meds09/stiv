@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stiv/core/router/router.dart';
 import 'package:stiv/core/theme/theme_data.dart';
-import 'package:stiv/features/login_register/providers/bottom_nav_bar_provider.dart';
-import 'package:stiv/features/login_register/widgets/card_menu.dart';
+import 'package:stiv/features/auth/providers/bottom_nav_bar_provider.dart';
+import 'package:stiv/features/auth/widgets/card_menu.dart';
 
 /// Modelo para las opciones del menú
 class MenuOption {

@@ -4,8 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:stiv/features/login_register/providers/auth_provider.dart';
-import 'package:stiv/features/login_register/providers/bottom_nav_bar_provider.dart';
+import 'package:stiv/features/auth/providers/auth_provider.dart';
+import 'package:stiv/features/auth/providers/bottom_nav_bar_provider.dart';
 import 'package:stiv/core/theme/theme_data.dart';
 
 /// Bottom Navigation Bar con diseño liquid glass moderno

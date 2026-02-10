@@ -1,16 +1,19 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:stiv/core/theme/theme_data.dart';
-import 'package:stiv/features/profile/presentation/widgets/profile_avatar.dart';
+import 'package:stiv/features/profile/presentation/widgets/profile_image_picker.dart';
 
 /// Header del perfil con gradiente y información del usuario
 class ProfileHeader extends StatelessWidget {
   final User? user;
+  final XFile? localImage;
   final VoidCallback? onAvatarEdit;
 
   const ProfileHeader({
     super.key,
     required this.user,
+    this.localImage,
     this.onAvatarEdit,
   });
 
@@ -47,8 +50,9 @@ class ProfileHeader extends StatelessWidget {
           ),
           child: Column(
             children: [
-              ProfileAvatar(
-                user: user,
+              ProfileImagePicker(
+                imageUrl: user?.photoURL,
+                localImage: localImage,
                 onEditTap: onAvatarEdit,
               ),
               const SizedBox(height: AppSpacing.lg),
