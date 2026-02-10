@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:stiv/features/login_register/widgets/squared_tile.dart';
-import 'package:stiv/features/login_register/widgets/stiv_email_formfield.dart';
-import 'package:stiv/features/login_register/widgets/stiv_login_button.dart';
-import 'package:stiv/features/login_register/widgets/stiv_textfield.dart';
+import 'package:stiv/features/auth/widgets/squared_tile.dart';
+import 'package:stiv/features/auth/widgets/stiv_email_formfield.dart';
+import 'package:stiv/features/auth/widgets/stiv_login_button.dart';
+import 'package:stiv/features/auth/widgets/stiv_textfield.dart';
 import 'package:stiv/services/auth_service.dart';
 import 'package:stiv/core/theme/theme_data.dart';
 

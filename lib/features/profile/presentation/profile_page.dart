@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:stiv/core/theme/theme_data.dart';
 import 'package:stiv/core/utils/toast_utils.dart';
 import 'package:stiv/features/home/presentation/widgets/sign_out_overlay.dart';
-import 'package:stiv/features/login_register/providers/auth_provider.dart';
+import 'package:stiv/features/auth/providers/auth_provider.dart';
 import 'package:stiv/features/profile/presentation/widgets/widgets.dart';
 import 'package:stiv/features/profile/providers/profile_image_upload_provider.dart';
 

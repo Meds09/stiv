@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stiv/core/theme/theme_data.dart';
+import 'package:stiv/core/utils/toast_utils.dart';
 import 'package:stiv/features/devices/providers/devices_providers.dart';
 import 'package:stiv/features/devices/presentation/widgets/device_image_picker.dart';
 import 'package:stiv/features/devices/providers/image_upload_provider.dart';
@@ -73,17 +74,11 @@ class _EditDevicePageState extends ConsumerState<EditDevicePage> {
 
       if (mounted) {
         context.pop();
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Dispositivo actualizado correctamente'),
-          ),
-        );
+        ToastUtils.showSuccess(context, 'Dispositivo actualizado correctamente');
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Error al actualizar: $e')));
+        ToastUtils.showError(context, 'Error al actualizar: $e');
         setState(() => _isLoading = false);
       }
     }
@@ -152,15 +147,11 @@ class _EditDevicePageState extends ConsumerState<EditDevicePage> {
       await ref.read(deviceRepositoryProvider).deleteDevice(widget.deviceId);
       if (mounted) {
         context.pop();
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Dispositivo eliminado correctamente')),
-        );
+        ToastUtils.showInfo(context, 'Dispositivo eliminado correctamente');
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Error al eliminar: $e')));
+        ToastUtils.showError(context, 'Error al eliminar: $e');
         setState(() => _isLoading = false);
       }
     }

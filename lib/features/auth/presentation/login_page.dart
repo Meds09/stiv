@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:stiv/features/login_register/widgets/squared_tile.dart';
-import 'package:stiv/features/login_register/widgets/stiv_login_button.dart';
-import 'package:stiv/features/login_register/widgets/stiv_textfield.dart';
+import 'package:stiv/core/utils/toast_utils.dart';
+import 'package:stiv/features/auth/widgets/squared_tile.dart';
+import 'package:stiv/features/auth/widgets/stiv_login_button.dart';
+import 'package:stiv/features/auth/widgets/stiv_textfield.dart';
 import 'package:stiv/services/auth_service.dart';
 import 'package:stiv/core/theme/theme_data.dart';
 
@@ -23,57 +24,47 @@ class _LoginPageState extends State<LoginPage> {
 
   final passwordController = TextEditingController();
 
-void signUserIn() async {
-  // Mostrar indicador de carga
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (context) => const Center(child: CircularProgressIndicator()),
-  );
-
-  try {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: emailController.text.trim(),
-      password: passwordController.text.trim(),
+  void signUserIn() async {
+    // Mostrar indicador de carga
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(child: CircularProgressIndicator()),
     );
 
-    if (!mounted) return;
-    Navigator.of(context).pop(); // Cerrar indicador
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
 
-    context.go('/home');
+      if (!mounted) return;
+      Navigator.of(context).pop(); // Cerrar indicador
 
-  } on FirebaseAuthException catch (e) {
-    Navigator.of(context).pop(); 
+      context.go('/home');
+    } on FirebaseAuthException catch (e) {
+      Navigator.of(context).pop();
 
-    String message = '';
+      String message = '';
 
-    // Mensajes de error específicos
-    if (e.code == 'invalid-email') {
-      message = 'Formato de correo inválido.';
-    } else if (e.code == 'user-not-found') {
-      message = 'No existe un usuario con este email.';
-    } else if (e.code == 'wrong-password') {
-      message = 'Contraseña incorrecta.';
-    } else {
-      message = 'Usuario o contraseña incorrectos.';
+      // Mensajes de error específicos
+      if (e.code == 'invalid-email') {
+        message = 'Formato de correo inválido.';
+      } else if (e.code == 'user-not-found') {
+        message = 'No existe un usuario con este email.';
+      } else if (e.code == 'wrong-password') {
+        message = 'Contraseña incorrecta.';
+      } else {
+        message = 'Usuario o contraseña incorrectos.';
+      }
+
+      // Mostrar el error al usuario
+      ToastUtils.showError(context, message);
+    } catch (e) {
+      Navigator.of(context).pop(); // cerrar sí o sí
+      ToastUtils.showError(context, 'Error desconocido');
     }
-
-    // Mostrar el error al usuario
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message, style: const TextStyle(fontFamily: 'Inter', color: Colors.white),),
-      backgroundColor: AppColors.danger,),
-    );
-
-  } catch (e) {
-    Navigator.of(context).pop(); // cerrar sí o sí
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Error desconocido')),
-    );
   }
-}
-
-
 
   void wrongCredentialsMessage() {
     showDialog(
@@ -120,10 +111,7 @@ void signUserIn() async {
               ),
 
               // Título
-              const Text(
-                'Bienvenido a Stiv',
-                style: AppTextStyles.h1,
-              ),
+              const Text('Bienvenido a Stiv', style: AppTextStyles.h1),
               const SizedBox(height: 10),
               // Subtítulo
               Padding(
@@ -142,7 +130,7 @@ void signUserIn() async {
                 hintText: 'Usuario o Correo electrónico',
                 obscureText: false,
                 controller: emailController,
-                suffixIcon:  IconButton(
+                suffixIcon: IconButton(
                   icon: Icon(Icons.person, color: AppColors.textSecondary),
                   onPressed: () {},
                 ),
@@ -177,7 +165,7 @@ void signUserIn() async {
                       style: TextStyle(
                         fontSize: 14,
                         fontFamily: 'Inter',
-                        color: AppColors.primary
+                        color: AppColors.primary,
                       ),
                     ),
                   ],
@@ -241,7 +229,10 @@ void signUserIn() async {
                 children: [
                   const Text(
                     "¿No tienes una cuenta?",
-                    style: TextStyle(color: AppColors.textSecondary, fontFamily: 'Inter'),
+                    style: TextStyle(
+                      color: AppColors.textSecondary,
+                      fontFamily: 'Inter',
+                    ),
                   ),
                   const SizedBox(width: 8),
                   GestureDetector(
@@ -252,7 +243,6 @@ void signUserIn() async {
                         fontFamily: 'Inter',
                         color: AppColors.primary,
                         fontWeight: FontWeight.bold,
-                        
                       ),
                     ),
                   ),
