@@ -101,9 +101,13 @@ class _EditProfileDialogState extends ConsumerState<EditProfileDialog> {
                 // Name Field (Editable)
                 TextFormField(
                   controller: _nameController,
-                  style: const TextStyle(color: AppColors.textPrimary),
+                  cursorColor: AppColors.primary,
+
+                  style: const TextStyle(color: AppColors.textPrimary, fontSize: 18),
                   decoration: const InputDecoration(
                     labelText: 'Nombre completo',
+                    labelStyle: TextStyle(color: AppColors.primary, fontSize: 18),
+                    
                     prefixIcon: Icon(Icons.person_outline),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: AppColors.primary, width: 2),
@@ -122,9 +126,10 @@ class _EditProfileDialogState extends ConsumerState<EditProfileDialog> {
                 TextFormField(
                   controller: _emailController,
                   readOnly: true,
-                  style: AppTextStyles.body.copyWith(color: AppColors.textSecondary),
+                  style: AppTextStyles.body.copyWith(color: AppColors.textSecondary, fontSize: 18),
                   decoration: InputDecoration(
                     labelText: 'Correo electrónico',
+                    labelStyle: TextStyle(color: AppColors.primary, fontSize: 18),
                     prefixIcon: const Icon(Icons.email_outlined),
                     filled: true,
                     fillColor: AppColors.card,

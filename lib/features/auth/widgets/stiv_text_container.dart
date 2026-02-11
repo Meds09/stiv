@@ -15,11 +15,12 @@ class StivTextContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(15),
-      margin: EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.all(16),
+      // Removed margin to respect parent padding
       decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(4),
+        color: AppColors.card2,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.border, width: 1),
       ),
       child: Row(
         children: [
@@ -34,8 +35,8 @@ class StivTextContainer extends StatelessWidget {
                   title ?? 'Titulo',
                   style: TextStyle(
                     fontFamily: 'Inter',
-                    fontSize: 12,
-                    color: AppColors.textSecondary,
+                    fontSize: 14,
+                    color: AppColors.primary,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
