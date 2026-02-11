@@ -73,44 +73,84 @@ class DeviceTypeList extends ConsumerStatefulWidget {
 
 class _DeviceTypeListState extends ConsumerState<DeviceTypeList>
     with TickerProviderStateMixin {
+
+  IconData _getCategoryIcon(int categoryId) {
+    switch (categoryId) {
+      case 1: // CCTV
+        return Icons.videocam_outlined;
+      case 2: // Red
+        return Icons.lan_outlined;
+      case 3: // Energía
+        return Icons.bolt_outlined;
+      case 4: // Control de Acceso
+        return Icons.lock_outlined;
+      default:
+        return Icons.grid_view_outlined;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          ListTile(
-            title: Text(widget.category.name, style: AppTextStyles.h2),
-            leading: Text(widget.category.emoji, style: AppTextStyles.h2),
-            trailing: AnimatedRotation(
-              turns: widget.isExpanded ? 0.5 : 0.0,
-              duration: const Duration(milliseconds: 200),
-              child: const Icon(Icons.expand_more, color: AppColors.primary),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Card(
+        elevation: 2,
+        shadowColor: Colors.black.withValues(alpha: 0.05),
+        color: AppColors.card2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: const BorderSide(color: AppColors.border, width: 1),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ListTile(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              title: Text(
+                widget.category.name, 
+                style: AppTextStyles.h3.copyWith(fontWeight: FontWeight.w600),
+              ),
+              leading: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  _getCategoryIcon(widget.category.id),
+                  color: AppColors.primary,
+                  size: 24,
+                ),
+              ),
+              trailing: AnimatedRotation(
+                turns: widget.isExpanded ? 0.5 : 0.0,
+                duration: const Duration(milliseconds: 200),
+                child: const Icon(Icons.expand_more, color: AppColors.textSecondary),
+              ),
+              onTap: () {
+                final notifier = ref.read(isExpandedCategoryIdProvider.notifier);
+                final next = {...notifier.state};
+
+                if (next.contains(widget.category.id)) {
+                  next.remove(widget.category.id);
+                } else {
+                  next.add(widget.category.id);
+                }
+
+                notifier.state = next;
+              },
             ),
-            onTap: () {
-              final notifier = ref.read(isExpandedCategoryIdProvider.notifier);
-              final next = {...notifier.state};
 
-              if (next.contains(widget.category.id)) {
-                next.remove(widget.category.id);
-              } else {
-                next.add(widget.category.id);
-              }
-
-              notifier.state = next;
-            },
-          ),
-
-          AnimatedSize(
-            duration: const Duration(milliseconds: 220),
-            curve: Curves.easeInOut,
-            alignment: Alignment.topCenter,
-            child: widget.isExpanded
-                ? _DevicesBlock(devices: widget.devices)
-                : const SizedBox(height: 0),
-          ),
-        ],
+            AnimatedSize(
+              duration: const Duration(milliseconds: 220),
+              curve: Curves.easeInOut,
+              alignment: Alignment.topCenter,
+              child: widget.isExpanded
+                  ? _DevicesBlock(devices: widget.devices)
+                  : const SizedBox(height: 0),
+            ),
+          ],
+        ),
       ),
     );
   }

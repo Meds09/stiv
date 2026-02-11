@@ -17,12 +17,20 @@ class _DeviceSearchBarState extends ConsumerState<DeviceSearchBar> {
       padding: const EdgeInsets.all(10),
       child: SearchBar(
         hintText: 'Buscar...',
-        textStyle: WidgetStatePropertyAll(
-          TextStyle(color: AppColors.textPrimary),
+        hintStyle: WidgetStatePropertyAll(
+          TextStyle(color: AppColors.textSecondary, fontFamily: 'Inter'),
         ),
-        backgroundColor: WidgetStatePropertyAll(AppColors.card),
-        elevation: WidgetStatePropertyAll(6),
-        leading: const Icon(Icons.search, color: AppColors.primary,),
+        textStyle: WidgetStatePropertyAll(
+          TextStyle(color: AppColors.textPrimary, fontFamily: 'Inter', fontWeight: FontWeight.w500),
+        ),
+        backgroundColor: WidgetStatePropertyAll(AppColors.surface),
+        elevation: WidgetStatePropertyAll(2),
+        shadowColor: WidgetStatePropertyAll(Colors.black.withValues(alpha: 0.1)),
+        shape: WidgetStatePropertyAll(
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        ),
+        padding: const WidgetStatePropertyAll(EdgeInsets.symmetric(horizontal: 16)),
+        leading: const Icon(Icons.search, color: AppColors.primary),
         onChanged: (query) {
           ref.read(deviceSearchQueryProvider.notifier).state = query;
         },

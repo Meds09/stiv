@@ -17,7 +17,7 @@ class DiagnosticDeviceBody extends ConsumerWidget {
         padding: const EdgeInsets.all(10.0),
         decoration: BoxDecoration(
 
-          color: AppColors.background,
+          color: AppColors.card,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(color: Colors.black.withValues(alpha: 0.1), width: 1),
           boxShadow: [

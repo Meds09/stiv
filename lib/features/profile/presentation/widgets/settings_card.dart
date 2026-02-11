@@ -49,18 +49,21 @@ class _SettingsCardState extends State<SettingsCard> {
         child: Container(
           padding: const EdgeInsets.all(AppSpacing.md),
           decoration: BoxDecoration(
-            color: AppColors.surface,
-            borderRadius: AppRadii.brMd,
-            boxShadow: AppShadows.soft,
+            color: AppColors.card2,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppColors.border, width: 1),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.05),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
           ),
           child: Row(
             children: [
               Container(
                 padding: const EdgeInsets.all(AppSpacing.sm),
-                decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(alpha: 0.1),
-                  borderRadius: AppRadii.brSm,
-                ),
                 child: Icon(
                   widget.icon,
                   color: AppColors.primary,
@@ -77,6 +80,7 @@ class _SettingsCardState extends State<SettingsCard> {
                       style: AppTextStyles.body.copyWith(
                         fontWeight: FontWeight.w600,
                         fontSize: 15,
+                        color: AppColors.primary
                       ),
                     ),
                     const SizedBox(height: 2),
