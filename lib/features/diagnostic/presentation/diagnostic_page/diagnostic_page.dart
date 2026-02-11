@@ -59,9 +59,12 @@ class DiagnosticPage extends StatelessWidget {
                               ),
                             ),
                             GestureDetector(
+                          
                               onTap: () {
+
                                 router.push('/devices/add');
                               },
+                              
                               child: const Text(
                                 'Aqui',
                                 style: TextStyle(

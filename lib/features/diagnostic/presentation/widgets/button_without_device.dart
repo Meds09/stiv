@@ -9,7 +9,17 @@ class ButtonWithoutDevice extends StatelessWidget {
     return ElevatedButton(
       onPressed: (){},
       style: AppButtonStyles.primary,
-      child: const Text('Continuar sin un dispositivo'),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: const [
+          Text(
+            'Continuar sin un dispositivo',
+            style: TextStyle(fontWeight: FontWeight.w600),
+          ),
+          SizedBox(width: 8),
+          Icon(Icons.arrow_forward_rounded, size: 20),
+        ],
+      ),
       
     );
   }
