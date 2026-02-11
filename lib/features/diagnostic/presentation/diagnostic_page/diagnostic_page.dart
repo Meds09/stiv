@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stiv/core/router/router.dart';
 import 'package:stiv/core/theme/theme_data.dart';
 import 'package:stiv/features/diagnostic/presentation/widgets/button_without_device.dart';
 import 'package:stiv/features/diagnostic/presentation/widgets/categories_list.dart';
@@ -59,7 +60,7 @@ class DiagnosticPage extends StatelessWidget {
                             ),
                             GestureDetector(
                               onTap: () {
-                                
+                                router.push('/devices/add');
                               },
                               child: const Text(
                                 'Aqui',

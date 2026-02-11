@@ -7,6 +7,7 @@ import 'package:stiv/core/utils/toast_utils.dart';
 import 'package:stiv/features/home/presentation/widgets/sign_out_overlay.dart';
 import 'package:stiv/features/auth/providers/auth_provider.dart';
 import 'package:stiv/features/profile/presentation/widgets/widgets.dart';
+import 'package:stiv/features/profile/presentation/widgets/edit_profile_dialog.dart';
 import 'package:stiv/features/profile/providers/profile_image_upload_provider.dart';
 
 /// Página principal del perfil de usuario
@@ -73,6 +74,17 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         );
       }
     }
+
+  }
+
+  void _showEditProfileDialog() {
+    final user = ref.read(currentUserProvider);
+    if (user == null) return;
+
+    showDialog(
+      context: context,
+      builder: (context) => EditProfileDialog(user: user),
+    );
   }
 
   @override
@@ -143,7 +155,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
           const SizedBox(height: AppSpacing.xl),
           const SectionTitle(title: 'Configuración'),
           const SizedBox(height: AppSpacing.md),
-          const SettingsSection(),
+          SettingsSection(
+            onEditProfile: _showEditProfileDialog,
+          ),
           const SizedBox(height: AppSpacing.xl),
           LogoutButton(
             onTap: () {
