@@ -24,9 +24,9 @@ final menuOptionsProvider = Provider<List<MenuOption>>((ref) {
       route: 'reports',  
     ),
     MenuOption(
-      title: 'Manuales',
+      title: 'Guías Técnicas',
       icon: Icons.menu_book_rounded, 
-      route: 'manuals',
+      route: 'guides',
     ),
   ];
 });

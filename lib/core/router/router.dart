@@ -7,7 +7,7 @@ import 'package:stiv/features/devices/presentation/add_new_device_page.dart';
 import 'package:stiv/features/devices/presentation/edit_device_page.dart';
 import 'package:stiv/features/features.dart';
 import 'package:stiv/features/reports/presentation/reports_history_page.dart';
-import 'package:stiv/features/manuals/presentation/manuals_page.dart';
+import 'package:stiv/features/guides/presentation/guides_page.dart';
 
 /// Estado del Onboarding (con SharedPreferences)
 class OnboardingState extends ChangeNotifier {
@@ -119,9 +119,9 @@ final router = GoRouter(
 
     //Manual
     GoRoute(
-      path: '/manuals',
-      name: 'manuals',
-      builder: (_, _) => const ManualsPage(),
+      path: '/guides',
+      name: 'guides',
+      builder: (_, _) => const GuidesPage(),
     ),
     // Historial de reportes
     GoRoute(
