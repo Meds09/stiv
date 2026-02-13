@@ -8,6 +8,8 @@ import 'package:stiv/features/devices/presentation/edit_device_page.dart';
 import 'package:stiv/features/features.dart';
 import 'package:stiv/features/reports/presentation/reports_history_page.dart';
 import 'package:stiv/features/guides/presentation/guides_page.dart';
+import 'package:stiv/features/guides/presentation/guide_detail_page.dart';
+import 'package:stiv/features/guides/domain/models/guides.dart';
 
 /// Estado del Onboarding (con SharedPreferences)
 class OnboardingState extends ChangeNotifier {
@@ -122,6 +124,21 @@ final router = GoRouter(
       path: '/guides',
       name: 'guides',
       builder: (_, _) => const GuidesPage(),
+      routes: [
+        GoRoute(
+          path: ':id',
+          name: 'guide-detail',
+          builder: (context, state) {
+            final guide = state.extra as Guide?;
+            if (guide == null) {
+              return const Scaffold(
+                body: Center(child: Text('Guía no encontrada')),
+              );
+            }
+            return GuideDetailPage(guide: guide);
+          },
+        ),
+      ],
     ),
     // Historial de reportes
     GoRoute(

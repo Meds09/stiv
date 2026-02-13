@@ -1,0 +1,144 @@
+{
+  "guides": [
+    {
+      "id": "instalacion-dispositivos",
+      "title": "Instalación de Dispositivos STIV",
+      "subtitle": "Guía completa para la instalación correcta de equipos",
+      "category": "Instalación",
+      "type": "Técnica",
+      "imageUrl": "",
+      "url": "",
+      "isActive": true,
+      "description": "Esta guía proporciona instrucciones detalladas para la instalación correcta de dispositivos STIV, asegurando un funcionamiento óptimo y cumplimiento de las normativas de seguridad.",
+      "estimatedTime": "30-45 minutos",
+      "steps": [
+        "Verificar que el área de instalación cumpla con los requisitos eléctricos y de espacio necesarios",
+        "Desembalar el dispositivo cuidadosamente y verificar que todos los componentes estén presentes",
+        "Montar el dispositivo en la ubicación designada siguiendo las especificaciones del fabricante",
+        "Conectar el cableado eléctrico asegurándose de seguir el código de colores correcto",
+        "Realizar las conexiones de red y comunicación según el diagrama de instalación",
+        "Encender el dispositivo y verificar que todos los indicadores LED muestren estado normal",
+        "Configurar los parámetros básicos de operación usando la interfaz de usuario",
+        "Realizar pruebas de funcionamiento para confirmar la instalación correcta"
+      ],
+      "tips": [
+        "Siempre desconecte la alimentación eléctrica antes de realizar cualquier conexión",
+        "Use herramientas calibradas y certificadas para garantizar precisión en las mediciones",
+        "Documente todas las configuraciones realizadas para futuras referencias",
+        "Mantenga el área de trabajo limpia y organizada durante todo el proceso"
+      ]
+    },
+    {
+      "id": "configuracion-parametros",
+      "title": "Configuración de Parámetros del Sistema",
+      "subtitle": "Optimización y ajuste de configuraciones",
+      "category": "Configuración",
+      "type": "Técnica",
+      "imageUrl": "",
+      "url": "",
+      "isActive": true,
+      "description": "Aprenda a configurar correctamente los parámetros del sistema STIV para optimizar el rendimiento y adaptarlo a las necesidades específicas de su instalación.",
+      "estimatedTime": "20-30 minutos",
+      "steps": [
+        "Acceder al menú de configuración usando las credenciales de administrador",
+        "Revisar y ajustar los parámetros de comunicación (baudrate, paridad, bits de parada)",
+        "Configurar las direcciones IP y puertos de red según la topología del sistema",
+        "Establecer los umbrales de alarma y notificaciones según los requerimientos operativos",
+        "Ajustar los tiempos de respuesta y ciclos de actualización de datos",
+        "Configurar los perfiles de usuario y niveles de acceso",
+        "Guardar la configuración y crear un respaldo de los parámetros",
+        "Reiniciar el sistema para aplicar todos los cambios realizados"
+      ],
+      "tips": [
+        "Siempre cree un respaldo de la configuración actual antes de realizar cambios",
+        "Documente cada cambio realizado con fecha, hora y justificación",
+        "Realice cambios de uno en uno y verifique el impacto antes de continuar",
+        "Consulte el manual técnico para valores recomendados de cada parámetro"
+      ]
+    },
+    {
+      "id": "mantenimiento-preventivo",
+      "title": "Mantenimiento Preventivo de Equipos",
+      "subtitle": "Rutinas de mantenimiento para prolongar la vida útil",
+      "category": "Mantenimiento",
+      "type": "Operativa",
+      "imageUrl": "",
+      "url": "",
+      "isActive": true,
+      "description": "Procedimientos de mantenimiento preventivo para garantizar el funcionamiento óptimo de los dispositivos STIV y prevenir fallas inesperadas.",
+      "estimatedTime": "1-2 horas",
+      "steps": [
+        "Realizar inspección visual del equipo buscando signos de desgaste o daño",
+        "Limpiar las superficies externas y ventilaciones usando materiales apropiados",
+        "Verificar todas las conexiones eléctricas y de comunicación",
+        "Revisar y ajustar tornillos y elementos de fijación si es necesario",
+        "Comprobar el funcionamiento de todos los indicadores y displays",
+        "Realizar pruebas de los sistemas de alarma y notificaciones",
+        "Verificar los niveles de voltaje y corriente en puntos críticos",
+        "Actualizar el registro de mantenimiento con todas las actividades realizadas"
+      ],
+      "tips": [
+        "Programe el mantenimiento durante períodos de baja demanda operativa",
+        "Use únicamente productos de limpieza aprobados para equipos electrónicos",
+        "Mantenga un registro detallado de todas las actividades de mantenimiento",
+        "Reemplace componentes preventivamente según las recomendaciones del fabricante"
+      ]
+    },
+    {
+      "id": "seguridad-operacion",
+      "title": "Seguridad en la Operación",
+      "subtitle": "Protocolos de seguridad y mejores prácticas",
+      "category": "Seguridad",
+      "type": "Normativa",
+      "imageUrl": "",
+      "url": "",
+      "isActive": true,
+      "description": "Guía completa de protocolos de seguridad para la operación de dispositivos STIV, incluyendo procedimientos de emergencia y mejores prácticas de seguridad.",
+      "estimatedTime": "15-20 minutos",
+      "steps": [
+        "Familiarizarse con todos los procedimientos de seguridad del fabricante",
+        "Verificar que el personal esté capacitado y certificado para operar el equipo",
+        "Comprobar que todos los sistemas de protección estén activos y funcionando",
+        "Establecer y señalizar claramente las zonas de seguridad alrededor del equipo",
+        "Verificar la disponibilidad y estado del equipo de protección personal",
+        "Revisar los procedimientos de emergencia y rutas de evacuación",
+        "Confirmar que los sistemas de comunicación de emergencia estén operativos",
+        "Realizar simulacros periódicos de situaciones de emergencia"
+      ],
+      "tips": [
+        "Nunca omita los procedimientos de seguridad, incluso en situaciones de urgencia",
+        "Mantenga actualizada la señalización de seguridad en todo momento",
+        "Reporte inmediatamente cualquier condición insegura detectada",
+        "Asegúrese de que todo el personal conozca la ubicación de los equipos de emergencia"
+      ]
+    },
+    {
+      "id": "diagnostico-fallas",
+      "title": "Diagnóstico y Solución de Fallas",
+      "subtitle": "Identificación y resolución de problemas comunes",
+      "category": "Diagnóstico",
+      "type": "Técnica",
+      "imageUrl": "",
+      "url": "",
+      "isActive": true,
+      "description": "Metodología sistemática para el diagnóstico y resolución de fallas en dispositivos STIV, incluyendo problemas comunes y sus soluciones.",
+      "estimatedTime": "Variable según la falla",
+      "steps": [
+        "Identificar y documentar los síntomas del problema reportado",
+        "Verificar el estado de los indicadores LED y mensajes de error",
+        "Revisar los registros de eventos y alarmas del sistema",
+        "Realizar pruebas básicas de conectividad y alimentación eléctrica",
+        "Aislar el componente o subsistema afectado mediante pruebas sistemáticas",
+        "Consultar el manual de solución de problemas para el código de error específico",
+        "Aplicar la solución recomendada o escalar a soporte técnico si es necesario",
+        "Verificar que el problema se haya resuelto completamente y documentar la solución"
+      ],
+      "tips": [
+        "Siempre comience con las verificaciones más simples antes de procedimientos complejos",
+        "Documente cada paso del proceso de diagnóstico para futuras referencias",
+        "No realice múltiples cambios simultáneos, verifique el efecto de cada acción",
+        "Mantenga un registro de fallas recurrentes para identificar patrones"
+      ]
+    }
+  ]
+}
