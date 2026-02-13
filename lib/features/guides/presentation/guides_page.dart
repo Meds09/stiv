@@ -98,7 +98,7 @@ class GuidesPage extends ConsumerWidget {
       color: AppColors.surface,
       child: InkWell(
         onTap: () {
-          // TODO: Navigate to guide detail or open URL
+          router.go('/guides/${guide.id}', extra: guide);
         },
         borderRadius: BorderRadius.circular(12),
         child: Padding(

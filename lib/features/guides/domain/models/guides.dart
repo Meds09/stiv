@@ -7,6 +7,10 @@ class Guide {
   final String imageUrl;
   final String url;
   final bool isActive;
+  final String description;
+  final List<String> steps;
+  final List<String> tips;
+  final String estimatedTime;
 
   Guide({
     required this.id,
@@ -17,6 +21,10 @@ class Guide {
     required this.imageUrl,
     required this.url,
     required this.isActive,
+    this.description = '',
+    this.steps = const [],
+    this.tips = const [],
+    this.estimatedTime = '',
   });
 
   factory Guide.fromJson(Map<String, dynamic> json) {
@@ -29,6 +37,10 @@ class Guide {
       imageUrl: json['imageUrl'] ?? '',
       url: json['url'] ?? '',
       isActive: json['isActive'] ?? true,
+      description: json['description'] ?? '',
+      steps: json['steps'] != null ? List<String>.from(json['steps']) : [],
+      tips: json['tips'] != null ? List<String>.from(json['tips']) : [],
+      estimatedTime: json['estimatedTime'] ?? '',
     );
   }
 
@@ -42,6 +54,10 @@ class Guide {
       imageUrl: map['imageUrl'] ?? '',
       url: map['url'] ?? '',
       isActive: map['isActive'] ?? true,
+      description: map['description'] ?? '',
+      steps: map['steps'] != null ? List<String>.from(map['steps']) : [],
+      tips: map['tips'] != null ? List<String>.from(map['tips']) : [],
+      estimatedTime: map['estimatedTime'] ?? '',
     );
   }
 }
