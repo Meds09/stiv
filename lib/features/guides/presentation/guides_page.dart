@@ -5,6 +5,8 @@ import 'package:stiv/core/theme/theme_data.dart';
 import 'package:stiv/features/guides/domain/models/guides.dart';
 import 'package:stiv/features/guides/providers/guides_providers.dart';
 import 'package:stiv/features/guides/widgets/guides_search_bar.dart';
+import 'package:stiv/features/guides/widgets/guides_category_filter.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class GuidesPage extends ConsumerWidget {
   const GuidesPage({super.key});
@@ -19,6 +21,7 @@ class GuidesPage extends ConsumerWidget {
       body: Column(
         children: [
           const GuidesSearchBar(),
+          const GuidesCategoryFilter(),
           Expanded(
             child: guidesAsync.when(
               data: (guides) {
@@ -109,22 +112,28 @@ class GuidesPage extends ConsumerWidget {
               // Image
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                  guide.imageUrl,
+                child: CachedNetworkImage(
+                  imageUrl: guide.imageUrl,
                   width: 80,
                   height: 80,
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      width: 80,
-                      height: 80,
-                      color: AppColors.primary.withValues(alpha: 0.1),
-                      child: const Icon(
-                        Icons.image_not_supported,
-                        color: AppColors.primary,
-                      ),
-                    );
-                  },
+                  placeholder: (context, url) => Container(
+                    width: 80,
+                    height: 80,
+                    color: AppColors.primary.withValues(alpha: 0.1),
+                    child: const Center(
+                       child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    width: 80,
+                    height: 80,
+                    color: AppColors.primary.withValues(alpha: 0.1),
+                    child: const Icon(
+                      Icons.image_not_supported,
+                      color: AppColors.primary,
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(width: AppSpacing.md),

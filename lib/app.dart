@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stiv/core/theme/theme_data.dart';
 import 'core/router/router.dart';
+import 'package:stiv/features/guides/providers/guides_providers.dart';
 
-class StivApp extends StatefulWidget {
+class StivApp extends ConsumerStatefulWidget {
   const StivApp({super.key});
 
   @override
-  State<StivApp> createState() => _StivAppState();
+  ConsumerState<StivApp> createState() => _StivAppState();
 }
 
-class _StivAppState extends State<StivApp> {
+class _StivAppState extends ConsumerState<StivApp> {
   bool _initialized = false;
 
   @override
@@ -25,6 +27,9 @@ class _StivAppState extends State<StivApp> {
 
   @override
   Widget build(BuildContext context) {
+    // Initialize image preloader
+    ref.watch(guidesImagePreloaderProvider);
+
     if (!_initialized) {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -42,7 +47,6 @@ class _StivAppState extends State<StivApp> {
 
     return MaterialApp.router(
       title: 'Stiv',
-      theme: ThemeData.dark(),
       debugShowCheckedModeBanner: false,
       routerConfig: router,
     );
