@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stiv/core/router/router.dart';
 import 'package:stiv/core/theme/theme_data.dart';
 import 'package:stiv/features/guides/domain/models/guides.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class GuideDetailPage extends StatelessWidget {
   final Guide guide;
@@ -61,10 +62,18 @@ class GuideDetailPage extends StatelessWidget {
           children: [
             // Image with gradient overlay
             guide.imageUrl.isNotEmpty
-                ? Image.network(
-                    guide.imageUrl,
+                ? CachedNetworkImage(
+                    imageUrl: guide.imageUrl,
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
+                    placeholder: (context, url) => Container(
+                      color: AppColors.primary.withValues(alpha: 0.3),
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.white.withValues(alpha: 0.7),
+                        ),
+                      ),
+                    ),
+                    errorWidget: (context, error, stackTrace) {
                       return _buildPlaceholderImage();
                     },
                   )

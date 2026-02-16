@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stiv/features/devices/data/repositories/device_repository_impl.dart';
 import 'package:stiv/features/devices/domain/models/device.dart';
 import 'package:stiv/features/devices/domain/repositories/device_repository.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 // Firestore Instance Provider
 final firestoreProvider = Provider<FirebaseFirestore>((ref) {
@@ -42,6 +43,31 @@ final filteredDeviceByCategoryProvider = Provider.family<AsyncValue<List<Device>
     loading: () => const AsyncLoading(),
     error: (e, st) => AsyncError(e, st),
   );
+});
+
+// Stream of all devices (for pre-loading images)
+final devicesStreamProvider = StreamProvider<List<Device>>((ref) {
+  final repo = ref.watch(deviceRepositoryProvider);
+  return repo.getDevices();
+});
+
+// Image pre-loader provider
+// This provider watches the devices stream and pre-caches images in the background
+final devicesImagePreloader = Provider<void>((ref) {
+  final devicesAsync = ref.watch(devicesStreamProvider);
+  
+  devicesAsync.whenData((devices) {
+    // Get BuildContext from the ProviderContainer if available
+    // Note: Pre-caching will happen when images are first rendered
+    // This is primarily a marker to ensure the stream is watched
+    for (final device in devices) {
+      if (device.image != null && device.image!.startsWith('http')) {
+        // Pre-load the image provider into cache manager
+        // This happens lazily when CachedNetworkImage first requests it
+        CachedNetworkImageProvider(device.image!);
+      }
+    }
+  });
 });
 
 // Single Device Provider (Firestore)

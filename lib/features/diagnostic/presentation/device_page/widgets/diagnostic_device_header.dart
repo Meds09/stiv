@@ -69,7 +69,7 @@ class DiagnosticHeader extends StatelessWidget {
                       child: CircleAvatar(
                         radius: 50,
                         backgroundColor: Colors.white,
-                        backgroundImage: device.image?.toImageProvider,
+                        backgroundImage: device.image?.toCachedImageProvider,
                         child: device.image == null
                             ? Icon(
                                 Icons.devices,

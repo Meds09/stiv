@@ -28,7 +28,7 @@ class DeviceImagePicker extends StatelessWidget {
     if (localImage != null) {
       imageProvider = FileImage(File(localImage!.path));
     } else if (imageUrl != null && imageUrl!.isNotEmpty) {
-      imageProvider = imageUrl!.toImageProvider;
+      imageProvider = imageUrl!.toCachedImageProvider;
     }
 
     return Center(
