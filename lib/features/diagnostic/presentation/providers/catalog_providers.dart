@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stiv/features/auth/providers/auth_provider.dart';
 import 'package:stiv/features/diagnostic/data/catalog_repository_firestore_impl.dart';
 import 'package:stiv/features/diagnostic/models/catalog_repository.dart';
 import 'package:stiv/features/diagnostic/models/category.dart';
@@ -18,8 +19,11 @@ final catalogRepositoryProvider = Provider<CatalogRepository>((ref) {
   return CatalogRepositoryFirestoreImpl(FirebaseFirestore.instance);
 });
 
-/// Categories provider - fetches from Firestore via catalog repository
+/// Categories provider - re-creates listener on auth state change
 final categoriesProvider = FutureProvider<List<Category>>((ref) async {
+  final user = ref.watch(currentUserProvider);
+  if (user == null) return [];
+  
   final repo = ref.watch(catalogRepositoryProvider);
   return repo.getCategories();
 });

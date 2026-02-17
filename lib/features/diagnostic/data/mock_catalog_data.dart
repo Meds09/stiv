@@ -20,6 +20,7 @@ final mockDevices = <Device>[
     model: 'HFW-XXX',
     ip: '192.168.19.129', 
     status: DeviceStatus.online,
+    userId: 'mock',
   ),
   Device(
     id: '2',
@@ -30,6 +31,7 @@ final mockDevices = <Device>[
     ip: '192.168.2.128',
     image: 'assets/images/devices/axis_camera.jfif', 
     status: DeviceStatus.offline,
+    userId: 'mock',
   ),
 
   Device(
@@ -40,6 +42,7 @@ final mockDevices = <Device>[
     model: 'APC',
     ip: '172.120.124.12', 
     status: DeviceStatus.maintenance,
+    userId: 'mock',
   ),
 
   Device(
@@ -50,6 +53,7 @@ final mockDevices = <Device>[
     model: 'Zkteco 1',
     ip: '192.168.1.2', 
     status: DeviceStatus.online,
+    userId: 'mock',
   ),
 
   Device(
@@ -61,6 +65,7 @@ final mockDevices = <Device>[
     ip: '192.168.1.5',
     image: 'assets/images/devices/router.jfif', 
     status: DeviceStatus.offline,
+    userId: 'mock',
   ),
 
 

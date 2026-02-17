@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stiv/core/theme/theme_data.dart';
+import 'package:stiv/core/utils/toast_utils.dart';
+import 'package:stiv/features/auth/providers/auth_provider.dart';
 import 'package:stiv/features/devices/domain/models/device.dart';
 import 'package:stiv/features/devices/providers/devices_providers.dart';
 import 'package:stiv/features/diagnostic/models/category.dart';
@@ -53,9 +55,7 @@ class _AddNewDevicePageState extends ConsumerState<AddNewDevicePage> {
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
     if (_selectedCategoryId == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Por favor seleccione una categoría')),
-      );
+     ToastUtils.showInfo(context,'Por favor seleccione una categoría');
       return;
     }
 
@@ -71,6 +71,12 @@ class _AddNewDevicePageState extends ConsumerState<AddNewDevicePage> {
         imageUrl = await ref.read(imageUploadServiceProvider).uploadDeviceImage(_selectedImage!, tempId);
       }
 
+      final user = ref.read(currentUserProvider);
+      if (user == null) {
+        ToastUtils.showError(_formKey.currentContext!,'Error: Usuario no autenticado');
+        return;
+      }
+
       final newDevice = Device(
         id: '', 
         name: _nameController.text.trim(),
@@ -80,22 +86,19 @@ class _AddNewDevicePageState extends ConsumerState<AddNewDevicePage> {
         location: _locationController.text.trim().isEmpty ? null : _locationController.text.trim(),
         categoryId: _selectedCategoryId!,
         status: DeviceStatus.offline, 
-        image: imageUrl, 
+        image: imageUrl,
+        userId: user.uid,
       );
 
       await ref.read(deviceRepositoryProvider).createDevice(newDevice);
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Dispositivo creado exitosamente')),
-        );
+        ToastUtils.showSuccess(_formKey.currentContext!,'Dispositivo creado exitosamente');
         context.pop();
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error al crear dispositivo: $e')),
-        );
+        ToastUtils.showError(_formKey.currentContext!,'Error al crear dispositivo: $e');
       }
     } finally {
       if (mounted) {

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stiv/features/auth/providers/auth_provider.dart';
 import 'package:stiv/features/guides/data/repositories/guide_repository_impl.dart';
 import 'package:stiv/features/guides/domain/models/guides.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -21,8 +22,11 @@ final guideSearchQueryProvider = StateProvider<String>((ref) => '');
 // Selected Category Provider
 final selectedCategoryProvider = StateProvider<String?>((ref) => null);
 
-// Stream of all active guides
+// Stream of all active guides (re-creates listener when auth state changes)
 final guidesStreamProvider = StreamProvider<List<Guide>>((ref) {
+  final user = ref.watch(currentUserProvider);
+  if (user == null) return Stream.value([]);
+  
   final repo = ref.watch(guideRepositoryProvider);
   return repo.getActiveGuidesStream();
 });

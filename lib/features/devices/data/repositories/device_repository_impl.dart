@@ -12,17 +12,21 @@ class DeviceRepositoryImpl implements DeviceRepository {
       _firestore.collection('devices');
 
   @override
-  Stream<List<Device>> getDevices() {
-    return _devicesCollection.snapshots().map((snapshot) {
+  Stream<List<Device>> getDevices(String userId) {
+    return _devicesCollection
+        .where('userId', isEqualTo: userId)
+        .snapshots()
+        .map((snapshot) {
       return snapshot.docs.map((doc) => Device.fromFirestore(doc)).toList();
     });
   }
 
   @override
-  Stream<List<Device>> getDevicesByCategory(int categoryId) {
+  Stream<List<Device>> getDevicesByCategory(String userId, int categoryId) {
     return _devicesCollection
+        .where('userId', isEqualTo: userId)
         .where('categoryId', isEqualTo: categoryId)
-        .snapshots() // Stream updates
+        .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) => Device.fromFirestore(doc)).toList();
     });
@@ -39,24 +43,14 @@ class DeviceRepositoryImpl implements DeviceRepository {
 
   @override
   Future<void> createDevice(Device device) async {
-    // We let Firestore generate the ID if it's empty, or use the one provided.
-    // Ideally, for a new device, we might want Firestore to generate the ID.
-    // But our model has 'id'. Let's see. 
-    // If the device.id is 'new' or empty, we treat it as new.
-    
-    // Better approach: simple add() lets firestore generate ID.
-    // BUT our Device object HAS an ID field. 
-    // So usually we create a DTO or we just ignore the ID field when writing 
-    // and let Firestore generate it, then read it back.
-    
-    // For now, let's assume if ID is empty string, we add.
+    if (device.userId.isEmpty) {
+      throw Exception("Cannot create device without userId");
+    }
+
     if (device.id.isEmpty) {
-        // ignore: unused_local_variable
-        final docRef = await _devicesCollection.add(device.toJson()..remove('id'));
-        // If we needed to return the device with the new ID, we would do it here.
+      await _devicesCollection.add(device.toJson()..remove('id'));
     } else {
-        // If it has an ID, we set it (could be overwrite).
-        await _devicesCollection.doc(device.id).set(device.toJson());
+      await _devicesCollection.doc(device.id).set(device.toJson());
     }
   }
 

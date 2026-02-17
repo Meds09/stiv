@@ -1,13 +1,13 @@
 import 'package:stiv/features/devices/domain/models/device.dart';
 
 abstract class DeviceRepository {
-  /// Stream of all devices. Real-time updates.
-  Stream<List<Device>> getDevices();
+  /// Stream of all devices for a specific user. Real-time updates.
+  Stream<List<Device>> getDevices(String userId);
 
-  /// Stream of devices filtered by category.
-  Stream<List<Device>> getDevicesByCategory(int categoryId);
+  /// Stream of devices filtered by category for a specific user.
+  Stream<List<Device>> getDevicesByCategory(String userId, int categoryId);
 
-  /// Get a single device by ID.
+  /// Get a single device by ID (validates ownership).
   Future<Device?> getDeviceById(String id);
 
   /// Create a new device.

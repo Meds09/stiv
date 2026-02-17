@@ -23,9 +23,7 @@ class SettingsSection extends StatelessWidget {
           icon: Icons.edit_outlined,
           title: 'Editar perfil',
           subtitle: 'Actualiza tu información personal',
-          onTap: onEditProfile ?? () {
-            // TODO: Navegar a editar perfil
-          },
+          onTap: onEditProfile ?? (){}
         ),
         const SizedBox(height: AppSpacing.sm),
         SettingsCard(

@@ -22,7 +22,6 @@ class CatalogRepositoryFirestoreImpl implements CatalogRepository {
         );
       }).toList();
     } catch (e) {
-      print('Error fetching categories from Firestore: $e');
       rethrow;
     }
   }
@@ -37,7 +36,6 @@ class CatalogRepositoryFirestoreImpl implements CatalogRepository {
 
       return snapshot.docs.map((doc) => Device.fromFirestore(doc)).toList();
     } catch (e) {
-      print('Error fetching devices by category from Firestore: $e');
       rethrow;
     }
   }
@@ -51,7 +49,7 @@ class CatalogRepositoryFirestoreImpl implements CatalogRepository {
       }
       return null;
     } catch (e) {
-      print('Error fetching device by ID from Firestore: $e');
+      
       rethrow;
     }
   }
