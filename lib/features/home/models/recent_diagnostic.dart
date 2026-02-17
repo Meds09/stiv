@@ -2,6 +2,7 @@
 /// Fácil de mapear desde Firebase/BD cuando se implemente
 class RecentDiagnostic {
   final String id;
+  final String userId;
   final String deviceName;
   final String deviceType;
   final DateTime date;
@@ -10,6 +11,7 @@ class RecentDiagnostic {
 
   const RecentDiagnostic({
     required this.id,
+    required this.userId,
     required this.deviceName,
     required this.deviceType,
     required this.date,
@@ -21,6 +23,7 @@ class RecentDiagnostic {
   factory RecentDiagnostic.fromJson(Map<String, dynamic> json) {
     return RecentDiagnostic(
       id: json['id'] ?? '',
+      userId: json['userId'] ?? '',
       deviceName: json['deviceName'] ?? '',
       deviceType: json['deviceType'] ?? '',
       date: json['date'] != null
@@ -35,6 +38,7 @@ class RecentDiagnostic {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
+      'userId': userId,
       'deviceName': deviceName,
       'deviceType': deviceType,
       'date': date.toIso8601String(),

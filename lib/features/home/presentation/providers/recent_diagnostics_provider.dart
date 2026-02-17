@@ -8,14 +8,13 @@ final recentDiagnosticsProvider = FutureProvider<List<RecentDiagnostic>>((ref) a
   // Simulación de delay de red
   await Future.delayed(const Duration(milliseconds: 600));
 
-  // TODO: Reemplazar con llamada real
+  // TODO: Reemplazar con llamada real a Firestore
   // final user = ref.watch(currentUserProvider);
   // if (user == null) return [];
   // 
   // final diagnosticsSnapshot = await FirebaseFirestore.instance
-  //     .collection('users')
-  //     .doc(user.uid)
   //     .collection('diagnostics')
+  //     .where('userId', isEqualTo: user.uid)
   //     .orderBy('date', descending: true)
   //     .limit(5)
   //     .get();
@@ -27,10 +26,11 @@ final recentDiagnosticsProvider = FutureProvider<List<RecentDiagnostic>>((ref) a
   //         }))
   //     .toList();
 
-  // Datos de ejemplo
+  // Datos de ejemplo (temporales hasta conectar con Firestore)
   return [
     RecentDiagnostic(
       id: '1',
+      userId: 'mock',
       deviceName: 'Laptop Dell XPS 15',
       deviceType: 'Laptop',
       date: DateTime.now().subtract(const Duration(hours: 2)),
@@ -39,6 +39,7 @@ final recentDiagnosticsProvider = FutureProvider<List<RecentDiagnostic>>((ref) a
     ),
     RecentDiagnostic(
       id: '2',
+      userId: 'mock',
       deviceName: 'iPhone 13 Pro',
       deviceType: 'Smartphone',
       date: DateTime.now().subtract(const Duration(days: 1)),
@@ -47,6 +48,7 @@ final recentDiagnosticsProvider = FutureProvider<List<RecentDiagnostic>>((ref) a
     ),
     RecentDiagnostic(
       id: '3',
+      userId: 'mock',
       deviceName: 'MacBook Pro M1',
       deviceType: 'Laptop',
       date: DateTime.now().subtract(const Duration(days: 2)),
@@ -55,4 +57,3 @@ final recentDiagnosticsProvider = FutureProvider<List<RecentDiagnostic>>((ref) a
     ),
   ];
 });
-
