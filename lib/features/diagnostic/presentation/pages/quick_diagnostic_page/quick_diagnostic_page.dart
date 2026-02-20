@@ -3,11 +3,6 @@ import 'package:stiv/core/router/router.dart';
 import 'package:stiv/core/theme/theme_data.dart';
 import 'package:stiv/features/diagnostic/presentation/pages/quick_diagnostic_page/quick_diagnostic.dart';
 
-
-
-
-/// Página principal de Diagnóstico Rápido.
-/// Muestra un banner hero y una grilla de síntomas comunes.
 class QuickDiagnosticPage extends StatelessWidget {
   const QuickDiagnosticPage({super.key});
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Modelo ligero para representar un síntoma en la UI.
 class Symptom {
   const Symptom({
     required this.id,
