@@ -10,6 +10,7 @@ import 'package:stiv/features/reports/presentation/reports_history_page.dart';
 import 'package:stiv/features/guides/presentation/guides_page.dart';
 import 'package:stiv/features/guides/presentation/guide_detail_page.dart';
 import 'package:stiv/features/guides/domain/models/guides.dart';
+import 'package:stiv/features/diagnostic/presentation/pages/quick_diagnostic_page/quick_diagnostic_page.dart';
 
 /// Estado del Onboarding (con SharedPreferences)
 class OnboardingState extends ChangeNotifier {
@@ -102,6 +103,13 @@ final router = GoRouter(
         ),
       ],
       builder: (_, _) => const DevicePage(),
+    ),
+
+    // Diagnóstico Rápido (sin selección de dispositivo)
+    GoRoute(
+      path: '/quick-diagnostic',
+      name: 'quick-diagnostic',
+      builder: (_, _) => const QuickDiagnosticPage(),
     ),
 
     // Ruta con parámetro: Chat de diagnóstico por dispositivo

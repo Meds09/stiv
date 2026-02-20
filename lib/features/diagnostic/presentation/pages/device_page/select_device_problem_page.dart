@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stiv/core/theme/theme_data.dart';
 import 'package:stiv/features/devices/domain/models/device.dart';
-import 'package:stiv/features/diagnostic/presentation/device_page/widgets/diagnostic_device_body.dart';
-import 'package:stiv/features/diagnostic/presentation/device_page/widgets/diagnostic_device_footer.dart';
-import 'package:stiv/features/diagnostic/presentation/device_page/widgets/diagnostic_device_header.dart';
+import 'package:stiv/features/diagnostic/presentation/pages/device_page/widgets/diagnostic_device_body.dart';
+import 'package:stiv/features/diagnostic/presentation/pages/device_page/widgets/diagnostic_device_footer.dart';
+import 'package:stiv/features/diagnostic/presentation/pages/device_page/widgets/diagnostic_device_header.dart';
 import 'package:stiv/features/diagnostic/presentation/providers/catalog_providers.dart';
 
 class SelectDevicePage extends ConsumerWidget {

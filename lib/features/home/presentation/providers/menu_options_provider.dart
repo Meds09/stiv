@@ -8,10 +8,8 @@ final menuOptionsProvider = Provider<List<MenuOption>>((ref) {
   return [
     MenuOption(
       title: 'Diagnóstico Rápido',
-      icon: Icons.import_contacts_rounded,
-      route: 'diag',
-      menuIndex: 1,
-   
+      icon: Icons.medical_services_outlined,
+      route: 'quick-diagnostic',
     ),
     MenuOption(
       title: 'Dispositivos',

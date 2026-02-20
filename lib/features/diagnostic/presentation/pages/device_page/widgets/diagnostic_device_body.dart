@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stiv/core/theme/theme_data.dart';
-import 'package:stiv/features/diagnostic/presentation/device_page/widgets/card_problem.dart';
+import 'package:stiv/features/diagnostic/presentation/pages/device_page/widgets/card_problem.dart';
 import 'package:stiv/features/diagnostic/presentation/providers/problem_providers.dart';
 
 class DiagnosticDeviceBody extends ConsumerWidget {
