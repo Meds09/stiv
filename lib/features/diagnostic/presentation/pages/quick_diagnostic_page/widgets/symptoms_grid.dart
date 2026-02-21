@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stiv/core/router/router.dart';
 import 'package:stiv/core/theme/theme_data.dart';
 import 'package:stiv/features/diagnostic/presentation/pages/quick_diagnostic_page/widgets/symptom.dart';
 import 'package:stiv/features/diagnostic/presentation/pages/quick_diagnostic_page/widgets/symptom_card.dart';
@@ -63,11 +64,14 @@ class SymptomsGrid extends StatelessWidget {
         return SymptomCard(
           symptom: s,
           onTap: () {
-            // TODO: navegar al flujo de decisión correspondiente
-            debugPrint('Symptom selected: ${s.id}');
+            router.pushNamed(
+              'diagnostic-flow',
+              pathParameters: {'symptomId': s.id},
+            );
           },
         );
       },
     );
   }
 }
+
