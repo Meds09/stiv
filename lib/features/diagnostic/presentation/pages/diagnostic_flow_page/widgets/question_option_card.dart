@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:stiv/core/theme/theme_data.dart';
 import 'package:stiv/features/diagnostic/models/diagnostic_question.dart';
 
-/// Tarjeta de opción premium con animaciones e indicador visual moderno.
+/// Tarjeta de opción premium — Material 3, dashboard técnico.
+///
+/// Animación de escala al presionar + HapticFeedback.
 class QuestionOptionCard extends StatefulWidget {
   const QuestionOptionCard({
     super.key,
@@ -23,74 +26,88 @@ class QuestionOptionCard extends StatefulWidget {
 
 class _QuestionOptionCardState extends State<QuestionOptionCard>
     with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _scaleAnimation;
+  late final AnimationController _pressController;
+  late final Animation<double> _scaleAnim;
+  late final Animation<double> _elevationAnim;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
+    _pressController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 120),
-      lowerBound: 0.0,
-      upperBound: 1.0,
     );
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.97).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
+    _scaleAnim = Tween<double>(
+      begin: 1.0,
+      end: 0.96,
+    ).animate(CurvedAnimation(parent: _pressController, curve: Curves.easeIn));
+
+    _elevationAnim = Tween<double>(
+      begin: 0,
+      end: 6,
+    ).animate(
+        CurvedAnimation(parent: _pressController, curve: Curves.easeOut));
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _pressController.dispose();
     super.dispose();
   }
 
-  bool get _isAiOption =>
-      widget.option.label.toLowerCase().contains('ia') ||
-      widget.option.label.toLowerCase().contains('otro');
+  bool get _isAiOption {
+    final label = widget.option.label.toLowerCase();
+    return label.contains('ia') ||
+        label.contains('asistencia') ||
+        label.contains('otro');
+  }
 
   @override
   Widget build(BuildContext context) {
-    final borderColor = widget.isSelected
+    // Colors
+    final Color selectedBg = AppColors.primary.withValues(alpha: 0.06);
+    final Color defaultBg = Colors.white;
+    final Color aiBg = const Color(0xFFFFF7ED);
+
+    final Color bg = widget.isSelected
+        ? selectedBg
+        : _isAiOption
+            ? aiBg
+            : defaultBg;
+
+    final Color borderColor = widget.isSelected
         ? AppColors.primary
         : _isAiOption
-            ? AppColors.warning.withValues(alpha: 0.3)
+            ? const Color(0xFFF59E0B).withValues(alpha: 0.4)
             : AppColors.border;
 
-    final bgColor = widget.isSelected
-        ? AppColors.primary.withValues(alpha: 0.05)
-        : _isAiOption
-            ? AppColors.warning.withValues(alpha: 0.03)
-            : Colors.white;
+    final double borderWidth = widget.isSelected ? 2.0 : 1.0;
 
     return AnimatedBuilder(
-      animation: _scaleAnimation,
+      animation: _pressController,
       builder: (context, child) => Transform.scale(
-        scale: _scaleAnimation.value,
+        scale: _scaleAnim.value,
         child: child,
       ),
       child: AnimatedContainer(
-        duration: AppDurations.fast,
+        duration: const Duration(milliseconds: 220),
         curve: Curves.easeOut,
         decoration: BoxDecoration(
-          color: bgColor,
-          borderRadius: AppRadii.brMd,
-          border: Border.all(
-            color: borderColor,
-            width: widget.isSelected ? 2.0 : 1.0,
-          ),
+          color: bg,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: borderColor, width: borderWidth),
           boxShadow: widget.isSelected
               ? [
                   BoxShadow(
-                    color: AppColors.primary.withValues(alpha: 0.12),
-                    blurRadius: 16,
-                    offset: const Offset(0, 4),
+                    color: AppColors.primary.withValues(alpha: 0.14),
+                    blurRadius: 20,
+                    spreadRadius: 0,
+                    offset: const Offset(0, 6),
                   ),
                 ]
               : [
                   const BoxShadow(
-                    color: Color(0x06000000),
+                    color: Color(0x08000000),
                     blurRadius: 8,
                     offset: Offset(0, 2),
                   ),
@@ -98,53 +115,60 @@ class _QuestionOptionCardState extends State<QuestionOptionCard>
         ),
         child: Material(
           color: Colors.transparent,
+          borderRadius: BorderRadius.circular(16),
           child: InkWell(
-            onTapDown: (_) => _controller.forward(),
+            onTapDown: (_) => _pressController.forward(),
             onTapUp: (_) {
-              _controller.reverse();
+              _pressController.reverse();
+              HapticFeedback.lightImpact();
               widget.onTap();
             },
-            onTapCancel: () => _controller.reverse(),
-            borderRadius: AppRadii.brMd,
-            splashColor: AppColors.primary.withValues(alpha: 0.06),
-            highlightColor: AppColors.primary.withValues(alpha: 0.03),
+            onTapCancel: () => _pressController.reverse(),
+            borderRadius: BorderRadius.circular(16),
+            splashColor: AppColors.primary.withValues(alpha: 0.05),
+            highlightColor: Colors.transparent,
             child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppSpacing.md,
-                vertical: 14,
-              ),
+              padding: const EdgeInsets.all(16),
               child: Row(
                 children: [
-                  // Icono con fondo gradiente
-                  _buildIcon(),
+                  // ── Icon container ───────────────────
+                  _OptionIcon(
+                    icon: widget.option.icon,
+                    isSelected: widget.isSelected,
+                    isAi: _isAiOption,
+                  ),
+
                   const SizedBox(width: 14),
 
-                  // Textos
+                  // ── Labels ──────────────────────────
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           widget.option.label,
-                          style: AppTextStyles.subtitle.copyWith(
-                            fontSize: 14,
-                            fontWeight: widget.isSelected
-                                ? FontWeight.w700
-                                : FontWeight.w600,
+                          style: TextStyle(
+                            fontFamily: 'Rubik',
+                            fontWeight: FontWeight.w600,
+                            fontSize: 15,
                             color: widget.isSelected
                                 ? AppColors.primary
                                 : AppColors.textPrimary,
+                            height: 1.25,
                           ),
                         ),
                         if (widget.option.description != null) ...[
                           const SizedBox(height: 3),
                           Text(
                             widget.option.description!,
-                            style: AppTextStyles.caption.copyWith(
+                            style: TextStyle(
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w400,
                               fontSize: 12,
                               color: _isAiOption
-                                  ? AppColors.warning
+                                  ? const Color(0xFFB45309)
                                   : AppColors.textSecondary,
+                              height: 1.35,
                             ),
                           ),
                         ],
@@ -152,9 +176,12 @@ class _QuestionOptionCardState extends State<QuestionOptionCard>
                     ),
                   ),
 
-                  // Chevron / selección
-                  const SizedBox(width: AppSpacing.sm),
-                  _buildTrailing(),
+                  const SizedBox(width: 12),
+
+                  // ── Trailing ────────────────────────
+                  _isAiOption
+                      ? _AiBadge(elevation: _elevationAnim.value)
+                      : _SelectionIndicator(isSelected: widget.isSelected),
                 ],
               ),
             ),
@@ -163,108 +190,136 @@ class _QuestionOptionCardState extends State<QuestionOptionCard>
       ),
     );
   }
+}
 
-  Widget _buildIcon() {
-    if (widget.option.icon == null) {
-      return const SizedBox.shrink();
-    }
+// ── Icon widget ───────────────────────────────────────────────────────────────
 
-    final Color iconBg;
-    final Color iconColor;
+class _OptionIcon extends StatelessWidget {
+  const _OptionIcon({
+    required this.icon,
+    required this.isSelected,
+    required this.isAi,
+  });
 
-    if (_isAiOption) {
-      iconBg = AppColors.warning.withValues(alpha: 0.12);
-      iconColor = AppColors.warning;
-    } else if (widget.isSelected) {
-      iconBg = AppColors.primary.withValues(alpha: 0.12);
-      iconColor = AppColors.primary;
-    } else {
-      iconBg = AppColors.primary.withValues(alpha: 0.06);
-      iconColor = AppColors.primary.withValues(alpha: 0.7);
-    }
+  final IconData? icon;
+  final bool isSelected;
+  final bool isAi;
+
+  @override
+  Widget build(BuildContext context) {
+    if (icon == null) return const SizedBox(width: 48, height: 48);
+
+    final Color bg = isSelected
+        ? AppColors.primary.withValues(alpha: 0.12)
+        : isAi
+            ? const Color(0xFFF59E0B).withValues(alpha: 0.10)
+            : AppColors.primary.withValues(alpha: 0.06);
+
+    final Color iconColor = isSelected
+        ? AppColors.primary
+        : isAi
+            ? const Color(0xFFD97706)
+            : AppColors.primary.withValues(alpha: 0.65);
 
     return AnimatedContainer(
       duration: AppDurations.fast,
-      width: 42,
-      height: 42,
+      width: 48,
+      height: 48,
       decoration: BoxDecoration(
-        color: iconBg,
-        borderRadius: BorderRadius.circular(12),
-        border: widget.isSelected
+        color: bg,
+        borderRadius: BorderRadius.circular(14),
+        border: isSelected
             ? Border.all(
-                color: AppColors.primary.withValues(alpha: 0.2),
-                width: 1,
+                color: AppColors.primary.withValues(alpha: 0.25),
+                width: 1.0,
               )
             : null,
       ),
-      child: Icon(
-        widget.option.icon,
-        color: iconColor,
-        size: 20,
-      ),
+      child: Icon(icon, color: iconColor, size: 24),
     );
   }
+}
 
-  Widget _buildTrailing() {
-    if (_isAiOption) {
-      return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              AppColors.warning.withValues(alpha: 0.15),
-              AppColors.warning.withValues(alpha: 0.08),
-            ],
-          ),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.auto_awesome_rounded,
-              size: 12,
-              color: AppColors.warning.withValues(alpha: 0.9),
-            ),
-            const SizedBox(width: 3),
-            Text(
-              'IA',
-              style: TextStyle(
-                fontFamily: 'Rubik',
-                fontWeight: FontWeight.w700,
-                fontSize: 10,
-                color: AppColors.warning.withValues(alpha: 0.9),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
+// ── Selection circle ──────────────────────────────────────────────────────────
 
+class _SelectionIndicator extends StatelessWidget {
+  const _SelectionIndicator({required this.isSelected});
+  final bool isSelected;
+
+  @override
+  Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: AppDurations.fast,
-      width: 28,
-      height: 28,
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.easeOut,
+      width: 24,
+      height: 24,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: widget.isSelected
-            ? AppColors.primary
-            : Colors.transparent,
+        color: isSelected ? AppColors.primary : Colors.transparent,
         border: Border.all(
-          color: widget.isSelected
-              ? AppColors.primary
-              : AppColors.outline,
-          width: widget.isSelected ? 0 : 1.5,
+          color: isSelected ? AppColors.primary : AppColors.outline,
+          width: isSelected ? 0 : 1.5,
         ),
+        boxShadow: isSelected
+            ? [
+                BoxShadow(
+                  color: AppColors.primary.withValues(alpha: 0.35),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ]
+            : null,
       ),
-      child: widget.isSelected
-          ? const Icon(
-              Icons.arrow_forward_rounded,
-              color: Colors.white,
-              size: 16,
-            )
+      child: isSelected
+          ? const Icon(Icons.check_rounded, color: Colors.white, size: 14)
           : null,
     );
   }
 }
 
+// ── AI sparkle badge ──────────────────────────────────────────────────────────
+
+class _AiBadge extends StatelessWidget {
+  const _AiBadge({required this.elevation});
+  final double elevation;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0xFFFEF3C7), Color(0xFFFDE68A)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: const Color(0xFFF59E0B).withValues(alpha: 0.35),
+          width: 1,
+        ),
+      ),
+      child: const Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.auto_awesome_rounded,
+            size: 12,
+            color: Color(0xFFB45309),
+          ),
+          SizedBox(width: 4),
+          Text(
+            'IA',
+            style: TextStyle(
+              fontFamily: 'Rubik',
+              fontWeight: FontWeight.w800,
+              fontSize: 11,
+              color: Color(0xFFB45309),
+              letterSpacing: 0.5,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
