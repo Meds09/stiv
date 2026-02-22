@@ -30,18 +30,6 @@ class QuickDiagnosticPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text('Síntomas comunes', style: AppTextStyles.h3),
-                  TextButton(
-                    onPressed: () {
-                      // TODO: navegar a lista completa
-                    },
-                    child: Text(
-                      'Ver todos',
-                      style: AppTextStyles.body.copyWith(
-                        color: AppColors.primary,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
                 ],
               ),
 

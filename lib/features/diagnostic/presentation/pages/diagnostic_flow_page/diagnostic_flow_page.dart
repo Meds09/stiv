@@ -107,6 +107,12 @@ class _DiagnosticFlowPageState extends ConsumerState<DiagnosticFlowPage>
                         description: symptomDesc,
                         icon: symptomIcon,
                         onClose: () => _showExitDialog(),
+                        gradient: widget.symptomId == 'other_issue' 
+                            ? AppColors.aiGradient 
+                            : null,
+                        highlightColor: widget.symptomId == 'other_issue'
+                            ? const Color(0xFF9B72CB)
+                            : AppColors.primary,
                       ),
 
                       const SizedBox(height: AppSpacing.md),
@@ -320,12 +326,16 @@ class _FlowHeader extends StatelessWidget {
     required this.description,
     required this.icon,
     required this.onClose,
+    this.gradient,
+    this.highlightColor = AppColors.primary,
   });
 
   final String label;
   final String description;
   final IconData icon;
   final VoidCallback onClose;
+  final Gradient? gradient;
+  final Color highlightColor;
 
   @override
   Widget build(BuildContext context) {
@@ -350,7 +360,13 @@ class _FlowHeader extends StatelessWidget {
                 ),
               ],
             ),
-            child: Icon(icon, color: AppColors.primary, size: 26),
+            child: gradient != null
+                ? ShaderMask(
+                    blendMode: BlendMode.srcIn,
+                    shaderCallback: (bounds) => gradient!.createShader(bounds),
+                    child: Icon(icon, color: Colors.white, size: 26),
+                  )
+                : Icon(icon, color: highlightColor, size: 26),
           ),
 
           const SizedBox(width: 14),
@@ -360,16 +376,31 @@ class _FlowHeader extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  label,
-                  style: const TextStyle(
-                    fontFamily: 'Rubik',
-                    fontWeight: FontWeight.w700,
-                    fontSize: 18,
-                    color: AppColors.textPrimary,
-                    height: 1.2,
-                  ),
-                ),
+                gradient != null
+                    ? ShaderMask(
+                        blendMode: BlendMode.srcIn,
+                        shaderCallback: (bounds) => gradient!.createShader(bounds),
+                        child: Text(
+                          label,
+                          style: const TextStyle(
+                            fontFamily: 'Rubik',
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18,
+                            color: Colors.white,
+                            height: 1.2,
+                          ),
+                        ),
+                      )
+                    : Text(
+                        label,
+                        style: const TextStyle(
+                          fontFamily: 'Rubik',
+                          fontWeight: FontWeight.w700,
+                          fontSize: 18,
+                          color: AppColors.textPrimary,
+                          height: 1.2,
+                        ),
+                      ),
                 const SizedBox(height: 3),
                 Text(
                   description,

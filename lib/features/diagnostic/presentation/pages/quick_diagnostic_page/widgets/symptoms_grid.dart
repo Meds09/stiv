@@ -56,13 +56,16 @@ class SymptomsGrid extends StatelessWidget {
         crossAxisCount: 2,
         crossAxisSpacing: AppSpacing.md,
         mainAxisSpacing: AppSpacing.md,
-        childAspectRatio: 1.05,
+        childAspectRatio: 1.35,
       ),
       itemCount: _symptoms.length,
       itemBuilder: (context, index) {
         final s = _symptoms[index];
+        final isOther = s.id == 'other_issue';
         return SymptomCard(
           symptom: s,
+          color: isOther ? const Color(0xFF9B72CB) : AppColors.primary,
+          gradient: isOther ? AppColors.aiGradient : null,
           onTap: () {
             router.pushNamed(
               'diagnostic-flow',

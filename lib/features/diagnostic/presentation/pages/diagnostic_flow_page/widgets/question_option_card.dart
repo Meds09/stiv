@@ -67,7 +67,7 @@ class _QuestionOptionCardState extends State<QuestionOptionCard>
     // Colors
     final Color selectedBg = AppColors.primary.withValues(alpha: 0.06);
     final Color defaultBg = Colors.white;
-    final Color aiBg = const Color(0xFFFFF7ED);
+    final Color aiBg = const Color(0xFFF8F4FF); // Light purple background
 
     final Color bg = widget.isSelected
         ? selectedBg
@@ -78,7 +78,7 @@ class _QuestionOptionCardState extends State<QuestionOptionCard>
     final Color borderColor = widget.isSelected
         ? AppColors.primary
         : _isAiOption
-            ? const Color(0xFFF59E0B).withValues(alpha: 0.4)
+            ? const Color(0xFF9B72CB).withValues(alpha: 0.3)
             : AppColors.border;
 
     final double borderWidth = widget.isSelected ? 2.0 : 1.0;
@@ -166,7 +166,7 @@ class _QuestionOptionCardState extends State<QuestionOptionCard>
                               fontWeight: FontWeight.w400,
                               fontSize: 12,
                               color: _isAiOption
-                                  ? const Color(0xFFB45309)
+                                  ? const Color(0xFF9B72CB)
                                   : AppColors.textSecondary,
                               height: 1.35,
                             ),
@@ -212,14 +212,12 @@ class _OptionIcon extends StatelessWidget {
     final Color bg = isSelected
         ? AppColors.primary.withValues(alpha: 0.12)
         : isAi
-            ? const Color(0xFFF59E0B).withValues(alpha: 0.10)
+            ? const Color(0xFF9B72CB).withValues(alpha: 0.10)
             : AppColors.primary.withValues(alpha: 0.06);
 
-    final Color iconColor = isSelected
+    final Color defaultIconColor = isSelected
         ? AppColors.primary
-        : isAi
-            ? const Color(0xFFD97706)
-            : AppColors.primary.withValues(alpha: 0.65);
+        : AppColors.primary.withValues(alpha: 0.65);
 
     return AnimatedContainer(
       duration: AppDurations.fast,
@@ -235,7 +233,13 @@ class _OptionIcon extends StatelessWidget {
               )
             : null,
       ),
-      child: Icon(icon, color: iconColor, size: 24),
+      child: isAi
+          ? ShaderMask(
+              blendMode: BlendMode.srcIn,
+              shaderCallback: (bounds) => AppColors.aiGradient.createShader(bounds),
+              child: Icon(icon, color: Colors.white, size: 24),
+            )
+          : Icon(icon, color: defaultIconColor, size: 24),
     );
   }
 }
@@ -288,16 +292,15 @@ class _AiBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFFFEF3C7), Color(0xFFFDE68A)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        gradient: AppColors.aiGradient,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: const Color(0xFFF59E0B).withValues(alpha: 0.35),
-          width: 1,
-        ),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF9B72CB).withValues(alpha: 0.3),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: const Row(
         mainAxisSize: MainAxisSize.min,
@@ -305,7 +308,7 @@ class _AiBadge extends StatelessWidget {
           Icon(
             Icons.auto_awesome_rounded,
             size: 12,
-            color: Color(0xFFB45309),
+            color: Colors.white,
           ),
           SizedBox(width: 4),
           Text(
@@ -314,7 +317,7 @@ class _AiBadge extends StatelessWidget {
               fontFamily: 'Rubik',
               fontWeight: FontWeight.w800,
               fontSize: 11,
-              color: Color(0xFFB45309),
+              color: Colors.white,
               letterSpacing: 0.5,
             ),
           ),
