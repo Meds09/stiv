@@ -24,6 +24,18 @@ class AppColors {
   static const Color warning = Color(0xFFF59E0B);
   static const Color danger = Color(0xFFEF4444);
   static const Color info = Color(0xFF3B82F6);
+
+  // Gradientes
+  static const LinearGradient aiGradient = LinearGradient(
+    colors: [
+      Color(0xFF4285F4), // Azul Google
+      Color(0xFF9B72CB), // Morado
+      Color(0xFFD96570), // Rosa/Rojo
+      Color(0xFFF4B400), // Amarillo
+    ],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
 }
 
 // ===== Espaciados, radios, sombras, duraciones =====

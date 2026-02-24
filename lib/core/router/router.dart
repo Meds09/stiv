@@ -11,7 +11,7 @@ import 'package:stiv/features/guides/presentation/guides_page.dart';
 import 'package:stiv/features/guides/presentation/guide_detail_page.dart';
 import 'package:stiv/features/guides/domain/models/guides.dart';
 import 'package:stiv/features/diagnostic/presentation/pages/quick_diagnostic_page/quick_diagnostic_page.dart';
-import 'package:stiv/features/diagnostic/presentation/pages/diagnostic_flow_page/diagnostic_flow_page.dart';
+import 'package:stiv/features/diagnostic/presentation/pages/quick_diagnostic_page/quick_diagnostic_flow_page/diagnostic_flow_page.dart';
 
 /// Estado del Onboarding (con SharedPreferences)
 class OnboardingState extends ChangeNotifier {

@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stiv/core/router/router.dart';
 import 'package:stiv/core/theme/theme_data.dart';
-import 'package:stiv/features/diagnostic/presentation/pages/diagnostic_flow_page/widgets/diagnostic_progress_bar.dart';
-import 'package:stiv/features/diagnostic/presentation/pages/diagnostic_flow_page/widgets/question_option_card.dart';
+import 'package:stiv/features/diagnostic/presentation/pages/quick_diagnostic_page/quick_diagnostic_flow_page/widgets/diagnostic_progress_bar.dart';
+import 'package:stiv/features/diagnostic/presentation/pages/quick_diagnostic_page/quick_diagnostic_flow_page/widgets/flow_header.dart';
+import 'package:stiv/features/diagnostic/presentation/pages/quick_diagnostic_page/quick_diagnostic_flow_page/widgets/flow_back_button.dart';
+import 'package:stiv/features/diagnostic/presentation/pages/quick_diagnostic_page/quick_diagnostic_flow_page/widgets/styled_dialog.dart';
+import 'package:stiv/features/diagnostic/presentation/pages/quick_diagnostic_page/quick_diagnostic_flow_page/widgets/question_content.dart';
 import 'package:stiv/features/diagnostic/presentation/providers/diagnostic_flow_provider.dart';
-import 'package:stiv/features/diagnostic/models/diagnostic_question.dart';
+import 'package:stiv/features/diagnostic/presentation/pages/diagnostic_result_page/diagnostic_result_page.dart';
 
 // ─── Metadata maps ─────────────────────────────────────────────────────────────
 
@@ -102,11 +105,17 @@ class _DiagnosticFlowPageState extends ConsumerState<DiagnosticFlowPage>
                   child: Column(
                     children: [
                       // ── Header ──────────────────────────────
-                      _FlowHeader(
+                      FlowHeader(
                         label: symptomLabel,
                         description: symptomDesc,
                         icon: symptomIcon,
                         onClose: () => _showExitDialog(),
+                        gradient: widget.symptomId == 'other_issue' 
+                            ? AppColors.aiGradient 
+                            : null,
+                        highlightColor: widget.symptomId == 'other_issue'
+                            ? const Color(0xFF9B72CB)
+                            : AppColors.primary,
                       ),
 
                       const SizedBox(height: AppSpacing.md),
@@ -119,6 +128,7 @@ class _DiagnosticFlowPageState extends ConsumerState<DiagnosticFlowPage>
                         child: DiagnosticProgressBar(
                           progress: state.progress,
                           currentStep: state.currentStep,
+                          totalSteps: state.totalSteps,
                         ),
                       ),
 
@@ -143,7 +153,7 @@ class _DiagnosticFlowPageState extends ConsumerState<DiagnosticFlowPage>
                               child: child,
                             ),
                           ),
-                          child: _QuestionContent(
+                          child: QuestionContent(
                             key: ValueKey(question.id),
                             question: question,
                             selectedOptionId: state.currentSelectedOptionId,
@@ -169,7 +179,7 @@ class _DiagnosticFlowPageState extends ConsumerState<DiagnosticFlowPage>
                                   AppSpacing.md,
                                   AppSpacing.md,
                                 ),
-                                child: _BackButton(
+                                child: FlowBackButton(
                                   onPressed: notifier.goBack,
                                 ),
                               ),
@@ -192,7 +202,7 @@ class _DiagnosticFlowPageState extends ConsumerState<DiagnosticFlowPage>
         filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
         child: Dialog(
           backgroundColor: Colors.transparent,
-          child: _StyledDialog(
+          child: StyledDialog(
             icon: Icons.exit_to_app_rounded,
             iconColor: AppColors.danger,
             title: '¿Salir del diagnóstico?',
@@ -244,6 +254,18 @@ class _DiagnosticFlowPageState extends ConsumerState<DiagnosticFlowPage>
   }
 
   void _showCompletionDialog() {
+    final state = ref.read(diagnosticFlowProvider(widget.symptomId));
+    final result = state.result;
+    if (result != null) {
+      // Navigate to the DSS result page.
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (_) => DiagnosticResultPage(result: result),
+        ),
+      );
+      return;
+    }
+    // Fallback if result not yet computed (edge case).
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -252,12 +274,12 @@ class _DiagnosticFlowPageState extends ConsumerState<DiagnosticFlowPage>
         filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
         child: Dialog(
           backgroundColor: Colors.transparent,
-          child: _StyledDialog(
+          child: StyledDialog(
             icon: Icons.check_circle_rounded,
             iconColor: const Color(0xFF22C55E),
             title: '¡Diagnóstico completado!',
             body:
-                'Hemos recopilado la información necesaria.\nEn la siguiente fase verás las recomendaciones personalizadas.',
+                'Hemos recopilado la información necesaria.',
             actions: SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -307,305 +329,6 @@ class _DiagnosticFlowPageState extends ConsumerState<DiagnosticFlowPage>
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-// ─── Header ───────────────────────────────────────────────────────────────────
-
-class _FlowHeader extends StatelessWidget {
-  const _FlowHeader({
-    required this.label,
-    required this.description,
-    required this.icon,
-    required this.onClose,
-  });
-
-  final String label;
-  final String description;
-  final IconData icon;
-  final VoidCallback onClose;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(
-          AppSpacing.md, AppSpacing.sm, AppSpacing.md, 0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          // Large icon
-          Container(
-            width: 52,
-            height: 52,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: const [
-                BoxShadow(
-                  color: Color(0x10000000),
-                  blurRadius: 12,
-                  offset: Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Icon(icon, color: AppColors.primary, size: 26),
-          ),
-
-          const SizedBox(width: 14),
-
-          // Title + description
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  label,
-                  style: const TextStyle(
-                    fontFamily: 'Rubik',
-                    fontWeight: FontWeight.w700,
-                    fontSize: 18,
-                    color: AppColors.textPrimary,
-                    height: 1.2,
-                  ),
-                ),
-                const SizedBox(height: 3),
-                Text(
-                  description,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontFamily: 'Inter',
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12,
-                    color: AppColors.textSecondary,
-                    height: 1.3,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          const SizedBox(width: 8),
-
-          // Close
-          GestureDetector(
-            onTap: onClose,
-            child: Container(
-              width: 36,
-              height: 36,
-              decoration: BoxDecoration(
-                color: AppColors.textSecondary.withValues(alpha: 0.08),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: const Icon(
-                Icons.close_rounded,
-                color: AppColors.textSecondary,
-                size: 18,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// ─── Back button ──────────────────────────────────────────────────────────────
-
-class _BackButton extends StatelessWidget {
-  const _BackButton({required this.onPressed});
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.6),
-          borderRadius: AppRadii.brMd,
-          border: Border.all(color: AppColors.border, width: 1),
-        ),
-        child: const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.arrow_back_ios_rounded,
-              size: 13,
-              color: AppColors.textSecondary,
-            ),
-            SizedBox(width: 6),
-            Text(
-              'Pregunta anterior',
-              style: TextStyle(
-                fontFamily: 'Inter',
-                fontWeight: FontWeight.w500,
-                fontSize: 13,
-                color: AppColors.textSecondary,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// ─── Styled Dialog ────────────────────────────────────────────────────────────
-
-class _StyledDialog extends StatelessWidget {
-  const _StyledDialog({
-    required this.icon,
-    required this.iconColor,
-    required this.title,
-    required this.body,
-    required this.actions,
-  });
-
-  final IconData icon;
-  final Color iconColor;
-  final String title;
-  final String body;
-  final Widget actions;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(AppSpacing.lg),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x1A000000),
-            blurRadius: 40,
-            offset: Offset(0, 16),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 64,
-            height: 64,
-            decoration: BoxDecoration(
-              color: iconColor.withValues(alpha: 0.10),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(icon, color: iconColor, size: 32),
-          ),
-          const SizedBox(height: AppSpacing.md),
-          Text(title,
-              style: AppTextStyles.h3,
-              textAlign: TextAlign.center),
-          const SizedBox(height: AppSpacing.sm),
-          Text(
-            body,
-            style: AppTextStyles.body.copyWith(
-              color: AppColors.textSecondary,
-              height: 1.5,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          actions,
-        ],
-      ),
-    );
-  }
-}
-
-// ─── Question content ─────────────────────────────────────────────────────────
-
-class _QuestionContent extends StatelessWidget {
-  const _QuestionContent({
-    super.key,
-    required this.question,
-    required this.selectedOptionId,
-    required this.onOptionSelected,
-  });
-
-  final DiagnosticQuestion question;
-  final String? selectedOptionId;
-  final void Function(String) onOptionSelected;
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(
-        parent: AlwaysScrollableScrollPhysics(),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Question label
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-            decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.08),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: const Text(
-              'Selecciona la opción que corresponda',
-              style: TextStyle(
-                fontFamily: 'Inter',
-                fontWeight: FontWeight.w600,
-                fontSize: 11,
-                color: AppColors.primary,
-                letterSpacing: 0.3,
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 12),
-
-          // Question text
-          Text(
-            question.text,
-            style: const TextStyle(
-              fontFamily: 'Rubik',
-              fontWeight: FontWeight.w700,
-              fontSize: 22,
-              color: AppColors.textPrimary,
-              height: 1.3,
-            ),
-          ),
-
-          if (question.subtitle != null) ...[
-            const SizedBox(height: 6),
-            Text(
-              question.subtitle!,
-              style: AppTextStyles.body.copyWith(
-                color: AppColors.textSecondary,
-                height: 1.45,
-              ),
-            ),
-          ],
-
-          const SizedBox(height: AppSpacing.lg),
-
-          // Options list
-          ...List.generate(question.options.length, (i) {
-            final option = question.options[i];
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: QuestionOptionCard(
-                option: option,
-                isSelected: option.id == selectedOptionId,
-                index: i,
-                onTap: () => onOptionSelected(option.id),
-              ),
-            );
-          }),
-
-          const SizedBox(height: AppSpacing.xl),
-        ],
       ),
     );
   }
