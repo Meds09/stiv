@@ -9,6 +9,7 @@ import 'package:stiv/features/diagnostic/presentation/pages/quick_diagnostic_pag
 import 'package:stiv/features/diagnostic/presentation/pages/quick_diagnostic_page/quick_diagnostic_flow_page/widgets/styled_dialog.dart';
 import 'package:stiv/features/diagnostic/presentation/pages/quick_diagnostic_page/quick_diagnostic_flow_page/widgets/question_content.dart';
 import 'package:stiv/features/diagnostic/presentation/providers/diagnostic_flow_provider.dart';
+import 'package:stiv/features/diagnostic/presentation/pages/diagnostic_result_page/diagnostic_result_page.dart';
 
 // ─── Metadata maps ─────────────────────────────────────────────────────────────
 
@@ -127,6 +128,7 @@ class _DiagnosticFlowPageState extends ConsumerState<DiagnosticFlowPage>
                         child: DiagnosticProgressBar(
                           progress: state.progress,
                           currentStep: state.currentStep,
+                          totalSteps: state.totalSteps,
                         ),
                       ),
 
@@ -252,6 +254,18 @@ class _DiagnosticFlowPageState extends ConsumerState<DiagnosticFlowPage>
   }
 
   void _showCompletionDialog() {
+    final state = ref.read(diagnosticFlowProvider(widget.symptomId));
+    final result = state.result;
+    if (result != null) {
+      // Navigate to the DSS result page.
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (_) => DiagnosticResultPage(result: result),
+        ),
+      );
+      return;
+    }
+    // Fallback if result not yet computed (edge case).
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -265,7 +279,7 @@ class _DiagnosticFlowPageState extends ConsumerState<DiagnosticFlowPage>
             iconColor: const Color(0xFF22C55E),
             title: '¡Diagnóstico completado!',
             body:
-                'Hemos recopilado la información necesaria.\nEn la siguiente fase verás las recomendaciones personalizadas.',
+                'Hemos recopilado la información necesaria.',
             actions: SizedBox(
               width: double.infinity,
               child: ElevatedButton(

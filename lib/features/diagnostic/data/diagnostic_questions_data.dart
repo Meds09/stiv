@@ -30,9 +30,32 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       text: '¿El LED indicador de la cámara se enciende?',
       subtitle: 'Revisa los LEDs frontales o traseros del equipo',
       options: [
-        QuestionOption(id: 'pow_2c_yes', label: 'Sí, el LED se enciende', nextQuestionId: 'pow_3_cctv_led_on'),
-        QuestionOption(id: 'pow_2c_no', label: 'No, ningún LED', nextQuestionId: 'pow_3_cctv_led_off'),
-        QuestionOption(id: 'pow_2c_blink', label: 'Parpadea intermitentemente', nextQuestionId: 'pow_3_cctv_blink'),
+        QuestionOption(
+          id: 'pow_2c_yes',
+          label: 'Sí, el LED se enciende',
+          nextQuestionId: 'pow_3_cctv_led_on',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.3),
+          ],
+        ),
+        QuestionOption(
+          id: 'pow_2c_no',
+          label: 'No, ningún LED',
+          nextQuestionId: 'pow_3_cctv_led_off',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'poe_failure', weight: 0.4),
+            EvidenceWeight(hypothesisId: 'power_adapter_failure', weight: 0.4),
+          ],
+        ),
+        QuestionOption(
+          id: 'pow_2c_blink',
+          label: 'Parpadea intermitentemente',
+          nextQuestionId: 'pow_3_cctv_blink',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'poe_failure', weight: 0.5),
+            EvidenceWeight(hypothesisId: 'cable_failure', weight: 0.3),
+          ],
+        ),
         QuestionOption(id: 'pow_2c_other', label: 'No estoy seguro', description: 'Solicitar asistencia IA', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -41,8 +64,24 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       id: 'pow_3_cctv_led_on',
       text: '¿El equipo transmite imagen al monitor/NVR?',
       options: [
-        QuestionOption(id: 'pow_3co_yes', label: 'Sí, pero se congela', nextQuestionId: 'pow_4_cctv_freeze'),
-        QuestionOption(id: 'pow_3co_no', label: 'No hay imagen', nextQuestionId: 'pow_4_cctv_no_img'),
+        QuestionOption(
+          id: 'pow_3co_yes',
+          label: 'Sí, pero se congela',
+          nextQuestionId: 'pow_4_cctv_freeze',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'poe_failure', weight: 0.4),
+            EvidenceWeight(hypothesisId: 'cable_failure', weight: 0.3),
+          ],
+        ),
+        QuestionOption(
+          id: 'pow_3co_no',
+          label: 'No hay imagen',
+          nextQuestionId: 'pow_4_cctv_no_img',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.5),
+            EvidenceWeight(hypothesisId: 'cable_failure', weight: 0.3),
+          ],
+        ),
         QuestionOption(id: 'pow_3co_other', label: 'Otro comportamiento', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -51,8 +90,22 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       id: 'pow_3_cctv_led_off',
       text: '¿Cómo se alimenta el equipo?',
       options: [
-        QuestionOption(id: 'pow_3cf_poe', label: 'PoE (cable de red)', nextQuestionId: 'pow_4_cctv_poe'),
-        QuestionOption(id: 'pow_3cf_adapter', label: 'Adaptador DC 12V/24V', nextQuestionId: 'pow_4_cctv_adapter'),
+        QuestionOption(
+          id: 'pow_3cf_poe',
+          label: 'PoE (cable de red)',
+          nextQuestionId: 'pow_4_cctv_poe',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'poe_failure', weight: 0.6),
+          ],
+        ),
+        QuestionOption(
+          id: 'pow_3cf_adapter',
+          label: 'Adaptador DC 12V/24V',
+          nextQuestionId: 'pow_4_cctv_adapter',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'power_adapter_failure', weight: 0.6),
+          ],
+        ),
         QuestionOption(id: 'pow_3cf_other', label: 'No lo sé', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -61,8 +114,24 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       id: 'pow_3_cctv_blink',
       text: '¿Cada cuánto se reinicia?',
       options: [
-        QuestionOption(id: 'pow_3cb_freq', label: 'Cada pocos segundos', nextQuestionId: 'pow_4_cctv_poe'),
-        QuestionOption(id: 'pow_3cb_random', label: 'De forma aleatoria', nextQuestionId: 'pow_4_cctv_adapter'),
+        QuestionOption(
+          id: 'pow_3cb_freq',
+          label: 'Cada pocos segundos',
+          nextQuestionId: 'pow_4_cctv_poe',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'poe_failure', weight: 0.7),
+            EvidenceWeight(hypothesisId: 'cable_failure', weight: 0.3),
+          ],
+        ),
+        QuestionOption(
+          id: 'pow_3cb_random',
+          label: 'De forma aleatoria',
+          nextQuestionId: 'pow_4_cctv_adapter',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'power_adapter_failure', weight: 0.5),
+            EvidenceWeight(hypothesisId: 'cable_failure', weight: 0.2),
+          ],
+        ),
         QuestionOption(id: 'pow_3cb_other', label: 'Otro patrón', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -72,8 +141,23 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       text: '¿El puerto PoE del switch muestra actividad?',
       subtitle: 'Revisa los LEDs del puerto donde está conectada la cámara',
       options: [
-        QuestionOption(id: 'pow_4cp_yes', label: 'Sí, LED activo', nextQuestionId: 'pow_5_cctv_cable'),
-        QuestionOption(id: 'pow_4cp_no', label: 'No, LED apagado', nextQuestionId: 'pow_5_cctv_switch'),
+        QuestionOption(
+          id: 'pow_4cp_yes',
+          label: 'Sí, LED activo',
+          nextQuestionId: 'pow_5_cctv_cable',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'poe_failure', weight: -0.2),
+            EvidenceWeight(hypothesisId: 'cable_failure', weight: 0.4),
+          ],
+        ),
+        QuestionOption(
+          id: 'pow_4cp_no',
+          label: 'No, LED apagado',
+          nextQuestionId: 'pow_5_cctv_switch',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'poe_failure', weight: 0.7),
+          ],
+        ),
         QuestionOption(id: 'pow_4cp_other', label: 'No puedo verificar', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -82,8 +166,22 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       id: 'pow_4_cctv_adapter',
       text: '¿El adaptador tiene LED o indicador de encendido?',
       options: [
-        QuestionOption(id: 'pow_4ca_yes', label: 'Sí, el adaptador enciende', nextQuestionId: 'pow_5_cctv_cable'),
-        QuestionOption(id: 'pow_4ca_no', label: 'No, el adaptador está muerto'),
+        QuestionOption(
+          id: 'pow_4ca_yes',
+          label: 'Sí, el adaptador enciende',
+          nextQuestionId: 'pow_5_cctv_cable',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'power_adapter_failure', weight: -0.2),
+            EvidenceWeight(hypothesisId: 'cable_failure', weight: 0.4),
+          ],
+        ),
+        QuestionOption(
+          id: 'pow_4ca_no',
+          label: 'No, el adaptador está muerto',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'power_adapter_failure', weight: 0.9),
+          ],
+        ),
         QuestionOption(id: 'pow_4ca_other', label: 'No estoy seguro', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -92,8 +190,22 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       id: 'pow_4_cctv_freeze',
       text: '¿El equipo se reinicia solo o se queda congelado?',
       options: [
-        QuestionOption(id: 'pow_4cfr_restart', label: 'Se reinicia periódicamente'),
-        QuestionOption(id: 'pow_4cfr_frozen', label: 'Se queda congelado'),
+        QuestionOption(
+          id: 'pow_4cfr_restart',
+          label: 'Se reinicia periódicamente',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'poe_failure', weight: 0.6),
+            EvidenceWeight(hypothesisId: 'overload', weight: 0.3),
+          ],
+        ),
+        QuestionOption(
+          id: 'pow_4cfr_frozen',
+          label: 'Se queda congelado',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.6),
+            EvidenceWeight(hypothesisId: 'cable_failure', weight: 0.2),
+          ],
+        ),
         QuestionOption(id: 'pow_4cfr_other', label: 'Otro comportamiento', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -102,8 +214,21 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       id: 'pow_4_cctv_no_img',
       text: '¿Probaste con otro cable de video o puerto?',
       options: [
-        QuestionOption(id: 'pow_4ci_yes', label: 'Sí, mismo resultado'),
-        QuestionOption(id: 'pow_4ci_no', label: 'No lo he probado'),
+        QuestionOption(
+          id: 'pow_4ci_yes',
+          label: 'Sí, mismo resultado',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.7),
+            EvidenceWeight(hypothesisId: 'cable_failure', weight: -0.2),
+          ],
+        ),
+        QuestionOption(
+          id: 'pow_4ci_no',
+          label: 'No lo he probado',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'cable_failure', weight: 0.3),
+          ],
+        ),
         QuestionOption(id: 'pow_4ci_other', label: 'No aplica', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -112,8 +237,23 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       id: 'pow_5_cctv_cable',
       text: '¿Probaste con otro cable de red / alimentación?',
       options: [
-        QuestionOption(id: 'pow_5cc_yes', label: 'Sí, con otro cable funciona'),
-        QuestionOption(id: 'pow_5cc_no', label: 'Sí, mismo resultado con otro cable'),
+        QuestionOption(
+          id: 'pow_5cc_yes',
+          label: 'Sí, con otro cable funciona',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'cable_failure', weight: 0.9),
+            EvidenceWeight(hypothesisId: 'poe_failure', weight: -0.2),
+          ],
+        ),
+        QuestionOption(
+          id: 'pow_5cc_no',
+          label: 'Sí, mismo resultado con otro cable',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'cable_failure', weight: -0.3),
+            EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.5),
+            EvidenceWeight(hypothesisId: 'poe_failure', weight: 0.4),
+          ],
+        ),
         QuestionOption(id: 'pow_5cc_skip', label: 'No tengo otro cable disponible'),
         QuestionOption(id: 'pow_5cc_other', label: 'Necesito ayuda', icon: Icons.help_outline_rounded),
       ],
@@ -123,8 +263,22 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       id: 'pow_5_cctv_switch',
       text: '¿El switch/inyector PoE está encendido correctamente?',
       options: [
-        QuestionOption(id: 'pow_5cs_yes', label: 'Sí, otros equipos funcionan'),
-        QuestionOption(id: 'pow_5cs_no', label: 'No, el switch también falló'),
+        QuestionOption(
+          id: 'pow_5cs_yes',
+          label: 'Sí, otros equipos funcionan',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'poe_failure', weight: 0.5),
+            EvidenceWeight(hypothesisId: 'cable_failure', weight: 0.3),
+          ],
+        ),
+        QuestionOption(
+          id: 'pow_5cs_no',
+          label: 'No, el switch también falló',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'poe_failure', weight: 0.8),
+            EvidenceWeight(hypothesisId: 'overload', weight: 0.3),
+          ],
+        ),
         QuestionOption(id: 'pow_5cs_other', label: 'No puedo verificar', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -134,9 +288,32 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       id: 'pow_2_net',
       text: '¿Los LEDs del switch/router están encendidos?',
       options: [
-        QuestionOption(id: 'pow_2n_all', label: 'Todos los LEDs encendidos', nextQuestionId: 'pow_3_net_on'),
-        QuestionOption(id: 'pow_2n_some', label: 'Solo algunos LEDs', nextQuestionId: 'pow_3_net_partial'),
-        QuestionOption(id: 'pow_2n_none', label: 'Ningún LED encendido', nextQuestionId: 'pow_3_net_off'),
+        QuestionOption(
+          id: 'pow_2n_all',
+          label: 'Todos los LEDs encendidos',
+          nextQuestionId: 'pow_3_net_on',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.2),
+          ],
+        ),
+        QuestionOption(
+          id: 'pow_2n_some',
+          label: 'Solo algunos LEDs',
+          nextQuestionId: 'pow_3_net_partial',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'overload', weight: 0.4),
+            EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.3),
+          ],
+        ),
+        QuestionOption(
+          id: 'pow_2n_none',
+          label: 'Ningún LED encendido',
+          nextQuestionId: 'pow_3_net_off',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'power_adapter_failure', weight: 0.5),
+            EvidenceWeight(hypothesisId: 'overload', weight: 0.3),
+          ],
+        ),
         QuestionOption(id: 'pow_2n_other', label: 'No estoy seguro', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -144,8 +321,24 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       id: 'pow_3_net_on',
       text: '¿Los puertos transmiten datos correctamente?',
       options: [
-        QuestionOption(id: 'pow_3no_yes', label: 'Sí, pero lento', nextQuestionId: 'pow_4_net_slow'),
-        QuestionOption(id: 'pow_3no_no', label: 'No, sin conectividad', nextQuestionId: 'pow_4_net_noconn'),
+        QuestionOption(
+          id: 'pow_3no_yes',
+          label: 'Sí, pero lento',
+          nextQuestionId: 'pow_4_net_slow',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'overload', weight: 0.5),
+            EvidenceWeight(hypothesisId: 'cable_failure', weight: 0.2),
+          ],
+        ),
+        QuestionOption(
+          id: 'pow_3no_no',
+          label: 'No, sin conectividad',
+          nextQuestionId: 'pow_4_net_noconn',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.5),
+            EvidenceWeight(hypothesisId: 'overload', weight: 0.3),
+          ],
+        ),
         QuestionOption(id: 'pow_3no_other', label: 'Otro', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -153,8 +346,21 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       id: 'pow_3_net_partial',
       text: '¿El equipo hace algún sonido o el ventilador gira?',
       options: [
-        QuestionOption(id: 'pow_3np_fan', label: 'Sí, el ventilador gira'),
-        QuestionOption(id: 'pow_3np_no', label: 'No hay ruido'),
+        QuestionOption(
+          id: 'pow_3np_fan',
+          label: 'Sí, el ventilador gira',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'overload', weight: 0.6),
+            EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.2),
+          ],
+        ),
+        QuestionOption(
+          id: 'pow_3np_no',
+          label: 'No hay ruido',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'power_adapter_failure', weight: 0.6),
+          ],
+        ),
         QuestionOption(id: 'pow_3np_other', label: 'No puedo verificar', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -162,8 +368,20 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       id: 'pow_3_net_off',
       text: '¿Verificaste el cable de alimentación y la toma eléctrica?',
       options: [
-        QuestionOption(id: 'pow_3nf_yes', label: 'Sí, el tomacorriente funciona'),
-        QuestionOption(id: 'pow_3nf_no', label: 'No lo he verificado'),
+        QuestionOption(
+          id: 'pow_3nf_yes',
+          label: 'Sí, el tomacorriente funciona',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'power_adapter_failure', weight: 0.7),
+          ],
+        ),
+        QuestionOption(
+          id: 'pow_3nf_no',
+          label: 'No lo he verificado',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'overload', weight: 0.3),
+          ],
+        ),
         QuestionOption(id: 'pow_3nf_other', label: 'Necesito ayuda', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -171,8 +389,22 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       id: 'pow_4_net_slow',
       text: '¿El problema es en todos los puertos o solo en algunos?',
       options: [
-        QuestionOption(id: 'pow_4ns_all', label: 'Todos los puertos'),
-        QuestionOption(id: 'pow_4ns_some', label: 'Solo algunos puertos'),
+        QuestionOption(
+          id: 'pow_4ns_all',
+          label: 'Todos los puertos',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'overload', weight: 0.6),
+            EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.3),
+          ],
+        ),
+        QuestionOption(
+          id: 'pow_4ns_some',
+          label: 'Solo algunos puertos',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'cable_failure', weight: 0.5),
+            EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.3),
+          ],
+        ),
         QuestionOption(id: 'pow_4ns_other', label: 'No lo sé', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -180,8 +412,20 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       id: 'pow_4_net_noconn',
       text: '¿Reiniciaste el equipo recientemente?',
       options: [
-        QuestionOption(id: 'pow_4nn_yes', label: 'Sí, sin mejoría'),
-        QuestionOption(id: 'pow_4nn_no', label: 'No lo he reiniciado'),
+        QuestionOption(
+          id: 'pow_4nn_yes',
+          label: 'Sí, sin mejoría',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.6),
+          ],
+        ),
+        QuestionOption(
+          id: 'pow_4nn_no',
+          label: 'No lo he reiniciado',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.2),
+          ],
+        ),
         QuestionOption(id: 'pow_4nn_other', label: 'Otro', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -191,8 +435,23 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       id: 'pow_2_ups',
       text: '¿El UPS emite algún sonido o alarma?',
       options: [
-        QuestionOption(id: 'pow_2u_beep', label: 'Sí, emite pitidos', nextQuestionId: 'pow_3_ups_beep'),
-        QuestionOption(id: 'pow_2u_silent', label: 'No, totalmente silencioso', nextQuestionId: 'pow_3_ups_silent'),
+        QuestionOption(
+          id: 'pow_2u_beep',
+          label: 'Sí, emite pitidos',
+          nextQuestionId: 'pow_3_ups_beep',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'ups_battery_failure', weight: 0.4),
+            EvidenceWeight(hypothesisId: 'overload', weight: 0.3),
+          ],
+        ),
+        QuestionOption(
+          id: 'pow_2u_silent',
+          label: 'No, totalmente silencioso',
+          nextQuestionId: 'pow_3_ups_silent',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'power_adapter_failure', weight: 0.4),
+          ],
+        ),
         QuestionOption(id: 'pow_2u_other', label: 'Otro sonido', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -200,8 +459,22 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       id: 'pow_3_ups_beep',
       text: '¿Cuántos pitidos y con qué frecuencia?',
       options: [
-        QuestionOption(id: 'pow_3ub_cont', label: 'Pitido continuo', nextQuestionId: 'pow_4_ups_overload'),
-        QuestionOption(id: 'pow_3ub_inter', label: 'Pitidos intermitentes', nextQuestionId: 'pow_4_ups_battery'),
+        QuestionOption(
+          id: 'pow_3ub_cont',
+          label: 'Pitido continuo',
+          nextQuestionId: 'pow_4_ups_overload',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'overload', weight: 0.8),
+          ],
+        ),
+        QuestionOption(
+          id: 'pow_3ub_inter',
+          label: 'Pitidos intermitentes',
+          nextQuestionId: 'pow_4_ups_battery',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'ups_battery_failure', weight: 0.8),
+          ],
+        ),
         QuestionOption(id: 'pow_3ub_other', label: 'No sé identificar', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -209,8 +482,21 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       id: 'pow_3_ups_silent',
       text: '¿Hay energía eléctrica en la toma de corriente?',
       options: [
-        QuestionOption(id: 'pow_3us_yes', label: 'Sí, hay corriente'),
-        QuestionOption(id: 'pow_3us_no', label: 'No hay corriente'),
+        QuestionOption(
+          id: 'pow_3us_yes',
+          label: 'Sí, hay corriente',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'ups_battery_failure', weight: 0.6),
+            EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.3),
+          ],
+        ),
+        QuestionOption(
+          id: 'pow_3us_no',
+          label: 'No hay corriente',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'power_adapter_failure', weight: 0.9),
+          ],
+        ),
         QuestionOption(id: 'pow_3us_other', label: 'No puedo medir', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -218,8 +504,21 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       id: 'pow_4_ups_overload',
       text: '¿Cuántos equipos están conectados al UPS?',
       options: [
-        QuestionOption(id: 'pow_4uo_many', label: 'Más de los recomendados'),
-        QuestionOption(id: 'pow_4uo_few', label: 'Dentro de la capacidad'),
+        QuestionOption(
+          id: 'pow_4uo_many',
+          label: 'Más de los recomendados',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'overload', weight: 0.9),
+          ],
+        ),
+        QuestionOption(
+          id: 'pow_4uo_few',
+          label: 'Dentro de la capacidad',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'overload', weight: -0.3),
+            EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.5),
+          ],
+        ),
         QuestionOption(id: 'pow_4uo_other', label: 'No lo sé', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -227,9 +526,28 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       id: 'pow_4_ups_battery',
       text: '¿Hace cuánto se reemplazó la batería?',
       options: [
-        QuestionOption(id: 'pow_4ub_new', label: 'Menos de 1 año'),
-        QuestionOption(id: 'pow_4ub_old', label: 'Más de 2 años'),
-        QuestionOption(id: 'pow_4ub_never', label: 'Nunca se ha cambiado'),
+        QuestionOption(
+          id: 'pow_4ub_new',
+          label: 'Menos de 1 año',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'ups_battery_failure', weight: -0.2),
+            EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.4),
+          ],
+        ),
+        QuestionOption(
+          id: 'pow_4ub_old',
+          label: 'Más de 2 años',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'ups_battery_failure', weight: 0.8),
+          ],
+        ),
+        QuestionOption(
+          id: 'pow_4ub_never',
+          label: 'Nunca se ha cambiado',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'ups_battery_failure', weight: 1.0),
+          ],
+        ),
         QuestionOption(id: 'pow_4ub_other', label: 'No lo sé', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -239,8 +557,23 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       id: 'pow_2_acc',
       text: '¿El panel de control de acceso muestra algo en pantalla?',
       options: [
-        QuestionOption(id: 'pow_2a_yes', label: 'Sí, pantalla encendida', nextQuestionId: 'pow_3_acc_on'),
-        QuestionOption(id: 'pow_2a_no', label: 'No, pantalla apagada', nextQuestionId: 'pow_3_acc_off'),
+        QuestionOption(
+          id: 'pow_2a_yes',
+          label: 'Sí, pantalla encendida',
+          nextQuestionId: 'pow_3_acc_on',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.2),
+          ],
+        ),
+        QuestionOption(
+          id: 'pow_2a_no',
+          label: 'No, pantalla apagada',
+          nextQuestionId: 'pow_3_acc_off',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'poe_failure', weight: 0.3),
+            EvidenceWeight(hypothesisId: 'power_adapter_failure', weight: 0.3),
+          ],
+        ),
         QuestionOption(id: 'pow_2a_other', label: 'No tiene pantalla / No sé', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -248,8 +581,23 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       id: 'pow_3_acc_on',
       text: '¿La cerradura o torniquete responde a comandos?',
       options: [
-        QuestionOption(id: 'pow_3ao_yes', label: 'Sí, pero con retardo', nextQuestionId: 'pow_4_acc_delay'),
-        QuestionOption(id: 'pow_3ao_no', label: 'No responde'),
+        QuestionOption(
+          id: 'pow_3ao_yes',
+          label: 'Sí, pero con retardo',
+          nextQuestionId: 'pow_4_acc_delay',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'cable_failure', weight: 0.4),
+            EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.3),
+          ],
+        ),
+        QuestionOption(
+          id: 'pow_3ao_no',
+          label: 'No responde',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.6),
+            EvidenceWeight(hypothesisId: 'cable_failure', weight: 0.3),
+          ],
+        ),
         QuestionOption(id: 'pow_3ao_other', label: 'Otro comportamiento', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -257,8 +605,20 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       id: 'pow_3_acc_off',
       text: '¿Cómo se alimenta el panel?',
       options: [
-        QuestionOption(id: 'pow_3af_dc', label: '12V DC directo'),
-        QuestionOption(id: 'pow_3af_poe', label: 'PoE'),
+        QuestionOption(
+          id: 'pow_3af_dc',
+          label: '12V DC directo',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'power_adapter_failure', weight: 0.6),
+          ],
+        ),
+        QuestionOption(
+          id: 'pow_3af_poe',
+          label: 'PoE',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'poe_failure', weight: 0.6),
+          ],
+        ),
         QuestionOption(id: 'pow_3af_other', label: 'No lo sé', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -266,8 +626,21 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       id: 'pow_4_acc_delay',
       text: '¿El retardo ocurre siempre o es intermitente?',
       options: [
-        QuestionOption(id: 'pow_4ad_always', label: 'Siempre tarda'),
-        QuestionOption(id: 'pow_4ad_inter', label: 'A veces funciona rápido'),
+        QuestionOption(
+          id: 'pow_4ad_always',
+          label: 'Siempre tarda',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'cable_failure', weight: 0.5),
+            EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.4),
+          ],
+        ),
+        QuestionOption(
+          id: 'pow_4ad_inter',
+          label: 'A veces funciona rápido',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'cable_failure', weight: 0.6),
+          ],
+        ),
         QuestionOption(id: 'pow_4ad_other', label: 'No lo puedo determinar', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -581,100 +954,434 @@ const _displayIssueQuestions = <DiagnosticQuestion>[
 // Audio issue questions
 // ─────────────────────────────────────────────────────
 const _audioIssueQuestions = <DiagnosticQuestion>[
+  // ── Paso 1: origen del ruido ──
   DiagnosticQuestion(
     id: 'aud_1',
     text: '¿De dónde proviene el ruido?',
+    subtitle: 'Identifica el equipo que hace el ruido',
     options: [
-      QuestionOption(id: 'aud_1_nvr', label: 'DVR / NVR', icon: Icons.dns_rounded, nextQuestionId: 'aud_2_nvr'),
-      QuestionOption(id: 'aud_1_ups', label: 'UPS', icon: Icons.battery_charging_full_rounded, nextQuestionId: 'aud_2_ups'),
-      QuestionOption(id: 'aud_1_switch', label: 'Switch / Router', icon: Icons.router_rounded, nextQuestionId: 'aud_2_switch'),
-      QuestionOption(id: 'aud_1_other', label: 'Otro equipo', icon: Icons.help_outline_rounded),
+      QuestionOption(
+        id: 'aud_1_nvr',
+        label: 'DVR / NVR',
+        icon: Icons.dns_rounded,
+        nextQuestionId: 'aud_2_nvr',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'hdd_failure', weight: 0.2),
+          EvidenceWeight(hypothesisId: 'fan_failure', weight: 0.2),
+        ],
+      ),
+      QuestionOption(
+        id: 'aud_1_ups',
+        label: 'UPS',
+        icon: Icons.battery_charging_full_rounded,
+        nextQuestionId: 'aud_2_ups',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'ups_battery_failure', weight: 0.3),
+          EvidenceWeight(hypothesisId: 'ups_overload', weight: 0.1),
+        ],
+      ),
+      QuestionOption(
+        id: 'aud_1_switch',
+        label: 'Switch / Router',
+        icon: Icons.router_rounded,
+        nextQuestionId: 'aud_2_switch',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'fan_failure', weight: 0.3),
+          EvidenceWeight(hypothesisId: 'equipment_overheating', weight: 0.2),
+        ],
+      ),
+      QuestionOption(
+        id: 'aud_1_other',
+        label: 'Otro equipo',
+        icon: Icons.help_outline_rounded,
+      ),
     ],
   ),
+
+  // ── Paso 2 NVR ──
   DiagnosticQuestion(
     id: 'aud_2_nvr',
-    text: '¿Qué tipo de ruido hace el NVR?',
+    text: '¿Qué tipo de ruido hace el DVR/NVR?',
+    subtitle: 'Escucha con atención y selecciona el más parecido',
     options: [
-      QuestionOption(id: 'aud_2n_click', label: 'Click repetitivo (disco duro)', nextQuestionId: 'aud_3_hdd'),
-      QuestionOption(id: 'aud_2n_fan', label: 'Zumbido fuerte (ventilador)', nextQuestionId: 'aud_3_fan'),
-      QuestionOption(id: 'aud_2n_beep', label: 'Pitido constante', nextQuestionId: 'aud_3_beep'),
-      QuestionOption(id: 'aud_2n_other', label: 'Otro ruido', icon: Icons.help_outline_rounded),
+      QuestionOption(
+        id: 'aud_2n_click',
+        label: 'Click repetitivo (tipo reloj o arañazo)',
+        nextQuestionId: 'aud_3_hdd',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'hdd_failure', weight: 0.7),
+          EvidenceWeight(hypothesisId: 'fan_failure', weight: -0.2),
+        ],
+      ),
+      QuestionOption(
+        id: 'aud_2n_fan',
+        label: 'Zumbido fuerte continuo',
+        nextQuestionId: 'aud_3_fan_nvr',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'fan_failure', weight: 0.6),
+          EvidenceWeight(hypothesisId: 'equipment_overheating', weight: 0.3),
+        ],
+      ),
+      QuestionOption(
+        id: 'aud_2n_beep',
+        label: 'Pitido constante o en intervalos',
+        nextQuestionId: 'aud_3_beep',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'hdd_failure', weight: 0.4),
+          EvidenceWeight(hypothesisId: 'equipment_overheating', weight: 0.2),
+        ],
+      ),
+      QuestionOption(
+        id: 'aud_2n_other',
+        label: 'Otro sonido',
+        icon: Icons.help_outline_rounded,
+      ),
     ],
   ),
-  DiagnosticQuestion(
-    id: 'aud_2_ups',
-    text: '¿El UPS emite pitidos o zumbido?',
-    options: [
-      QuestionOption(id: 'aud_2u_beep', label: 'Pitidos intermitentes', nextQuestionId: 'aud_3_ups_beep'),
-      QuestionOption(id: 'aud_2u_buzz', label: 'Zumbido eléctrico'),
-      QuestionOption(id: 'aud_2u_other', label: 'Otro sonido', icon: Icons.help_outline_rounded),
-    ],
-  ),
-  DiagnosticQuestion(
-    id: 'aud_2_switch',
-    text: '¿El ruido proviene del ventilador del switch?',
-    options: [
-      QuestionOption(id: 'aud_2s_yes', label: 'Sí, ventilador ruidoso', nextQuestionId: 'aud_3_fan'),
-      QuestionOption(id: 'aud_2s_no', label: 'No, es otro componente'),
-      QuestionOption(id: 'aud_2s_other', label: 'No puedo identificar', icon: Icons.help_outline_rounded),
-    ],
-  ),
+
+  // ── Paso 3 NVR: disco duro (click) ──
   DiagnosticQuestion(
     id: 'aud_3_hdd',
-    text: '¿El disco duro sigue grabando correctamente?',
+    text: '¿El DVR/NVR sigue grabando correctamente?',
     options: [
-      QuestionOption(id: 'aud_3h_yes', label: 'Sí, pero hace ruido', nextQuestionId: 'aud_4_hdd_age'),
-      QuestionOption(id: 'aud_3h_no', label: 'No, dejó de grabar', nextQuestionId: 'aud_4_hdd_fail'),
-      QuestionOption(id: 'aud_3h_other', label: 'No lo sé', icon: Icons.help_outline_rounded),
+      QuestionOption(
+        id: 'aud_3h_yes',
+        label: 'Sí, graba pero hace ruido',
+        nextQuestionId: 'aud_4_hdd_age',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'hdd_failure', weight: 0.4),
+        ],
+      ),
+      QuestionOption(
+        id: 'aud_3h_no',
+        label: 'No, dejó de grabar o aparece error',
+        nextQuestionId: 'aud_4_hdd_fail',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'hdd_failure', weight: 0.8),
+        ],
+      ),
+      QuestionOption(
+        id: 'aud_3h_other',
+        label: 'No lo sé / no tengo acceso',
+        icon: Icons.help_outline_rounded,
+        evidence: [
+          EvidenceWeight(hypothesisId: 'hdd_failure', weight: 0.2),
+        ],
+      ),
     ],
   ),
-  DiagnosticQuestion(
-    id: 'aud_3_fan',
-    text: '¿El equipo se sobrecalienta?',
-    options: [
-      QuestionOption(id: 'aud_3f_yes', label: 'Sí, está muy caliente'),
-      QuestionOption(id: 'aud_3f_no', label: 'No, temperatura normal'),
-      QuestionOption(id: 'aud_3f_other', label: 'No puedo verificar', icon: Icons.help_outline_rounded),
-    ],
-  ),
-  DiagnosticQuestion(
-    id: 'aud_3_beep',
-    text: '¿El NVR muestra algún mensaje de error en pantalla?',
-    options: [
-      QuestionOption(id: 'aud_3b_hdd', label: 'Error de disco duro', nextQuestionId: 'aud_4_hdd_fail'),
-      QuestionOption(id: 'aud_3b_net', label: 'Error de red'),
-      QuestionOption(id: 'aud_3b_none', label: 'No muestra error'),
-      QuestionOption(id: 'aud_3b_other', label: 'No puedo ver la pantalla', icon: Icons.help_outline_rounded),
-    ],
-  ),
-  DiagnosticQuestion(
-    id: 'aud_3_ups_beep',
-    text: '¿El UPS indica nivel de batería bajo?',
-    options: [
-      QuestionOption(id: 'aud_3ub_yes', label: 'Sí, LED de batería parpadeando'),
-      QuestionOption(id: 'aud_3ub_no', label: 'No, indicadores normales'),
-      QuestionOption(id: 'aud_3ub_other', label: 'No puedo ver los indicadores', icon: Icons.help_outline_rounded),
-    ],
-  ),
+
+  // ── Paso 4 NVR: antigüedad del disco ──
   DiagnosticQuestion(
     id: 'aud_4_hdd_age',
-    text: '¿Qué antigüedad tiene el disco duro?',
+    text: '¿Qué antigüedad tiene el disco duro del DVR/NVR?',
     options: [
-      QuestionOption(id: 'aud_4ha_new', label: 'Menos de 1 año'),
-      QuestionOption(id: 'aud_4ha_old', label: 'Más de 2 años'),
-      QuestionOption(id: 'aud_4ha_other', label: 'No lo sé', icon: Icons.help_outline_rounded),
+      QuestionOption(
+        id: 'aud_4ha_new',
+        label: 'Menos de 1 año',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'hdd_failure', weight: 0.3),
+        ],
+      ),
+      QuestionOption(
+        id: 'aud_4ha_old',
+        label: 'Más de 2 años sin mantenimiento',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'hdd_failure', weight: 0.7),
+        ],
+      ),
+      QuestionOption(
+        id: 'aud_4ha_other',
+        label: 'No lo sé',
+        icon: Icons.help_outline_rounded,
+        evidence: [
+          EvidenceWeight(hypothesisId: 'hdd_failure', weight: 0.2),
+        ],
+      ),
     ],
   ),
+
+  // ── Paso 4 NVR: disco con error ──
   DiagnosticQuestion(
     id: 'aud_4_hdd_fail',
-    text: '¿Tienes un disco de repuesto para probar?',
+    text: '¿El DVR/NVR muestra algún mensaje de error en pantalla?',
     options: [
-      QuestionOption(id: 'aud_4hf_yes', label: 'Sí, puedo reemplazarlo'),
-      QuestionOption(id: 'aud_4hf_no', label: 'No tengo repuesto'),
-      QuestionOption(id: 'aud_4hf_other', label: 'Necesito ayuda', icon: Icons.help_outline_rounded),
+      QuestionOption(
+        id: 'aud_4hf_hdd_err',
+        label: 'Sí — error de disco duro',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'hdd_failure', weight: 0.9),
+        ],
+      ),
+      QuestionOption(
+        id: 'aud_4hf_no_err',
+        label: 'No muestra ningún error',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'hdd_failure', weight: 0.5),
+        ],
+      ),
+      QuestionOption(
+        id: 'aud_4hf_other',
+        label: 'No puedo ver la pantalla',
+        icon: Icons.help_outline_rounded,
+        evidence: [
+          EvidenceWeight(hypothesisId: 'hdd_failure', weight: 0.3),
+        ],
+      ),
+    ],
+  ),
+
+  // ── Paso 3 NVR: ventilador ──
+  DiagnosticQuestion(
+    id: 'aud_3_fan_nvr',
+    text: '¿El DVR/NVR está caliente al tacto?',
+    options: [
+      QuestionOption(
+        id: 'aud_3fn_yes',
+        label: 'Sí, muy caliente',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'equipment_overheating', weight: 0.7),
+          EvidenceWeight(hypothesisId: 'fan_failure', weight: 0.5),
+        ],
+      ),
+      QuestionOption(
+        id: 'aud_3fn_no',
+        label: 'No, temperatura normal',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'fan_failure', weight: 0.5),
+          EvidenceWeight(hypothesisId: 'equipment_overheating', weight: -0.2),
+        ],
+      ),
+      QuestionOption(
+        id: 'aud_3fn_other',
+        label: 'No puedo verificar',
+        icon: Icons.help_outline_rounded,
+        evidence: [
+          EvidenceWeight(hypothesisId: 'fan_failure', weight: 0.2),
+        ],
+      ),
+    ],
+  ),
+
+  // ── Paso 3 NVR: pitido ──
+  DiagnosticQuestion(
+    id: 'aud_3_beep',
+    text: '¿El DVR/NVR muestra algún mensaje de error en pantalla?',
+    options: [
+      QuestionOption(
+        id: 'aud_3b_hdd',
+        label: 'Error de disco duro',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'hdd_failure', weight: 0.8),
+        ],
+      ),
+      QuestionOption(
+        id: 'aud_3b_temp',
+        label: 'Alerta de temperatura',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'equipment_overheating', weight: 0.7),
+          EvidenceWeight(hypothesisId: 'fan_failure', weight: 0.5),
+        ],
+      ),
+      QuestionOption(
+        id: 'aud_3b_net',
+        label: 'Error de red o cámara desconectada',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'hdd_failure', weight: 0.1),
+          EvidenceWeight(hypothesisId: 'equipment_overheating', weight: 0.1),
+        ],
+      ),
+      QuestionOption(
+        id: 'aud_3b_none',
+        label: 'No muestra ningún error',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'hdd_failure', weight: 0.3),
+        ],
+      ),
+      QuestionOption(
+        id: 'aud_3b_other',
+        label: 'No puedo ver la pantalla',
+        icon: Icons.help_outline_rounded,
+      ),
+    ],
+  ),
+
+  // ── Paso 2 UPS ──
+  DiagnosticQuestion(
+    id: 'aud_2_ups',
+    text: '¿Qué tipo de sonido emite el UPS?',
+    subtitle: 'Escucha con atención',
+    options: [
+      QuestionOption(
+        id: 'aud_2u_beep_inter',
+        label: 'Pitidos intermitentes cortos',
+        nextQuestionId: 'aud_3_ups_beep',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'ups_battery_failure', weight: 0.5),
+          EvidenceWeight(hypothesisId: 'ups_overload', weight: 0.3),
+        ],
+      ),
+      QuestionOption(
+        id: 'aud_2u_beep_cont',
+        label: 'Pitido continuo sin parar',
+        nextQuestionId: 'aud_3_ups_beep',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'ups_overload', weight: 0.6),
+          EvidenceWeight(hypothesisId: 'ups_battery_failure', weight: 0.4),
+        ],
+      ),
+      QuestionOption(
+        id: 'aud_2u_buzz',
+        label: 'Zumbido eléctrico constante',
+        nextQuestionId: 'aud_3_ups_buzz',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'ups_battery_failure', weight: 0.3),
+          EvidenceWeight(hypothesisId: 'equipment_overheating', weight: 0.4),
+        ],
+      ),
+      QuestionOption(
+        id: 'aud_2u_other',
+        label: 'Otro sonido',
+        icon: Icons.help_outline_rounded,
+      ),
+    ],
+  ),
+
+  // ── Paso 3 UPS: pitidos ──
+  DiagnosticQuestion(
+    id: 'aud_3_ups_beep',
+    text: '¿El LED o pantalla del UPS indica batería baja?',
+    options: [
+      QuestionOption(
+        id: 'aud_3ub_yes',
+        label: 'Sí, LED de batería parpadea en rojo',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'ups_battery_failure', weight: 0.9),
+          EvidenceWeight(hypothesisId: 'ups_overload', weight: -0.2),
+        ],
+      ),
+      QuestionOption(
+        id: 'aud_3ub_overload',
+        label: 'Indica sobrecarga (overload)',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'ups_overload', weight: 0.9),
+          EvidenceWeight(hypothesisId: 'ups_battery_failure', weight: -0.1),
+        ],
+      ),
+      QuestionOption(
+        id: 'aud_3ub_no',
+        label: 'No, los indicadores parecen normales',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'ups_battery_failure', weight: 0.3),
+        ],
+      ),
+      QuestionOption(
+        id: 'aud_3ub_other',
+        label: 'No puedo ver los indicadores',
+        icon: Icons.help_outline_rounded,
+        evidence: [
+          EvidenceWeight(hypothesisId: 'ups_battery_failure', weight: 0.2),
+        ],
+      ),
+    ],
+  ),
+
+  // ── Paso 3 UPS: zumbido eléctrico ──
+  DiagnosticQuestion(
+    id: 'aud_3_ups_buzz',
+    text: '¿El UPS transfiere correctamente a batería cuando hay corte?',
+    options: [
+      QuestionOption(
+        id: 'aud_3uz_yes',
+        label: 'Sí, funciona en batería',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'equipment_overheating', weight: 0.5),
+          EvidenceWeight(hypothesisId: 'ups_battery_failure', weight: 0.2),
+        ],
+      ),
+      QuestionOption(
+        id: 'aud_3uz_no',
+        label: 'No, los equipos se apagan igualmente',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'ups_battery_failure', weight: 0.7),
+          EvidenceWeight(hypothesisId: 'ups_overload', weight: 0.4),
+        ],
+      ),
+      QuestionOption(
+        id: 'aud_3uz_other',
+        label: 'No lo sé / no ha habido corte',
+        icon: Icons.help_outline_rounded,
+        evidence: [
+          EvidenceWeight(hypothesisId: 'ups_battery_failure', weight: 0.2),
+        ],
+      ),
+    ],
+  ),
+
+  // ── Paso 2 Switch / Router ──
+  DiagnosticQuestion(
+    id: 'aud_2_switch',
+    text: '¿El ruido proviene claramente del ventilador del switch?',
+    options: [
+      QuestionOption(
+        id: 'aud_2s_yes',
+        label: 'Sí, ventilador muy ruidoso',
+        nextQuestionId: 'aud_3_fan_switch',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'fan_failure', weight: 0.7),
+          EvidenceWeight(hypothesisId: 'equipment_overheating', weight: 0.3),
+        ],
+      ),
+      QuestionOption(
+        id: 'aud_2s_no',
+        label: 'No, es otro componente interno',
+        nextQuestionId: 'aud_3_fan_switch',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'equipment_overheating', weight: 0.4),
+          EvidenceWeight(hypothesisId: 'fan_failure', weight: 0.2),
+        ],
+      ),
+      QuestionOption(
+        id: 'aud_2s_other',
+        label: 'No puedo identificar',
+        icon: Icons.help_outline_rounded,
+      ),
+    ],
+  ),
+
+  // ── Paso 3 Switch: ventilador ──
+  DiagnosticQuestion(
+    id: 'aud_3_fan_switch',
+    text: '¿El switch está caliente o en un espacio mal ventilado?',
+    options: [
+      QuestionOption(
+        id: 'aud_3fs_hot',
+        label: 'Sí, muy caliente o sin ventilación',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'equipment_overheating', weight: 0.8),
+          EvidenceWeight(hypothesisId: 'fan_failure', weight: 0.5),
+        ],
+      ),
+      QuestionOption(
+        id: 'aud_3fs_ok',
+        label: 'No, temperatura aceptable',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'fan_failure', weight: 0.6),
+          EvidenceWeight(hypothesisId: 'equipment_overheating', weight: -0.2),
+        ],
+      ),
+      QuestionOption(
+        id: 'aud_3fs_other',
+        label: 'No puedo verificar',
+        icon: Icons.help_outline_rounded,
+        evidence: [
+          EvidenceWeight(hypothesisId: 'fan_failure', weight: 0.2),
+        ],
+      ),
     ],
   ),
 ];
+
 
 // ─────────────────────────────────────────────────────
 // Camera issue questions
