@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:stiv/core/theme/theme_data.dart';
 import 'package:stiv/features/diagnostic/models/diagnostic_question.dart';
+import 'package:stiv/features/diagnostic/presentation/pages/quick_diagnostic_page/quick_diagnostic_flow_page/widgets/option_icon.dart';
+import 'package:stiv/features/diagnostic/presentation/pages/quick_diagnostic_page/quick_diagnostic_flow_page/widgets/selection_indicator.dart';
+import 'package:stiv/features/diagnostic/presentation/pages/quick_diagnostic_page/quick_diagnostic_flow_page/widgets/ai_badge.dart';
 
 /// Tarjeta de opción premium — Material 3, dashboard técnico.
 ///
@@ -28,7 +31,6 @@ class _QuestionOptionCardState extends State<QuestionOptionCard>
     with SingleTickerProviderStateMixin {
   late final AnimationController _pressController;
   late final Animation<double> _scaleAnim;
-  late final Animation<double> _elevationAnim;
 
   @override
   void initState() {
@@ -41,12 +43,6 @@ class _QuestionOptionCardState extends State<QuestionOptionCard>
       begin: 1.0,
       end: 0.96,
     ).animate(CurvedAnimation(parent: _pressController, curve: Curves.easeIn));
-
-    _elevationAnim = Tween<double>(
-      begin: 0,
-      end: 6,
-    ).animate(
-        CurvedAnimation(parent: _pressController, curve: Curves.easeOut));
   }
 
   @override
@@ -57,9 +53,7 @@ class _QuestionOptionCardState extends State<QuestionOptionCard>
 
   bool get _isAiOption {
     final label = widget.option.label.toLowerCase();
-    return label.contains('ia') ||
-        label.contains('asistencia') ||
-        label.contains('otro');
+    return label.contains('asistencia') || label.contains('otro');
   }
 
   @override
@@ -132,10 +126,11 @@ class _QuestionOptionCardState extends State<QuestionOptionCard>
               child: Row(
                 children: [
                   // ── Icon container ───────────────────
-                  _OptionIcon(
+                  OptionIcon(
                     icon: widget.option.icon,
                     isSelected: widget.isSelected,
                     isAi: _isAiOption,
+                    index: widget.index,
                   ),
 
                   const SizedBox(width: 14),
@@ -180,8 +175,8 @@ class _QuestionOptionCardState extends State<QuestionOptionCard>
 
                   // ── Trailing ────────────────────────
                   _isAiOption
-                      ? _AiBadge(elevation: _elevationAnim.value)
-                      : _SelectionIndicator(isSelected: widget.isSelected),
+                      ? const AiBadge()
+                      : SelectionIndicator(isSelected: widget.isSelected),
                 ],
               ),
             ),
@@ -192,137 +187,4 @@ class _QuestionOptionCardState extends State<QuestionOptionCard>
   }
 }
 
-// ── Icon widget ───────────────────────────────────────────────────────────────
 
-class _OptionIcon extends StatelessWidget {
-  const _OptionIcon({
-    required this.icon,
-    required this.isSelected,
-    required this.isAi,
-  });
-
-  final IconData? icon;
-  final bool isSelected;
-  final bool isAi;
-
-  @override
-  Widget build(BuildContext context) {
-    if (icon == null) return const SizedBox(width: 48, height: 48);
-
-    final Color bg = isSelected
-        ? AppColors.primary.withValues(alpha: 0.12)
-        : isAi
-            ? const Color(0xFF9B72CB).withValues(alpha: 0.10)
-            : AppColors.primary.withValues(alpha: 0.06);
-
-    final Color defaultIconColor = isSelected
-        ? AppColors.primary
-        : AppColors.primary.withValues(alpha: 0.65);
-
-    return AnimatedContainer(
-      duration: AppDurations.fast,
-      width: 48,
-      height: 48,
-      decoration: BoxDecoration(
-        color: bg,
-        borderRadius: BorderRadius.circular(14),
-        border: isSelected
-            ? Border.all(
-                color: AppColors.primary.withValues(alpha: 0.25),
-                width: 1.0,
-              )
-            : null,
-      ),
-      child: isAi
-          ? ShaderMask(
-              blendMode: BlendMode.srcIn,
-              shaderCallback: (bounds) => AppColors.aiGradient.createShader(bounds),
-              child: Icon(icon, color: Colors.white, size: 24),
-            )
-          : Icon(icon, color: defaultIconColor, size: 24),
-    );
-  }
-}
-
-// ── Selection circle ──────────────────────────────────────────────────────────
-
-class _SelectionIndicator extends StatelessWidget {
-  const _SelectionIndicator({required this.isSelected});
-  final bool isSelected;
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 200),
-      curve: Curves.easeOut,
-      width: 24,
-      height: 24,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: isSelected ? AppColors.primary : Colors.transparent,
-        border: Border.all(
-          color: isSelected ? AppColors.primary : AppColors.outline,
-          width: isSelected ? 0 : 1.5,
-        ),
-        boxShadow: isSelected
-            ? [
-                BoxShadow(
-                  color: AppColors.primary.withValues(alpha: 0.35),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ]
-            : null,
-      ),
-      child: isSelected
-          ? const Icon(Icons.check_rounded, color: Colors.white, size: 14)
-          : null,
-    );
-  }
-}
-
-// ── AI sparkle badge ──────────────────────────────────────────────────────────
-
-class _AiBadge extends StatelessWidget {
-  const _AiBadge({required this.elevation});
-  final double elevation;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      decoration: BoxDecoration(
-        gradient: AppColors.aiGradient,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xFF9B72CB).withValues(alpha: 0.3),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: const Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.auto_awesome_rounded,
-            size: 12,
-            color: Colors.white,
-          ),
-          SizedBox(width: 4),
-          Text(
-            'IA',
-            style: TextStyle(
-              fontFamily: 'Rubik',
-              fontWeight: FontWeight.w800,
-              fontSize: 11,
-              color: Colors.white,
-              letterSpacing: 0.5,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}

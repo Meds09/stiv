@@ -755,7 +755,7 @@ const _cameraIssueQuestions = <DiagnosticQuestion>[
   ),
   DiagnosticQuestion(
     id: 'cam_3_ptz_config',
-    text: '¿El protocolo PTZ está configurado correctamente (Pelco-D/P)?',
+    text: '¿El protocolo PTZ está configurado correctamente (Ejemplo: Pelco-D/P, Axis VAPIX)?',
     options: [
       QuestionOption(id: 'cam_3pc_yes', label: 'Sí, protocolo correcto'),
       QuestionOption(id: 'cam_3pc_no', label: 'No estoy seguro'),
