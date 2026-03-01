@@ -237,8 +237,7 @@ class _DiagnosticFlowPageState extends ConsumerState<DiagnosticFlowPage>
                           borderRadius: AppRadii.brMd),
                     ),
                     onPressed: () {
-                      Navigator.of(ctx).pop();
-                      router.pop();
+                      router.go("/home");
                     },
                     child: const Text('Salir',
                         style: TextStyle(
