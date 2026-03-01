@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stiv/features/diagnostic/data/diagnostic_questions_data.dart';
+import 'package:stiv/features/diagnostic/data/device_diagnostic_data.dart';
 import 'package:stiv/features/diagnostic/data/hypotheses_data.dart';
 import 'package:stiv/features/diagnostic/domain/evidence_accumulator.dart';
 import 'package:stiv/features/diagnostic/domain/inference_engine.dart';
@@ -8,11 +8,28 @@ import 'package:stiv/features/diagnostic/models/diagnostic_result.dart';
 import 'package:stiv/features/diagnostic/models/hypothesis.dart';
 
 /// Número máximo de preguntas que el flujo puede hacer antes de concluir.
-const int _maxQuestions = 7;
+/// La Q de dispositivo y la Q de síntoma no cuentan contra este límite,
+/// ya que son preguntas de navegación, no de diagnóstico.
+const int _maxDiagnosticQuestions = 7;
+
+/// Prefix de IDs de preguntas de navegación (no cuentan para el límite).
+const _navQuestionPrefixes = ['dev_'];
+
+/// Conjunto combinado de todas las hipótesis del sistema (para el flujo unificado).
+final _allHypotheses = [
+  ...hypothesesBySymptom['power_issue'] ?? [],
+  ...hypothesesBySymptom['connectivity_issue'] ?? [],
+  ...hypothesesBySymptom['display_issue'] ?? [],
+  ...hypothesesBySymptom['audio_issue'] ?? [],
+  ...hypothesesBySymptom['camera_issue'] ?? [],
+  ...hypothesesBySymptom['other_issue'] ?? [],
+].fold<List<Hypothesis>>([], (acc, h) {
+  if (!acc.any((existing) => existing.id == h.id)) acc.add(h);
+  return acc;
+});
 
 /// Estado inmutable del flujo de diagnóstico DSS.
 class DiagnosticFlowState {
-  final String symptomId;
   final List<DiagnosticQuestion> questions;
   final List<Hypothesis> hypotheses;
   final List<String> questionHistory; // pila de IDs visitados
@@ -24,12 +41,11 @@ class DiagnosticFlowState {
   /// Historial de confianza de las últimas N respuestas (para anti-oscilación).
   final List<double> confidenceHistory;
   /// Conjunto de IDs de preguntas permitidas en el sub-árbol activo.
-  /// Se captura al elegir el dispositivo inicial para aislar el contexto
-  /// del motor dinámico y evitar que mezcle preguntas de otras ramas (NVR vs UPS).
   final Set<String>? allowedQuestionIds;
+  /// Contador de preguntas de diagnóstico respondidas (excluye preguntas nav).
+  final int diagnosticAnswerCount;
 
   const DiagnosticFlowState({
-    required this.symptomId,
     required this.questions,
     required this.hypotheses,
     this.questionHistory = const [],
@@ -40,18 +56,22 @@ class DiagnosticFlowState {
     this.result,
     this.confidenceHistory = const [],
     this.allowedQuestionIds,
+    this.diagnosticAnswerCount = 0,
   });
 
-  /// Número máximo de preguntas en el flujo.
-  int get totalSteps => _maxQuestions;
+  /// Número máximo de preguntas de diagnóstico.
+  int get totalSteps => _maxDiagnosticQuestions;
 
-  /// Número de preguntas ya respondidas (0-based → 0 al inicio).
+  /// Paso actual visible en la UI (1-based).
+  int get currentStep => (diagnosticAnswerCount + 1).clamp(1, totalSteps);
+
+  /// Número total de respuestas (incluyendo navegación).
   int get answeredCount => selectedAnswers.length;
 
-  /// Paso actual visible en la UI (1-based, clamped a totalSteps).
-  int get currentStep => (answeredCount + 1).clamp(1, totalSteps);
+  /// Verdadero si está en la primera pregunta.
+  bool get isFirstQuestion => answeredCount == 0;
 
-  /// Pregunta actual (o null si ya terminó el flujo).
+  /// Pregunta actual.
   DiagnosticQuestion? get currentQuestion {
     if (currentQuestionId == null) return null;
     try {
@@ -61,16 +81,20 @@ class DiagnosticFlowState {
     }
   }
 
+  /// Verdadero si la pregunta actual es de navegación (no cuenta para el límite).
+  bool get isCurrentNavQuestion {
+    final id = currentQuestionId ?? '';
+    return _navQuestionPrefixes.any((prefix) => id.startsWith(prefix));
+  }
+
   /// Opción actualmente seleccionada para la pregunta actual.
   String? get currentSelectedOptionId =>
       currentQuestionId != null ? selectedAnswers[currentQuestionId] : null;
 
-  /// Progreso estimado (0.0 – 1.0) basado en pasos respondidos vs. máximo.
+  /// Progreso estimado (0.0 – 1.0).
   double get progress =>
-      (answeredCount / totalSteps).clamp(0.0, 1.0);
+      (diagnosticAnswerCount / totalSteps).clamp(0.0, 1.0);
 
-  /// Verdadero si la opción actualmente seleccionada es un nodo hoja
-  /// (según el esquema clásico nextQuestionId == null).
   bool get isCurrentSelectionLeaf {
     final q = currentQuestion;
     final optId = currentSelectedOptionId;
@@ -83,11 +107,7 @@ class DiagnosticFlowState {
     }
   }
 
-  /// Verdadero si está en la primera pregunta (ninguna respondida aún).
-  bool get isFirstQuestion => answeredCount == 0;
-
   DiagnosticFlowState copyWith({
-    String? symptomId,
     List<DiagnosticQuestion>? questions,
     List<Hypothesis>? hypotheses,
     List<String>? questionHistory,
@@ -99,9 +119,9 @@ class DiagnosticFlowState {
     List<double>? confidenceHistory,
     Set<String>? allowedQuestionIds,
     bool clearAllowedIds = false,
+    int? diagnosticAnswerCount,
   }) {
     return DiagnosticFlowState(
-      symptomId: symptomId ?? this.symptomId,
       questions: questions ?? this.questions,
       hypotheses: hypotheses ?? this.hypotheses,
       questionHistory: questionHistory ?? this.questionHistory,
@@ -111,40 +131,39 @@ class DiagnosticFlowState {
       accumulator: accumulator ?? this.accumulator,
       result: result ?? this.result,
       confidenceHistory: confidenceHistory ?? this.confidenceHistory,
-      allowedQuestionIds: clearAllowedIds ? null : (allowedQuestionIds ?? this.allowedQuestionIds),
+      allowedQuestionIds: clearAllowedIds
+          ? null
+          : (allowedQuestionIds ?? this.allowedQuestionIds),
+      diagnosticAnswerCount:
+          diagnosticAnswerCount ?? this.diagnosticAnswerCount,
     );
   }
 }
 
-/// Notifier que gestiona la lógica del flujo de diagnóstico DSS.
+/// Notifier que gestiona la lógica del flujo de diagnóstico unificado.
 class DiagnosticFlowNotifier extends StateNotifier<DiagnosticFlowState> {
-  DiagnosticFlowNotifier(String symptomId)
-      : super(_initialState(symptomId));
+  DiagnosticFlowNotifier(String _) : super(_initialState());
 
   static const _engine = InferenceEngine(confidenceThreshold: 0.75);
 
-  static DiagnosticFlowState _initialState(String symptomId) {
-    final questions = diagnosticQuestionTrees[symptomId] ?? [];
-    final hypotheses = hypothesesBySymptom[symptomId] ?? [];
-    final firstId = questions.isNotEmpty ? questions.first.id : null;
+  static DiagnosticFlowState _initialState() {
+    final questions = deviceDiagnosticQuestions;
+    const firstId = 'dev_0';
     return DiagnosticFlowState(
-      symptomId: symptomId,
       questions: questions,
-      hypotheses: hypotheses,
-      questionHistory: firstId != null ? [firstId] : [],
+      hypotheses: _allHypotheses,
+      questionHistory: [firstId],
       currentQuestionId: firstId,
       accumulator: EvidenceAccumulator(),
     );
   }
 
   /// Selecciona una opción y avanza automáticamente.
-  ///
   /// Retorna `true` si el flujo se completó.
   bool selectAndAdvance(String optionId) {
     final qId = state.currentQuestionId;
     if (qId == null) return false;
 
-    // 1. Encontrar la opción seleccionada
     final currentQ = state.currentQuestion;
     if (currentQ == null) return false;
 
@@ -155,33 +174,43 @@ class DiagnosticFlowNotifier extends StateNotifier<DiagnosticFlowState> {
       return false;
     }
 
-    // 2. Registrar la respuesta
+    // 1. Registrar la respuesta
     final newAnswers = {...state.selectedAnswers, qId: optionId};
 
-    // 3. Acumular evidencia
+    // 2. Acumular evidencia (solo si no es pregunta de navegación)
     final newAccumulator = EvidenceAccumulator.from(state.accumulator);
     if (selectedOption.evidence.isNotEmpty) {
       newAccumulator.addEvidence(selectedOption.evidence);
     }
 
-    // 4. Detectar sub-árbol activo (solo en la primera respuesta).
-    // Extraemos todos los IDs de preguntas alcanzables desde la opción seleccionada.
+    // 3. Contador de diagnóstico (no cuenta preguntas de navegación)
+    final isNav = _navQuestionPrefixes.any((p) => qId.startsWith(p));
+    final newDiagCount =
+        state.diagnosticAnswerCount + (isNav ? 0 : 1);
+
+    // 4. Detectar sub-árbol activo: solo cuando salimos de la Q de síntoma
+    //    (primera vez que la siguiente pregunta NO es de navegación).
     Set<String>? newAllowedIds = state.allowedQuestionIds;
-    if (newAllowedIds == null && selectedOption.nextQuestionId != null) {
-      // Si es la primera pregunta (ninguna respuesta previa), capturamos el sub-árbol completo.
-      newAllowedIds = _extractSubtree(state.questions, selectedOption.nextQuestionId!);
+    if (newAllowedIds == null &&
+        selectedOption.nextQuestionId != null &&
+        !_navQuestionPrefixes
+            .any((p) => selectedOption!.nextQuestionId!.startsWith(p))) {
+      newAllowedIds =
+          _extractSubtree(state.questions, selectedOption.nextQuestionId!);
+      // Incluir también las preguntas de navegación para que goBack funcione
+      newAllowedIds.addAll(['dev_0', 'dev_cctv_sym', 'dev_net_sym',
+          'dev_nrg_sym', 'dev_acc_sym']);
     }
 
     // 5. Actualizar historial de confianza (ventana de 4)
     double currentConfidence = 0.0;
-    if (state.hypotheses.isNotEmpty) {
+    if (!isNav && state.hypotheses.isNotEmpty) {
       currentConfidence = newAccumulator.evaluate(state.hypotheses).confidence;
     }
     final newConfidenceHistory = [
       ...state.confidenceHistory,
       currentConfidence,
     ].toList();
-    // Mantener solo las últimas 4 lecturas
     if (newConfidenceHistory.length > 4) {
       newConfidenceHistory.removeAt(0);
     }
@@ -191,61 +220,83 @@ class DiagnosticFlowNotifier extends StateNotifier<DiagnosticFlowState> {
       accumulator: newAccumulator,
       confidenceHistory: newConfidenceHistory,
       allowedQuestionIds: newAllowedIds,
+      diagnosticAnswerCount: newDiagCount,
     );
 
-    // 5. Verificar límite de preguntas respondidas
-    final answered = newAnswers.length;
-    if (answered >= _maxQuestions) {
+    // 6. Verificar límite de preguntas de diagnóstico
+    if (newDiagCount >= _maxDiagnosticQuestions) {
       final result = newAccumulator.buildResult(
         allHypotheses: state.hypotheses,
-        symptomId: state.symptomId,
+        symptomId: 'device_flow',
       );
       state = state.copyWith(isComplete: true, result: result);
       return true;
     }
 
-    // 6. Verificar si el motor de inferencia quiere concluir por confianza
-    if (state.hypotheses.isNotEmpty &&
+    // 7. Si la opción no tiene siguiente pregunta → concluir
+    if (selectedOption.nextQuestionId == null) {
+      final result = newAccumulator.buildResult(
+        allHypotheses: state.hypotheses,
+        symptomId: 'device_flow',
+      );
+      state = state.copyWith(isComplete: true, result: result);
+      return true;
+    }
+
+    // 8. Verificar si el motor de inferencia decide concluir (solo fuera de nav)
+    if (!isNav &&
+        state.hypotheses.isNotEmpty &&
         _engine.shouldConclude(newAccumulator, state.hypotheses)) {
       final result = newAccumulator.buildResult(
         allHypotheses: state.hypotheses,
-        symptomId: state.symptomId,
+        symptomId: 'device_flow',
       );
       state = state.copyWith(isComplete: true, result: result);
       return true;
     }
 
-    // 7. Detección de oscilación de confianza (confianza sube-baja-sube o baja-sube-baja)
-    //    Si en 4 lecturas hay 3+ cambios de dirección → concluir.
-    if (newConfidenceHistory.length >= 4 && _isOscillating(newConfidenceHistory)) {
+    // 9. Detección de oscilación (solo fuera de nav)
+    if (!isNav &&
+        newConfidenceHistory.length >= 4 &&
+        _isOscillating(newConfidenceHistory)) {
       final result = newAccumulator.buildResult(
         allHypotheses: state.hypotheses,
-        symptomId: state.symptomId,
+        symptomId: 'device_flow',
       );
       state = state.copyWith(isComplete: true, result: result);
       return true;
     }
 
-    // 8. Seleccionar siguiente pregunta (limitada al sub-árbol activo)
-    final nextQ = _engine.nextQuestion(
+    // 10. Avanzar a la siguiente pregunta
+    //     Si la opción tiene nextQuestionId explícito, usarlo directamente;
+    //     de lo contrario usar el motor de inferencia.
+    final String? nextId = selectedOption.nextQuestionId;
+    DiagnosticQuestion? nextQ;
+
+    if (nextId != null) {
+      try {
+        nextQ = state.questions.firstWhere((q) => q.id == nextId);
+      } catch (_) {}
+    }
+
+    nextQ ??= _engine.nextQuestion(
       allQuestions: state.questions,
       answeredIds: newAnswers.keys.toSet(),
       accumulator: newAccumulator,
       hypotheses: state.hypotheses,
-      forcedNextId: selectedOption.nextQuestionId,
+      forcedNextId: nextId,
       allowedQuestionIds: state.allowedQuestionIds,
     );
 
     if (nextQ == null) {
       final result = newAccumulator.buildResult(
         allHypotheses: state.hypotheses,
-        symptomId: state.symptomId,
+        symptomId: 'device_flow',
       );
       state = state.copyWith(isComplete: true, result: result);
       return true;
     }
 
-    // 9. Avanzar
     final currentIndex = state.questionHistory.indexOf(qId);
     final newHistory = [
       ...state.questionHistory.sublist(0, currentIndex + 1),
@@ -260,14 +311,12 @@ class DiagnosticFlowNotifier extends StateNotifier<DiagnosticFlowState> {
     return false;
   }
 
-  /// Retorna `true` si la secuencia de confianzas oscila (3+ cambios de dirección).
   bool _isOscillating(List<double> history) {
     if (history.length < 4) return false;
     int directionChanges = 0;
     for (int i = 1; i < history.length - 1; i++) {
       final prev = history[i] - history[i - 1];
       final next = history[i + 1] - history[i];
-      // Cambio de dirección si uno sube y el otro baja (o viceversa)
       if (prev.abs() > 0.04 && next.abs() > 0.04 && prev * next < 0) {
         directionChanges++;
       }
@@ -275,7 +324,6 @@ class DiagnosticFlowNotifier extends StateNotifier<DiagnosticFlowState> {
     return directionChanges >= 2;
   }
 
-  /// Retrocede a la pregunta anterior, revirtiendo la evidencia acumulada.
   void goBack() {
     final currentIndex =
         state.questionHistory.indexOf(state.currentQuestionId ?? '');
@@ -283,32 +331,58 @@ class DiagnosticFlowNotifier extends StateNotifier<DiagnosticFlowState> {
 
     final prevId = state.questionHistory[currentIndex - 1];
 
-    // Revertir evidencia de la respuesta de la pregunta ACTUAL (que se deshace)
+    // Revertir evidencia de la respuesta de la pregunta actual
     final currentOptId = state.selectedAnswers[state.currentQuestionId];
     if (currentOptId != null) {
       final currentQ = state.currentQuestion;
       if (currentQ != null) {
         try {
-          final option = currentQ.options.firstWhere((o) => o.id == currentOptId);
+          final option =
+              currentQ.options.firstWhere((o) => o.id == currentOptId);
           if (option.evidence.isNotEmpty) {
             final newAccumulator = EvidenceAccumulator.from(state.accumulator);
             newAccumulator.removeEvidence(option.evidence);
-            // También eliminamos la respuesta del mapa
-            final newAnswers = Map<String, String>.from(state.selectedAnswers)
-              ..remove(state.currentQuestionId);
-            // Revertir confianza history
+            final newAnswers =
+                Map<String, String>.from(state.selectedAnswers)
+                  ..remove(state.currentQuestionId);
             final newHistory = state.confidenceHistory.isNotEmpty
-                ? state.confidenceHistory.sublist(
-                    0, state.confidenceHistory.length - 1)
+                ? state.confidenceHistory
+                    .sublist(0, state.confidenceHistory.length - 1)
                 : <double>[];
+
+            // Revertir contador de diagnóstico si la pregunta no era de nav
+            final wasNav = _navQuestionPrefixes
+                .any((p) => (state.currentQuestionId ?? '').startsWith(p));
+            final newCount = wasNav
+                ? state.diagnosticAnswerCount
+                : (state.diagnosticAnswerCount - 1).clamp(0, _maxDiagnosticQuestions);
+
             state = state.copyWith(
               accumulator: newAccumulator,
               selectedAnswers: newAnswers,
               confidenceHistory: newHistory,
+              diagnosticAnswerCount: newCount,
             );
           }
         } catch (_) {}
       }
+    }
+
+    // Si también hay respuesta previa sin evidencia (preguntas de navegación)
+    // solo eliminamos la respuesta del mapa
+    if (state.selectedAnswers.containsKey(state.currentQuestionId)) {
+      final newAnswers =
+          Map<String, String>.from(state.selectedAnswers)
+            ..remove(state.currentQuestionId);
+      final wasNav = _navQuestionPrefixes
+          .any((p) => (state.currentQuestionId ?? '').startsWith(p));
+      final newCount = wasNav
+          ? state.diagnosticAnswerCount
+          : (state.diagnosticAnswerCount - 1).clamp(0, _maxDiagnosticQuestions);
+      state = state.copyWith(
+        selectedAnswers: newAnswers,
+        diagnosticAnswerCount: newCount,
+      );
     }
 
     state = state.copyWith(
@@ -320,12 +394,11 @@ class DiagnosticFlowNotifier extends StateNotifier<DiagnosticFlowState> {
 
   /// Reinicia todo el flujo.
   void reset() {
-    state = _initialState(state.symptomId);
+    state = _initialState();
   }
 
-  /// Recorre el árbol de opciones (BFS) para encontrar todos los IDs 
-  /// contextualmente enlazados a partir de [startNodeId].
-  Set<String> _extractSubtree(List<DiagnosticQuestion> allQuestions, String startNodeId) {
+  Set<String> _extractSubtree(
+      List<DiagnosticQuestion> allQuestions, String startNodeId) {
     final visited = <String>{};
     final queue = [startNodeId];
 
@@ -348,8 +421,9 @@ class DiagnosticFlowNotifier extends StateNotifier<DiagnosticFlowState> {
   }
 }
 
-/// Provider family que crea un notifier por symptomId.
+/// Provider family (autoDispose) del flujo diagnóstico unificado.
+/// El parámetro String es ignorado — siempre se usa el árbol de dispositivos.
 final diagnosticFlowProvider = StateNotifierProvider.autoDispose
     .family<DiagnosticFlowNotifier, DiagnosticFlowState, String>(
-  (ref, symptomId) => DiagnosticFlowNotifier(symptomId),
+  (ref, key) => DiagnosticFlowNotifier(key),
 );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:stiv/core/theme/theme_data.dart';
 import 'package:stiv/features/diagnostic/models/diagnostic_result.dart';
 
@@ -564,7 +565,7 @@ class _ActionButtons extends StatelessWidget {
             side: const BorderSide(color: AppColors.border, width: 1.5),
             shape: RoundedRectangleBorder(borderRadius: AppRadii.brMd),
           ),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => context.go('/home'),
           child: const Text(
             'Volver al inicio',
             style: TextStyle(

@@ -10,7 +10,6 @@ import 'package:stiv/features/reports/presentation/reports_history_page.dart';
 import 'package:stiv/features/guides/presentation/guides_page.dart';
 import 'package:stiv/features/guides/presentation/guide_detail_page.dart';
 import 'package:stiv/features/guides/domain/models/guides.dart';
-import 'package:stiv/features/diagnostic/presentation/pages/quick_diagnostic_page/quick_diagnostic_page.dart';
 import 'package:stiv/features/diagnostic/presentation/pages/quick_diagnostic_page/quick_diagnostic_flow_page/diagnostic_flow_page.dart';
 
 /// Estado del Onboarding (con SharedPreferences)
@@ -106,21 +105,12 @@ final router = GoRouter(
       builder: (_, _) => const DevicePage(),
     ),
 
-    // Diagnóstico Rápido (sin selección de dispositivo)
+    // Flujo de diagnóstico rápido unificado (dispositivo → síntoma → Q&A)
     GoRoute(
-      path: '/quick-diagnostic',
-      name: 'quick-diagnostic',
-      builder: (_, _) => const QuickDiagnosticPage(),
-    ),
-
-    // Flujo de preguntas de diagnóstico rápido
-    GoRoute(
-      path: '/diagnostic/flow/:symptomId',
+      path: '/diagnostic/flow',
       name: 'diagnostic-flow',
-      builder: (context, state) {
-        final symptomId = state.pathParameters['symptomId'] ?? '';
-        return DiagnosticFlowPage(symptomId: symptomId);
-      },
+      builder: (_, _) =>
+          const DiagnosticFlowPage(symptomId: 'device_flow'),
     ),
 
     // Ruta con parámetro: Chat de diagnóstico por dispositivo
