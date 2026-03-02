@@ -254,7 +254,13 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
             EvidenceWeight(hypothesisId: 'poe_failure', weight: 0.4),
           ],
         ),
-        QuestionOption(id: 'pow_5cc_skip', label: 'No tengo otro cable disponible'),
+        QuestionOption(
+          id: 'pow_5cc_skip',
+          label: 'No tengo otro cable disponible',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'cable_failure', weight: 0.5),
+          ],
+        ),
         QuestionOption(id: 'pow_5cc_other', label: 'Necesito ayuda', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -373,13 +379,15 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
           label: 'Sí, el tomacorriente funciona',
           evidence: [
             EvidenceWeight(hypothesisId: 'power_adapter_failure', weight: 0.7),
+            EvidenceWeight(hypothesisId: 'power_strip_trip', weight: 0.5),
           ],
         ),
         QuestionOption(
           id: 'pow_3nf_no',
           label: 'No lo he verificado',
           evidence: [
-            EvidenceWeight(hypothesisId: 'overload', weight: 0.3),
+            EvidenceWeight(hypothesisId: 'power_adapter_failure', weight: 0.3),
+            EvidenceWeight(hypothesisId: 'power_strip_trip', weight: 0.4),
           ],
         ),
         QuestionOption(id: 'pow_3nf_other', label: 'Necesito ayuda', icon: Icons.help_outline_rounded),
@@ -437,11 +445,12 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       options: [
         QuestionOption(
           id: 'pow_2u_beep',
-          label: 'Sí, emite pitidos',
+          label: 'Sí, emite pitidos o cliquea',
           nextQuestionId: 'pow_3_ups_beep',
           evidence: [
             EvidenceWeight(hypothesisId: 'ups_battery_failure', weight: 0.4),
-            EvidenceWeight(hypothesisId: 'overload', weight: 0.3),
+            EvidenceWeight(hypothesisId: 'ups_inverter_fault', weight: 0.5),
+            EvidenceWeight(hypothesisId: 'ups_bypass_mode', weight: 0.3),
           ],
         ),
         QuestionOption(
@@ -583,19 +592,18 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       options: [
         QuestionOption(
           id: 'pow_3ao_yes',
-          label: 'Sí, pero con retardo',
-          nextQuestionId: 'pow_4_acc_delay',
+          label: 'Hace un clic pero se queda trancada',
           evidence: [
-            EvidenceWeight(hypothesisId: 'cable_failure', weight: 0.4),
-            EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.3),
+            EvidenceWeight(hypothesisId: 'access_strike_jammed', weight: 0.9),
+            EvidenceWeight(hypothesisId: 'cable_failure', weight: 0.2),
           ],
         ),
         QuestionOption(
           id: 'pow_3ao_no',
           label: 'No responde',
           evidence: [
-            EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.6),
-            EvidenceWeight(hypothesisId: 'cable_failure', weight: 0.3),
+            EvidenceWeight(hypothesisId: 'rs485_polarity_reversed', weight: 0.6),
+            EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.4),
           ],
         ),
         QuestionOption(id: 'pow_3ao_other', label: 'Otro comportamiento', icon: Icons.help_outline_rounded),
@@ -702,8 +710,22 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       id: 'con_4_cctv_novid',
       text: '¿El stream de video muestra error o simplemente no carga?',
       options: [
-        QuestionOption(id: 'con_4cn_err', label: 'Muestra un error'),
-        QuestionOption(id: 'con_4cn_load', label: 'Se queda cargando'),
+        QuestionOption(
+          id: 'con_4cn_err',
+          label: 'Muestra un error',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.5),
+            EvidenceWeight(hypothesisId: 'firmware_bug', weight: 0.3),
+          ],
+        ),
+        QuestionOption(
+          id: 'con_4cn_load',
+          label: 'Se queda cargando infinitamente',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'bandwidth_issue', weight: 0.7),
+            EvidenceWeight(hypothesisId: 'mac_filtering_locked', weight: 0.2),
+          ],
+        ),
         QuestionOption(id: 'con_4cn_other', label: 'Otro', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -711,8 +733,21 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       id: 'con_4_cctv_port',
       text: '¿Verificaste que el puerto HTTP de la cámara es correcto?',
       options: [
-        QuestionOption(id: 'con_4cp_yes', label: 'Sí, es el puerto por defecto'),
-        QuestionOption(id: 'con_4cp_changed', label: 'Se cambió el puerto'),
+        QuestionOption(
+          id: 'con_4cp_yes',
+          label: 'Sí, es el puerto por defecto',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'firewall_blocking', weight: 0.6),
+            EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.3),
+          ],
+        ),
+        QuestionOption(
+          id: 'con_4cp_changed',
+          label: 'Alguien cambió el puerto',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'misconfiguration', weight: 0.8),
+          ],
+        ),
         QuestionOption(id: 'con_4cp_other', label: 'No lo sé', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -720,8 +755,22 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       id: 'con_4_cctv_ip',
       text: '¿La IP de la cámara está en el mismo segmento de red?',
       options: [
-        QuestionOption(id: 'con_4ci_yes', label: 'Sí, mismo segmento'),
-        QuestionOption(id: 'con_4ci_no', label: 'No, segmento diferente'),
+        QuestionOption(
+          id: 'con_4ci_yes',
+          label: 'Sí, mismo segmento',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'mac_filtering_locked', weight: 0.5),
+            EvidenceWeight(hypothesisId: 'firewall_blocking', weight: 0.4),
+          ],
+        ),
+        QuestionOption(
+          id: 'con_4ci_no',
+          label: 'Apuntó una IP APIPA u otro segmento',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'dhcp_pool_exhausted', weight: 0.8),
+            EvidenceWeight(hypothesisId: 'misconfiguration', weight: 0.5),
+          ],
+        ),
         QuestionOption(id: 'con_4ci_other', label: 'No lo sé', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -729,8 +778,22 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       id: 'con_4_cctv_cable',
       text: '¿Probaste cambiando el cable o el puerto del switch?',
       options: [
-        QuestionOption(id: 'con_4cc_yes', label: 'Sí, mismo resultado'),
-        QuestionOption(id: 'con_4cc_no', label: 'No lo he probado'),
+        QuestionOption(
+          id: 'con_4cc_yes',
+          label: 'Sí, pero el LED sigue apagado',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.6),
+            EvidenceWeight(hypothesisId: 'poe_failure', weight: 0.5),
+          ],
+        ),
+        QuestionOption(
+          id: 'con_4cc_no',
+          label: 'Aún no lo he probado',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'dirty_ethernet_port', weight: 0.7),
+            EvidenceWeight(hypothesisId: 'cable_network_failure', weight: 0.5),
+          ],
+        ),
         QuestionOption(id: 'con_4cc_other', label: 'No tengo material', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -751,7 +814,14 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       text: '¿El router/gateway principal está operativo?',
       options: [
         QuestionOption(id: 'con_3na_yes', label: 'Sí, encendido y con LEDs', nextQuestionId: 'con_4_net_dns'),
-        QuestionOption(id: 'con_3na_no', label: 'No, está apagado'),
+        QuestionOption(
+          id: 'con_3na_no',
+          label: 'No, está apagado o tildado y con luces locas',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'loopback_storm', weight: 0.6),
+            EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.4),
+          ],
+        ),
         QuestionOption(id: 'con_3na_other', label: 'No puedo verificar', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -760,7 +830,14 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       text: '¿El switch de ese segmento está funcionando?',
       options: [
         QuestionOption(id: 'con_3ns_yes', label: 'Sí, LEDs activos', nextQuestionId: 'con_4_net_vlan'),
-        QuestionOption(id: 'con_3ns_no', label: 'No, tiene problemas'),
+        QuestionOption(
+          id: 'con_3ns_no',
+          label: 'No, tiene problemas o luce desconectado',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'power_adapter_failure', weight: 0.6),
+            EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.4),
+          ],
+        ),
         QuestionOption(id: 'con_3ns_other', label: 'No lo sé', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -768,8 +845,22 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       id: 'con_3_net_port',
       text: '¿Probaste conectando a otro puerto del switch?',
       options: [
-        QuestionOption(id: 'con_3np_yes', label: 'Sí, funciona en otro puerto'),
-        QuestionOption(id: 'con_3np_no', label: 'No, falla en todos'),
+        QuestionOption(
+          id: 'con_3np_yes',
+          label: 'Sí, funciona en otro puerto',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'dirty_ethernet_port', weight: 0.8),
+            EvidenceWeight(hypothesisId: 'mac_filtering_locked', weight: 0.5),
+          ],
+        ),
+        QuestionOption(
+          id: 'con_3np_no',
+          label: 'No, falla en todos',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'dhcp_pool_exhausted', weight: 0.7),
+            EvidenceWeight(hypothesisId: 'mac_filtering_locked', weight: 0.4),
+          ],
+        ),
         QuestionOption(id: 'con_3np_other', label: 'No lo he probado', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -777,17 +868,44 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
       id: 'con_4_net_dns',
       text: '¿Puedes navegar usando IP directa pero no por nombre de dominio?',
       options: [
-        QuestionOption(id: 'con_4nd_yes', label: 'Sí, es problema de DNS'),
-        QuestionOption(id: 'con_4nd_no', label: 'No, ni por IP funciona'),
-        QuestionOption(id: 'con_4nd_other', label: 'No lo sé', icon: Icons.help_outline_rounded),
+        QuestionOption(
+          id: 'con_4nd_yes',
+          label: 'Sí, es problema de DNS evidente',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'misconfiguration', weight: 0.9),
+          ],
+        ),
+        QuestionOption(
+          id: 'con_4nd_no',
+          label: 'No, ni por IP funciona (Ping externo roto)',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'isp_outage', weight: 0.8),
+            EvidenceWeight(hypothesisId: 'cable_network_failure', weight: 0.3),
+          ],
+        ),
+        QuestionOption(id: 'con_4nd_other', label: 'No lo sé / No evalué PING', icon: Icons.help_outline_rounded),
       ],
     ),
     const DiagnosticQuestion(
       id: 'con_4_net_vlan',
       text: '¿Se realizó algún cambio de configuración reciente?',
       options: [
-        QuestionOption(id: 'con_4nv_yes', label: 'Sí, hubo cambios'),
-        QuestionOption(id: 'con_4nv_no', label: 'No, dejó de funcionar solo'),
+        QuestionOption(
+          id: 'con_4nv_yes',
+          label: 'Sí, de IP, VLAN o cableado',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'misconfiguration', weight: 0.8),
+            EvidenceWeight(hypothesisId: 'loopback_storm', weight: 0.4),
+          ],
+        ),
+        QuestionOption(
+          id: 'con_4nv_no',
+          label: 'No, dejó de funcionar solo',
+          evidence: [
+            EvidenceWeight(hypothesisId: 'cable_network_failure', weight: 0.6),
+            EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.4),
+          ],
+        ),
         QuestionOption(id: 'con_4nv_other', label: 'No lo sé', icon: Icons.help_outline_rounded),
       ],
     ),
@@ -898,9 +1016,31 @@ const _displayIssueQuestions = <DiagnosticQuestion>[
     id: 'dsp_3_lines',
     text: '¿Las líneas son horizontales o verticales?',
     options: [
-      QuestionOption(id: 'dsp_3l_h', label: 'Horizontales'),
-      QuestionOption(id: 'dsp_3l_v', label: 'Verticales'),
-      QuestionOption(id: 'dsp_3l_other', label: 'Ambas / Otro patrón', icon: Icons.help_outline_rounded),
+      QuestionOption(
+        id: 'dsp_3l_h',
+        label: 'Horizontales y parpadean',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'signal_degradation', weight: 0.8),
+          EvidenceWeight(hypothesisId: 'ground_loop_audio', weight: 0.5),
+        ],
+      ),
+      QuestionOption(
+        id: 'dsp_3l_v',
+        label: 'Líneas rectas fijas de color (morado/verde)',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'physical_damage', weight: 0.7),
+          EvidenceWeight(hypothesisId: 'sensor_burn_ir_reflection', weight: 0.8),
+        ],
+      ),
+      QuestionOption(
+        id: 'dsp_3l_other',
+        label: 'Ambas / Otro patrón caótico',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'physical_damage', weight: 0.5),
+          EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.4),
+        ],
+        icon: Icons.help_outline_rounded,
+      ),
     ],
   ),
   DiagnosticQuestion(
@@ -916,8 +1056,20 @@ const _displayIssueQuestions = <DiagnosticQuestion>[
     id: 'dsp_3_nvr_output',
     text: '¿Probaste con otro cable HDMI/VGA hacia el monitor?',
     options: [
-      QuestionOption(id: 'dsp_3no_yes', label: 'Sí, mismo resultado'),
-      QuestionOption(id: 'dsp_3no_no', label: 'No lo he probado'),
+      QuestionOption(
+        id: 'dsp_3no_yes',
+        label: 'Sí, mismo resultado',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.8),
+        ],
+      ),
+      QuestionOption(
+        id: 'dsp_3no_no',
+        label: 'No lo he probado',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'cable_failure', weight: 0.6),
+        ],
+      ),
       QuestionOption(id: 'dsp_3no_other', label: 'No tengo otro cable', icon: Icons.help_outline_rounded),
     ],
   ),
@@ -925,8 +1077,21 @@ const _displayIssueQuestions = <DiagnosticQuestion>[
     id: 'dsp_4_focus',
     text: '¿Ajustaste el anillo de enfoque y sigue borrosa?',
     options: [
-      QuestionOption(id: 'dsp_4f_yes', label: 'Sí, no mejora'),
-      QuestionOption(id: 'dsp_4f_no', label: 'No lo he ajustado'),
+      QuestionOption(
+        id: 'dsp_4f_yes',
+        label: 'Sí, no mejora o gira en falso',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'camera_mount_loose', weight: 0.6),
+          EvidenceWeight(hypothesisId: 'physical_damage', weight: 0.5),
+        ],
+      ),
+      QuestionOption(
+        id: 'dsp_4f_no',
+        label: 'No lo he ajustado',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'misconfiguration', weight: 0.7),
+        ],
+      ),
       QuestionOption(id: 'dsp_4f_other', label: 'No puedo acceder a la cámara', icon: Icons.help_outline_rounded),
     ],
   ),
@@ -934,8 +1099,22 @@ const _displayIssueQuestions = <DiagnosticQuestion>[
     id: 'dsp_4_clean',
     text: '¿Limpiaste el domo o lente de la cámara?',
     options: [
-      QuestionOption(id: 'dsp_4c_yes', label: 'Sí, sigue igual'),
-      QuestionOption(id: 'dsp_4c_no', label: 'No lo he limpiado'),
+      QuestionOption(
+        id: 'dsp_4c_yes',
+        label: 'Sí, sigue igual',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'physical_damage', weight: 0.6),
+          EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.3),
+        ],
+      ),
+      QuestionOption(
+        id: 'dsp_4c_no',
+        label: 'No lo he limpiado',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'environmental_factor', weight: 0.8),
+          EvidenceWeight(hypothesisId: 'sensor_burn_ir_reflection', weight: 0.4),
+        ],
+      ),
       QuestionOption(id: 'dsp_4c_other', label: 'No puedo acceder', icon: Icons.help_outline_rounded),
     ],
   ),
@@ -943,8 +1122,22 @@ const _displayIssueQuestions = <DiagnosticQuestion>[
     id: 'dsp_4_ir',
     text: '¿Los LEDs infrarrojos de la cámara se encienden de noche?',
     options: [
-      QuestionOption(id: 'dsp_4i_yes', label: 'Sí, pero imagen sigue oscura'),
-      QuestionOption(id: 'dsp_4i_no', label: 'No, los LEDs no encienden'),
+      QuestionOption(
+        id: 'dsp_4i_yes',
+        label: 'Sí, parecen encendidos pero de noche la imagen deslumbra o se ve blanca',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'sensor_burn_ir_reflection', weight: 0.9),
+          EvidenceWeight(hypothesisId: 'environmental_factor', weight: 0.5),
+        ],
+      ),
+      QuestionOption(
+        id: 'dsp_4i_no',
+        label: 'No, los LEDs no encienden',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'poe_failure', weight: 0.6),
+          EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.5),
+        ],
+      ),
       QuestionOption(id: 'dsp_4i_other', label: 'No puedo ver los LEDs', icon: Icons.help_outline_rounded),
     ],
   ),
@@ -1429,7 +1622,14 @@ const _cameraIssueQuestions = <DiagnosticQuestion>[
     text: '¿Puedes ver el stream directo en la interfaz web?',
     options: [
       QuestionOption(id: 'cam_3s_yes', label: 'Sí, en web funciona', nextQuestionId: 'cam_4_protocol'),
-      QuestionOption(id: 'cam_3s_no', label: 'No, tampoco en web'),
+      QuestionOption(
+        id: 'cam_3s_no',
+        label: 'No, tampoco en web',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.7),
+          EvidenceWeight(hypothesisId: 'network_port_closed', weight: 0.5),
+        ],
+      ),
       QuestionOption(id: 'cam_3s_other', label: 'No sé acceder a la web', icon: Icons.help_outline_rounded),
     ],
   ),
@@ -1437,8 +1637,22 @@ const _cameraIssueQuestions = <DiagnosticQuestion>[
     id: 'cam_3_power',
     text: '¿Verificaste la alimentación (PoE / Adaptador)?',
     options: [
-      QuestionOption(id: 'cam_3pw_yes', label: 'Sí, la alimentación es correcta'),
-      QuestionOption(id: 'cam_3pw_no', label: 'No lo he verificado'),
+      QuestionOption(
+        id: 'cam_3pw_yes',
+        label: 'Sí, la alimentación es correcta',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.8),
+          EvidenceWeight(hypothesisId: 'firmware_bug', weight: 0.4),
+        ],
+      ),
+      QuestionOption(
+        id: 'cam_3pw_no',
+        label: 'No lo he verificado',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'power_adapter_failure', weight: 0.7),
+          EvidenceWeight(hypothesisId: 'poe_failure', weight: 0.6),
+        ],
+      ),
       QuestionOption(id: 'cam_3pw_other', label: 'Necesito ayuda', icon: Icons.help_outline_rounded),
     ],
   ),
@@ -1447,7 +1661,14 @@ const _cameraIssueQuestions = <DiagnosticQuestion>[
     text: '¿El disco duro del NVR tiene espacio disponible?',
     options: [
       QuestionOption(id: 'cam_3st_yes', label: 'Sí, hay espacio', nextQuestionId: 'cam_4_schedule'),
-      QuestionOption(id: 'cam_3st_no', label: 'No, disco lleno'),
+      QuestionOption(
+        id: 'cam_3st_no',
+        label: 'No, disco lleno o no detectado',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'hdd_sata_fault', weight: 0.8),
+          EvidenceWeight(hypothesisId: 'storage_full', weight: 0.6),
+        ],
+      ),
       QuestionOption(id: 'cam_3st_other', label: 'No puedo verificar', icon: Icons.help_outline_rounded),
     ],
   ),
@@ -1455,8 +1676,21 @@ const _cameraIssueQuestions = <DiagnosticQuestion>[
     id: 'cam_3_add',
     text: '¿Intentaste agregar la cámara manualmente al NVR?',
     options: [
-      QuestionOption(id: 'cam_3a_yes', label: 'Sí, da error'),
-      QuestionOption(id: 'cam_3a_no', label: 'No lo he intentado'),
+      QuestionOption(
+        id: 'cam_3a_yes',
+        label: 'Sí, da error de red o timeout',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'misconfiguration', weight: 0.7),
+          EvidenceWeight(hypothesisId: 'network_port_closed', weight: 0.5),
+        ],
+      ),
+      QuestionOption(
+        id: 'cam_3a_no',
+        label: 'No lo he intentado',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'misconfiguration', weight: 0.6),
+        ],
+      ),
       QuestionOption(id: 'cam_3a_other', label: 'No sé cómo hacerlo', icon: Icons.help_outline_rounded),
     ],
   ),
@@ -1464,8 +1698,21 @@ const _cameraIssueQuestions = <DiagnosticQuestion>[
     id: 'cam_3_ptz_config',
     text: '¿El protocolo PTZ está configurado correctamente (Ejemplo: Pelco-D/P, Axis VAPIX)?',
     options: [
-      QuestionOption(id: 'cam_3pc_yes', label: 'Sí, protocolo correcto'),
-      QuestionOption(id: 'cam_3pc_no', label: 'No estoy seguro'),
+      QuestionOption(
+        id: 'cam_3pc_yes',
+        label: 'Sí, protocolo e ID correctos',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'rs485_polarity_reversed', weight: 0.8),
+          EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.6),
+        ],
+      ),
+      QuestionOption(
+        id: 'cam_3pc_no',
+        label: 'No estoy seguro o está mal configurado',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'misconfiguration', weight: 0.9),
+        ],
+      ),
       QuestionOption(id: 'cam_3pc_other', label: 'No sé qué protocolo usa', icon: Icons.help_outline_rounded),
     ],
   ),
@@ -1473,9 +1720,28 @@ const _cameraIssueQuestions = <DiagnosticQuestion>[
     id: 'cam_4_protocol',
     text: '¿Qué protocolo de stream usa (RTSP, ONVIF, propietario)?',
     options: [
-      QuestionOption(id: 'cam_4p_rtsp', label: 'RTSP'),
-      QuestionOption(id: 'cam_4p_onvif', label: 'ONVIF'),
-      QuestionOption(id: 'cam_4p_prop', label: 'Propietario del fabricante'),
+      QuestionOption(
+        id: 'cam_4p_rtsp',
+        label: 'RTSP pero la cadena de conexión falla',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'misconfiguration', weight: 0.7),
+        ],
+      ),
+      QuestionOption(
+        id: 'cam_4p_onvif',
+        label: 'ONVIF pero solicita un perfil erróneo',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'firmware_bug', weight: 0.6),
+          EvidenceWeight(hypothesisId: 'misconfiguration', weight: 0.5),
+        ],
+      ),
+      QuestionOption(
+        id: 'cam_4p_prop',
+        label: 'Propietario del fabricante pero la versión es distinta',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'firmware_bug', weight: 0.8),
+        ],
+      ),
       QuestionOption(id: 'cam_4p_other', label: 'No lo sé', icon: Icons.help_outline_rounded),
     ],
   ),
@@ -1483,8 +1749,21 @@ const _cameraIssueQuestions = <DiagnosticQuestion>[
     id: 'cam_4_schedule',
     text: '¿La grabación está programada para este horario?',
     options: [
-      QuestionOption(id: 'cam_4s_yes', label: 'Sí, debería grabar'),
-      QuestionOption(id: 'cam_4s_no', label: 'No, es fuera de horario'),
+      QuestionOption(
+        id: 'cam_4s_yes',
+        label: 'Sí, debería grabar (marcado en verde/continuo)',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'firmware_bug', weight: 0.6),
+          EvidenceWeight(hypothesisId: 'hdd_sata_fault', weight: 0.5),
+        ],
+      ),
+      QuestionOption(
+        id: 'cam_4s_no',
+        label: 'No, es fuera de horario (configurado por movimiento)',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'misconfiguration', weight: 0.9),
+        ],
+      ),
       QuestionOption(id: 'cam_4s_other', label: 'No sé la programación', icon: Icons.help_outline_rounded),
     ],
   ),
@@ -1539,8 +1818,22 @@ const _otherIssueQuestions = <DiagnosticQuestion>[
     id: 'oth_3_hw_detail',
     text: '¿El daño es visible a simple vista?',
     options: [
-      QuestionOption(id: 'oth_3hd_yes', label: 'Sí, se ve el daño'),
-      QuestionOption(id: 'oth_3hd_no', label: 'No, funciona pero con fallas'),
+      QuestionOption(
+        id: 'oth_3hd_yes',
+        label: 'Sí, se ve el daño',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'physical_damage', weight: 0.9),
+          EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.3),
+        ],
+      ),
+      QuestionOption(
+        id: 'oth_3hd_no',
+        label: 'No, funciona pero con fallas de HW',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'equipment_failure', weight: 0.8),
+          EvidenceWeight(hypothesisId: 'equipment_overheating', weight: 0.3),
+        ],
+      ),
       QuestionOption(id: 'oth_3hd_other', label: 'Necesito ayuda para evaluar', icon: Icons.help_outline_rounded),
     ],
   ),
@@ -1548,9 +1841,28 @@ const _otherIssueQuestions = <DiagnosticQuestion>[
     id: 'oth_3_sw_detail',
     text: '¿Tienes acceso para revertir el cambio o restaurar config?',
     options: [
-      QuestionOption(id: 'oth_3sd_yes', label: 'Sí, puedo restaurar'),
-      QuestionOption(id: 'oth_3sd_no', label: 'No, no tengo acceso'),
-      QuestionOption(id: 'oth_3sd_backup', label: 'Tengo un respaldo'),
+      QuestionOption(
+        id: 'oth_3sd_yes',
+        label: 'Sí, puedo restaurar',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'misconfiguration', weight: 0.8),
+        ],
+      ),
+      QuestionOption(
+        id: 'oth_3sd_no',
+        label: 'No, no tengo acceso al equipo',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'misconfiguration', weight: 0.6),
+          EvidenceWeight(hypothesisId: 'firmware_bug', weight: 0.4),
+        ],
+      ),
+      QuestionOption(
+        id: 'oth_3sd_backup',
+        label: 'Tengo un respaldo',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'firmware_bug', weight: 0.7),
+        ],
+      ),
       QuestionOption(id: 'oth_3sd_other', label: 'Necesito orientación', icon: Icons.help_outline_rounded),
     ],
   ),
@@ -1558,8 +1870,21 @@ const _otherIssueQuestions = <DiagnosticQuestion>[
     id: 'oth_3_env_detail',
     text: '¿Puedes reubicar o proteger el equipo?',
     options: [
-      QuestionOption(id: 'oth_3ed_yes', label: 'Sí, puedo reubicarlo'),
-      QuestionOption(id: 'oth_3ed_no', label: 'No, la ubicación es fija'),
+      QuestionOption(
+        id: 'oth_3ed_yes',
+        label: 'Sí, puedo reubicarlo',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'environmental_factor', weight: 0.8),
+        ],
+      ),
+      QuestionOption(
+        id: 'oth_3ed_no',
+        label: 'No, la ubicación es fija (sigue expuesto)',
+        evidence: [
+          EvidenceWeight(hypothesisId: 'environmental_factor', weight: 0.9),
+          EvidenceWeight(hypothesisId: 'equipment_overheating', weight: 0.5),
+        ],
+      ),
       QuestionOption(id: 'oth_3ed_other', label: 'Necesito opciones de protección', icon: Icons.help_outline_rounded),
     ],
   ),
