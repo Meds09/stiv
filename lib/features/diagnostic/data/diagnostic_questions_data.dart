@@ -106,7 +106,7 @@ final Map<String, List<DiagnosticQuestion>> diagnosticQuestionTrees = {
   // ═══════════════════════════════════════════════════
   'other_issue': [
     ...sharedOtherQuestions,
-    // Access-specific other issues
+    // Problemas específicos de control de acceso (cerraduras, lectores, RS-485)
     ...accessOtherQuestions,
   ],
 };

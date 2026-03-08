@@ -179,7 +179,7 @@ const _accSymQuestion = DiagnosticQuestion(
   options: [
     QuestionOption(
       id: 'dev_acc_sym_pow',
-      label: 'No enciende o sin respuesta',
+      label: 'No enciende / sin alimentación',
       description: 'El panel o equipo no tiene energía',
       icon: Icons.power_settings_new_rounded,
       nextQuestionId: 'pow_2_acc',
@@ -192,11 +192,18 @@ const _accSymQuestion = DiagnosticQuestion(
       nextQuestionId: 'con_2_acc',
     ),
     QuestionOption(
+      id: 'dev_acc_sym_lock',
+      label: 'Cerradura o lector no funciona',
+      description: 'Panel OK pero la cerradura, biométrico o lector fallan',
+      icon: Icons.lock_open_rounded,
+      nextQuestionId: 'oth_2_acc',
+    ),
+    QuestionOption(
       id: 'dev_acc_sym_other',
       label: 'Otro problema',
       description: 'No está en la lista anterior',
       icon: Icons.help_outline_rounded,
-      nextQuestionId: 'oth_1',
+      nextQuestionId: 'oth_2_acc',
     ),
   ],
 );
