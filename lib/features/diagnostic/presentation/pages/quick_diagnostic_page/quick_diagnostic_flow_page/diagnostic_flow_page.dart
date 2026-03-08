@@ -11,6 +11,7 @@ import 'package:stiv/features/diagnostic/presentation/pages/quick_diagnostic_pag
 import 'package:stiv/features/diagnostic/presentation/providers/diagnostic_flow_provider.dart';
 import 'package:stiv/features/diagnostic/presentation/pages/diagnostic_result_page/diagnostic_result_page.dart';
 
+
 // ─── Metadata maps ─────────────────────────────────────────────────────────────
 
 const _symptomLabels = <String, String>{
@@ -191,6 +192,7 @@ class _DiagnosticFlowPageState extends ConsumerState<DiagnosticFlowPage>
             ),
     );
   }
+
 
   // ── Dialogs ──────────────────────────────────────────────────────────────────
 

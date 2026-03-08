@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stiv/core/theme/theme_data.dart';
+import 'package:stiv/features/auth/providers/auth_provider.dart';
+import 'package:stiv/features/diagnostic/domain/entities/ai_chat_context.dart';
 import 'package:stiv/features/diagnostic/models/diagnostic_result.dart';
+import 'package:stiv/features/diagnostic/presentation/pages/ai_chat_page/ai_chat_page.dart';
+
 
 /// Página de resultado del diagnóstico DSS.
 ///
@@ -527,12 +531,12 @@ class _AiEscalationBanner extends StatelessWidget {
 
 // ─── Action Buttons ───────────────────────────────────────────────────────────
 
-class _ActionButtons extends StatelessWidget {
+class _ActionButtons extends ConsumerWidget {
   const _ActionButtons({required this.result});
   final DiagnosticResult result;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       children: [
         if (result.requiresAiEscalation)
@@ -555,7 +559,18 @@ class _ActionButtons extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              // TODO: integrar con el módulo de IA en una fase posterior
+              final user = ref.read(currentUserProvider);
+              final name = user?.displayName?.split(' ').first ?? 'Técnico';
+              final ctx = AiChatContext(
+                deviceType: result.probableCause?.label ?? 'Dispositivo',
+                symptomLabel: result.probableCause?.description,
+                userName: name,
+              );
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => AiChatPage(chatContext: ctx),
+                ),
+              );
             },
           ),
         if (result.requiresAiEscalation) const SizedBox(height: 10),
