@@ -60,18 +60,13 @@ class _AiChatPageState extends ConsumerState<AiChatPage> {
     final state = ref.watch(aiChatProvider(widget.chatContext));
 
     // scroll to bottom whenever messages update
-    ref.listen(aiChatProvider(widget.chatContext), (_, __) => _scrollToBottom());
+    ref.listen(aiChatProvider(widget.chatContext), (_, _) => _scrollToBottom());
 
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: _buildAppBar(context),
       body: Column(
         children: [
-          // ── Context chip ───────────────────────────────────
-          if (widget.chatContext.deviceType != 'No especificado')
-            _ContextChip(context: widget.chatContext),
-
-          // ── Messages list ──────────────────────────────────
           Expanded(
             child: state.messages.isEmpty && state.isLoading
                 ? const Center(
@@ -175,41 +170,7 @@ class _AiChatPageState extends ConsumerState<AiChatPage> {
   }
 }
 
-// ── Context chip ──────────────────────────────────────────────────────────────
 
-class _ContextChip extends StatelessWidget {
-  const _ContextChip({required this.context});
-  final AiChatContext context;
-
-  @override
-  Widget build(BuildContext ctx) {
-    return Container(
-      width: double.infinity,
-      color: AppColors.primaryDark.withValues(alpha: 0.05),
-      padding:
-          const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: 8),
-      child: Row(
-        children: [
-          const Icon(Icons.memory_rounded,
-              size: 14, color: AppColors.textSecondary),
-          const SizedBox(width: 6),
-          Expanded(
-            child: Text(
-              'Contexto: ${context.deviceType}'
-              '${context.symptomLabel != null ? ' · ${context.symptomLabel}' : ''}',
-              style: const TextStyle(
-                fontFamily: 'Inter',
-                fontSize: 11,
-                color: AppColors.textSecondary,
-              ),
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 // ── Error banner ──────────────────────────────────────────────────────────────
 
@@ -290,8 +251,8 @@ class _InputBar extends StatelessWidget {
                 style: AppTextStyles.body,
                 decoration: InputDecoration(
                   hintText: isLoading
-                      ? 'La IA está respondiendo...'
-                      : 'Escribe tu respuesta...',
+                      ? 'La IA está respondiendo'
+                      : 'Escribe tu pregunta',
                   hintStyle: AppTextStyles.body.copyWith(
                     color: AppColors.textSecondary,
                   ),
