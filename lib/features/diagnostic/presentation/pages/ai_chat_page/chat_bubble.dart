@@ -24,8 +24,9 @@ class ChatBubble extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
-        mainAxisAlignment:
-            isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+        mainAxisAlignment: isUser
+            ? MainAxisAlignment.end
+            : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           if (!isUser) ...[_aiAvatar(), const SizedBox(width: 8)],
@@ -34,10 +35,9 @@ class ChatBubble extends StatelessWidget {
               constraints: BoxConstraints(
                 maxWidth: MediaQuery.of(context).size.width * 0.75,
               ),
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
               decoration: BoxDecoration(
-                color: isUser ? AppColors.primary : AppColors.card,
+                color: isUser ? AppColors.primary : Colors.white,
                 borderRadius: BorderRadius.only(
                   topLeft: const Radius.circular(18),
                   topRight: const Radius.circular(18),
@@ -65,9 +65,7 @@ class ChatBubble extends StatelessWidget {
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
                         height: 1.5,
-                        color: isUser
-                            ? Colors.white
-                            : AppColors.textPrimary,
+                        color: isUser ? Colors.white : AppColors.textPrimary,
                       ),
                     ),
             ),
@@ -85,8 +83,11 @@ class ChatBubble extends StatelessWidget {
         gradient: AppColors.aiGradient,
         shape: BoxShape.circle,
       ),
-      child: const Icon(Icons.auto_awesome_rounded,
-          size: 16, color: Colors.white),
+      child: const Icon(
+        Icons.auto_awesome_rounded,
+        size: 16,
+        color: Colors.white,
+      ),
     );
   }
 }

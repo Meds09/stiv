@@ -3,15 +3,12 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:stiv/features/diagnostic/domain/entities/chat_message.dart';
 
 /// Datasource que se comunica con Gemini usando el paquete oficial google_generative_ai.
-///
-/// **Seguridad**: la API key se lee en tiempo de ejecución desde `.env` a
-/// través de `flutter_dotenv` y NUNCA se incluye como literal en el código
-/// fuente ni en el binario compilado.
+
 class GeminiChatDatasource {
   String get _apiKey {
     final key = dotenv.maybeGet('GEMINI_API_KEY');
     if (key == null || key.isEmpty) {
-      throw Exception('GEMINI_API_KEY no está configurada en el archivo .env');
+      throw Exception('GEMINI_API_KEY no configurada');
     }
     return key;
   }
@@ -24,7 +21,7 @@ class GeminiChatDatasource {
     required String systemPrompt,
   }) async* {
     final model = GenerativeModel(
-      model: 'gemini-2.5-flash',
+      model: 'gemini-2.5-flash-lite',
       apiKey: _apiKey,
       systemInstruction: Content.system(systemPrompt),
       generationConfig: GenerationConfig(
@@ -35,6 +32,8 @@ class GeminiChatDatasource {
       safetySettings: [
         SafetySetting(HarmCategory.harassment, HarmBlockThreshold.medium),
         SafetySetting(HarmCategory.dangerousContent, HarmBlockThreshold.medium),
+        SafetySetting(HarmCategory.sexuallyExplicit, HarmBlockThreshold.medium),
+        SafetySetting(HarmCategory.hateSpeech, HarmBlockThreshold.medium),
       ],
     );
 
