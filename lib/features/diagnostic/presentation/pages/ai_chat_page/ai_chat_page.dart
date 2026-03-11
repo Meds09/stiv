@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stiv/core/router/router.dart';
 import 'package:stiv/core/theme/theme_data.dart';
 import 'package:stiv/features/diagnostic/domain/entities/ai_chat_context.dart';
 import 'package:stiv/features/diagnostic/presentation/pages/ai_chat_page/chat_bubble.dart';
@@ -48,9 +49,7 @@ class _AiChatPageState extends ConsumerState<AiChatPage> {
     final text = _textCtrl.text.trim();
     if (text.isEmpty) return;
     HapticFeedback.lightImpact();
-    ref
-        .read(aiChatProvider(widget.chatContext).notifier)
-        .sendMessage(text);
+    ref.read(aiChatProvider(widget.chatContext).notifier).sendMessage(text);
     _textCtrl.clear();
     _scrollToBottom();
   }
@@ -63,7 +62,7 @@ class _AiChatPageState extends ConsumerState<AiChatPage> {
     ref.listen(aiChatProvider(widget.chatContext), (_, _) => _scrollToBottom());
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: const Color(0xFFF0EBE4),
       appBar: _buildAppBar(context),
       body: Column(
         children: [
@@ -86,8 +85,7 @@ class _AiChatPageState extends ConsumerState<AiChatPage> {
                     itemCount: state.messages.length,
                     itemBuilder: (_, i) {
                       final msg = state.messages[i];
-                      final isStreaming =
-                          msg.id == state.streamingMessageId;
+                      final isStreaming = msg.id == state.streamingMessageId;
                       return ChatBubble(
                         text: msg.text,
                         isUser: msg.isUser,
@@ -117,9 +115,7 @@ class _AiChatPageState extends ConsumerState<AiChatPage> {
     return PreferredSize(
       preferredSize: const Size.fromHeight(kToolbarHeight),
       child: Container(
-        decoration: const BoxDecoration(
-          gradient: AppColors.aiGradient,
-        ),
+        decoration: const BoxDecoration(gradient: AppColors.aiGradient),
         child: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -135,8 +131,11 @@ class _AiChatPageState extends ConsumerState<AiChatPage> {
                   color: Colors.white.withValues(alpha: 0.2),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.auto_awesome_rounded,
-                    size: 18, color: Colors.white),
+                child: const Icon(
+                  Icons.auto_awesome_rounded,
+                  size: 18,
+                  color: Colors.white,
+                ),
               ),
               const SizedBox(width: 10),
               Column(
@@ -164,13 +163,26 @@ class _AiChatPageState extends ConsumerState<AiChatPage> {
               ),
             ],
           ),
+          actions: [
+            TextButton(
+              onPressed: () => router.go('/home'),
+              child: const Text(
+                'Terminar',
+                style: TextStyle(
+                  fontFamily: 'Rubik',
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+          ],
         ),
       ),
     );
   }
 }
-
-
 
 // ── Error banner ──────────────────────────────────────────────────────────────
 
@@ -183,12 +195,17 @@ class _ErrorBanner extends StatelessWidget {
     return Container(
       width: double.infinity,
       color: AppColors.danger.withValues(alpha: 0.08),
-      padding:
-          const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: 8),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.md,
+        vertical: 8,
+      ),
       child: Row(
         children: [
-          const Icon(Icons.warning_amber_rounded,
-              size: 16, color: AppColors.danger),
+          const Icon(
+            Icons.warning_amber_rounded,
+            size: 16,
+            color: AppColors.danger,
+          ),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
@@ -232,12 +249,7 @@ class _InputBar extends StatelessWidget {
           AppSpacing.sm,
           AppSpacing.md,
         ),
-        decoration: BoxDecoration(
-          color: AppColors.surface,
-          border: const Border(
-            top: BorderSide(color: AppColors.border),
-          ),
-        ),
+        decoration: const BoxDecoration(color: Colors.transparent),
         child: Row(
           children: [
             Expanded(
@@ -257,23 +269,29 @@ class _InputBar extends StatelessWidget {
                     color: AppColors.textSecondary,
                   ),
                   filled: true,
-                  fillColor: AppColors.background,
+                  fillColor: Colors.transparent,
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: 14,
                     vertical: 10,
                   ),
                   border: OutlineInputBorder(
                     borderRadius: AppRadii.brLg,
-                    borderSide: const BorderSide(color: AppColors.border),
+                    borderSide: BorderSide(
+                      color: Colors.black.withValues(alpha: 0.12),
+                    ),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: AppRadii.brLg,
-                    borderSide: const BorderSide(color: AppColors.border),
+                    borderSide: BorderSide(
+                      color: Colors.black.withValues(alpha: 0.12),
+                    ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: AppRadii.brLg,
-                    borderSide:
-                        const BorderSide(color: AppColors.primary, width: 1.4),
+                    borderSide: const BorderSide(
+                      color: AppColors.primary,
+                      width: 1.4,
+                    ),
                   ),
                   disabledBorder: OutlineInputBorder(
                     borderRadius: AppRadii.brLg,
