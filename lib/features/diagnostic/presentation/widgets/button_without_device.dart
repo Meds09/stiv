@@ -9,7 +9,7 @@ class ButtonWithoutDevice extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: (){
-        router.pushNamed('diagnostic-flow');
+        router.goNamed('diagnostic-flow');
       },
       style: AppButtonStyles.primary,
       child: Row(

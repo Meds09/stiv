@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stiv/core/router/router.dart';
 import 'package:stiv/core/theme/theme_data.dart';
+import 'package:stiv/features/auth/providers/bottom_nav_bar_provider.dart';
 import 'package:stiv/features/diagnostic/domain/entities/ai_chat_context.dart';
 import 'package:stiv/features/diagnostic/presentation/pages/ai_chat_page/chat_bubble.dart';
 import 'package:stiv/features/diagnostic/presentation/providers/ai_chat_provider.dart';
@@ -165,7 +166,10 @@ class _AiChatPageState extends ConsumerState<AiChatPage> {
           ),
           actions: [
             TextButton(
-              onPressed: () => router.go('/home'),
+              onPressed: () {
+                ref.read(menuIndexProvider.notifier).state = 0;
+                router.go('/home');
+              },
               child: const Text(
                 'Terminar',
                 style: TextStyle(
