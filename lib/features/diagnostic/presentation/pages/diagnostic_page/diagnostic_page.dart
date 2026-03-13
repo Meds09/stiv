@@ -107,7 +107,7 @@ class DiagnosticPage extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  children: const [ButtonWithoutDevice()],
+                  children: [ButtonWithoutDevice()],
                 ),
               ),
             ),

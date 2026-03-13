@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stiv/core/router/router.dart';
 import 'package:stiv/core/theme/theme_data.dart';
 
 class ButtonWithoutDevice extends StatelessWidget {
@@ -7,7 +8,9 @@ class ButtonWithoutDevice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: (){},
+      onPressed: (){
+        router.goNamed('diagnostic-flow');
+      },
       style: AppButtonStyles.primary,
       child: Row(
         mainAxisSize: MainAxisSize.min,

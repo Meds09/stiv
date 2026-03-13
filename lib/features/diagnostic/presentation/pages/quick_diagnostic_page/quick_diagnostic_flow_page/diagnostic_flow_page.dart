@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stiv/core/router/router.dart';
 import 'package:stiv/core/theme/theme_data.dart';
+import 'package:stiv/features/auth/providers/bottom_nav_bar_provider.dart';
 import 'package:stiv/features/diagnostic/presentation/pages/quick_diagnostic_page/quick_diagnostic_flow_page/widgets/diagnostic_progress_bar.dart';
 import 'package:stiv/features/diagnostic/presentation/pages/quick_diagnostic_page/quick_diagnostic_flow_page/widgets/flow_header.dart';
 import 'package:stiv/features/diagnostic/presentation/pages/quick_diagnostic_page/quick_diagnostic_flow_page/widgets/flow_back_button.dart';
@@ -44,6 +45,7 @@ const _symptomDescriptions = <String, String>{
 // ─── Main page ────────────────────────────────────────────────────────────────
 
 class DiagnosticFlowPage extends ConsumerStatefulWidget {
+  
   const DiagnosticFlowPage({super.key, required this.symptomId});
   final String symptomId;
 
@@ -197,6 +199,7 @@ class _DiagnosticFlowPageState extends ConsumerState<DiagnosticFlowPage>
   // ── Dialogs ──────────────────────────────────────────────────────────────────
 
   void _showExitDialog() {
+
     showDialog(
       context: context,
       barrierColor: Colors.black.withValues(alpha: 0.4),
@@ -240,6 +243,7 @@ class _DiagnosticFlowPageState extends ConsumerState<DiagnosticFlowPage>
                     ),
                     onPressed: () {
                       router.go("/home");
+                      ref.read(menuIndexProvider.notifier).state = 0;
                     },
                     child: const Text('Salir',
                         style: TextStyle(
