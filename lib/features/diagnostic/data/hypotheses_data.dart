@@ -18,7 +18,7 @@ final Map<String, List<Hypothesis>> hypothesesBySymptom = {
   // POWER ISSUE — "No enciende"
   // ══════════════════════════════════════════════════════
   'power_issue': const [
-    ...energyPowerHypotheses,  // PoE, adaptador, cable, breaker, UPS
+    ...energyPowerHypotheses,  // PoE, adaptador, cable, breaker, UPS + nuevas
     ...accessOtherHypotheses,  // batería panel acceso
   ],
 
@@ -46,6 +46,7 @@ final Map<String, List<Hypothesis>> hypothesesBySymptom = {
 
   // ══════════════════════════════════════════════════════
   // CAMERA ISSUE — "Cámara falla / no graba"
+  // Incluye hipótesis de cámara IP, grabación, ONVIF y ancho de banda
   // ══════════════════════════════════════════════════════
   'camera_issue': const [
     ...cctvCameraHypotheses,

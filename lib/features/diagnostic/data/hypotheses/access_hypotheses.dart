@@ -69,11 +69,68 @@ const accessOtherHypotheses = <Hypothesis>[
         'Lector secundario no permite abrir. Cables D0/D1 Wiegand, o RS-485 (TX/RX) apuntando al controlador fueron conectados chuecos durante un remiendo.',
     recommendedActions: [
       'Paso 1 — RS-485 se monta en cadena Margarita: Positivo al Positivo (D+) Negativo al Negativo (D-). Voltear e intentar; estos chips MAX485 suelen protegerse solos de polarizaciones inversas erradas.',
-      'Paso 2 — Lector esclavo parpadea verde pero no abre el electroimán. En protocolos wiegand Data0 (Green) / Data1 (White) están cruzados llegando al panel base.',
+      'Paso 2 — Lector esclavo parpadea verde pero no abre el electroímán. En protocolos wiegand Data0 (Green) / Data1 (White) están cruzados llegando al panel base.',
       'Paso 3 — Medir Ohmios sobre cable RS485 (120 Ohm fin línea resistor) si es largo (miles metros), quizá falta impedancia final.',
       'Paso 4 — Destornillar los bornes de la bornera verde del Wiegand 2 o Reader, pelar cable nuevamente porque la prensa "pellizcó" el forro plástico aislante adrenal de cobre y rompió voltaje al panel de control maestro.',
       'Paso 5 — Verificar tarjeta maestra (Reader Format) configurada a "26 bit Wiegand" versus lecturas modernas de 34 bits del aparato lector.',
     ],
     escalationThreshold: 0.40,
+  ),
+  // ── Nuevas hipótesis de control de acceso ─────────────────────────────────────────────────────────────
+  Hypothesis(
+    id: 'access_schedule_error',
+    label: 'Horario de acceso mal configurado o expirado',
+    description:
+        'El panel de acceso funciona correctamente pero los usuarios no pueden entrar porque el horario de acceso asignado a la zona, puerta o grupo de usuarios está deshabilitado, expirado o es incorrecto. Es la causa más frecuente de "credencial válida que no abre".',
+    recommendedActions: [
+      'Paso 1 — En el software de control de acceso, ir a Configuración > Horarios de Acceso. Verificar que el horario asignado a la puerta y/o grupo de usuarios incluya el día y la hora actual.',
+      'Paso 2 — Revisar si la fecha de vigencia del horario o de las credenciales de usuario está vencida: buscar campos "Fecha de inicio" y "Fecha de fin" en el perfil de usuario.',
+      'Paso 3 — Verificar que la puerta tenga un horario de acceso asignado: si el campo está vacío o en "Sin horario", la puerta no permitirá acceso en ningún momento.',
+      'Paso 4 — Comprobar que el día de la semana actual esté incluido en el horario: muchos horarios están configurados solo para días hábiles y los fines de semana quedan bloqueados.',
+      'Paso 5 — Sincronizar el horario del panel con el servidor NTP o ajustar manualmente la hora del controlador: una diferencia de hora entre el software y el panel puede causar denegaciones incorrectas.',
+    ],
+    escalationThreshold: 0.20,
+  ),
+  Hypothesis(
+    id: 'antipassback_violation',
+    label: 'Violación de Antipassback (APB) / Zona bloqueada',
+    description:
+        'El sistema detectó que un usuario intentó acceder a una zona sin haber registrado la salida correctamente (o viceversa). El antipassback bloquea el acceso hasta que se resuelva la violación.',
+    recommendedActions: [
+      'Paso 1 — En el software de acceso, buscar el indicador de violación de antipassback del usuario afectado (suele aparecer como un ícono o alerta en el perfil del usuario).',
+      'Paso 2 — Limpiar la violación de antipassback desde el software: buscar la opción "Resetear APB", "Limpiar estado de zona" o "Liberar usuario" en el perfil del usuario.',
+      'Paso 3 — Si muchos usuarios tienen la misma violación simultáneamente, puede deberse a un reinicio del servidor o panel que perdió el estado de zonas: hacer un reset global de APB.',
+      'Paso 4 — Verificar la configuración de antipassback de la puerta: si está en modo "Estricto", no permitirá el acceso hasta que se resuelva. Cambiar a "Suave" solo envía una alerta pero permite el acceso.',
+      'Paso 5 — Revisar que todos los lectores de entrada y salida de cada zona estén funcionando correctamente: si un lector de salida falla, los usuarios nunca registran la salida y quedan bloqueados.',
+    ],
+    escalationThreshold: 0.20,
+  ),
+  Hypothesis(
+    id: 'lock_face_obstruction',
+    label: 'Marco de puerta deformado / Hoja desalineada',
+    description:
+        'La puerta o el marco están físicamente deformados por temperatura, humedad o traslados, causando que la chapa electromagnética o el pestillo no hagan contacto completo con la superficie de fijación.',
+    recommendedActions: [
+      'Paso 1 — Inspeccionar visualmente el espacio entre la hoja de la puerta y el marco: si hay una separación irregular o si la hoja está torcida, hay desalineamiento.',
+      'Paso 2 — Para electromagnéticas: medir con multímetro el voltaje en los terminales de la chapa al activar. Si el voltaje es correcto pero la chapa no retiene, la placa de contacto no está paralela.',
+      'Paso 3 — Ajustar la posición de la placa de contacto (armature plate) de la chapa electromagnética: aflojar los tornillos de fijación y realinearla para maximizar el área de contacto.',
+      'Paso 4 — Para cerraduras eléctricas de pestillo: lubricar el mecanismo con grasa neutra y verificar que el pestillo retraiga completamente al activar la corriente.',
+      'Paso 5 — Si el problema persiste, instalar un ajustador de puerta (bracket de ajuste) o llamar a un cerrajero especializado para corregir el marco.',
+    ],
+    escalationThreshold: 0.25,
+  ),
+  Hypothesis(
+    id: 'credential_not_enrolled',
+    label: 'Tarjeta/Huella no enrolada o enrolada en otro panel',
+    description:
+        'Las credenciales (tarjetas RFID, huellas dactilares o PINs) no están registradas en el controlador local de acceso, o fueron registradas en un controlador diferente sin sincronización.',
+    recommendedActions: [
+      'Paso 1 — En el software, verificar si el usuario existe y si sus credenciales están asignadas al panel que controla la puerta afectada.',
+      'Paso 2 — Revisar si la credencial fue registrada en otro servidor o panel: en sistemas multi-panel, las credenciales deben estar sincronizadas a todos los controladores.',
+      'Paso 3 — Forzar una sincronización desde el software hacia el panel: buscar la opción "Sincronizar", "Descargar al panel" o "Cargar usuarios al dispositivo".',
+      'Paso 4 — Si es una huella dactilar, verificar que la huella fue enrolada con la misma mano/dedo que el usuario está usando al intentar acceder.',
+      'Paso 5 — En sistemas offline (sin servidor central), asegurarse de que los usuarios fueron exportados e importados correctamente al panel físico mediante la herramienta de configuración del fabricante.',
+    ],
+    escalationThreshold: 0.20,
   ),
 ];

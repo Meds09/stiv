@@ -13,9 +13,18 @@ import 'package:stiv/features/diagnostic/presentation/pages/ai_chat_page/ai_chat
 /// Muestra la causa probable, nivel de confianza, acciones recomendadas
 /// y opción de escalación a IA si la confianza es baja.
 class DiagnosticResultPage extends ConsumerWidget {
-  const DiagnosticResultPage({super.key, required this.result});
+  const DiagnosticResultPage({
+    super.key,
+    required this.result,
+    this.deviceName,
+    this.symptomLabel,
+  });
 
   final DiagnosticResult result;
+  /// Nombre del dispositivo específico (null cuando viene del quick diagnostic).
+  final String? deviceName;
+  /// Etiqueta del síntoma seleccionado (null cuando viene del quick diagnostic).
+  final String? symptomLabel;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -35,16 +44,16 @@ class DiagnosticResultPage extends ConsumerWidget {
                     _ConfidenceCard(result: result),
                     const SizedBox(height: AppSpacing.md),
                     _RecommendationsCard(result: result),
-                    if (result.allScores.length > 1) ...[
-                      const SizedBox(height: AppSpacing.md),
-                      _HypothesisRankingCard(result: result),
-                    ],
                     if (result.requiresAiEscalation) ...[
                       const SizedBox(height: AppSpacing.md),
                       _AiEscalationBanner(),
                     ],
                     const SizedBox(height: AppSpacing.xl),
-                    _ActionButtons(result: result),
+                    _ActionButtons(
+                      result: result,
+                      deviceName: deviceName,
+                      symptomLabel: symptomLabel,
+                    ),
                     const SizedBox(height: AppSpacing.lg),
                   ],
                 ),
@@ -387,101 +396,6 @@ class _RecommendationsCard extends StatelessWidget {
   }
 }
 
-// ─── Hypothesis Ranking Card ──────────────────────────────────────────────────
-
-class _HypothesisRankingCard extends StatelessWidget {
-  const _HypothesisRankingCard({required this.result});
-  final DiagnosticResult result;
-
-  @override
-  Widget build(BuildContext context) {
-    final sorted = result.allScores.entries.where((e) => e.value > 0).toList()
-      ..sort((a, b) => b.value.compareTo(a.value));
-
-    if (sorted.isEmpty) return const SizedBox.shrink();
-
-    final total = sorted.fold(0.0, (acc, e) => acc + e.value);
-
-    return Container(
-      padding: const EdgeInsets.all(AppSpacing.md),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: AppRadii.brMd,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Otras hipótesis evaluadas',
-            style: TextStyle(
-              fontFamily: 'Rubik',
-              fontWeight: FontWeight.w700,
-              fontSize: 15,
-              color: AppColors.textPrimary,
-            ),
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          ...sorted.take(4).map((entry) {
-            final pct = total == 0 ? 0.0 : entry.value / total;
-            final isWinner = entry.key == result.probableCause?.id;
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    entry.key,
-                    style: TextStyle(
-                      fontFamily: 'Inter',
-                      fontWeight:
-                          isWinner ? FontWeight.w700 : FontWeight.w400,
-                      fontSize: 12,
-                      color: isWinner
-                          ? AppColors.primary
-                          : AppColors.textSecondary,
-                    ),
-                  ),
-                  const SizedBox(height: 3),
-                  Stack(
-                    children: [
-                      Container(
-                        height: 6,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: AppColors.border,
-                          borderRadius: BorderRadius.circular(3),
-                        ),
-                      ),
-                      FractionallySizedBox(
-                        widthFactor: pct.clamp(0.0, 1.0),
-                        child: Container(
-                          height: 6,
-                          decoration: BoxDecoration(
-                            color: isWinner
-                                ? AppColors.primary
-                                : AppColors.textSecondary.withValues(alpha: 0.4),
-                            borderRadius: BorderRadius.circular(3),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            );
-          }),
-        ],
-      ),
-    );
-  }
-}
 
 // ─── AI Escalation Banner ─────────────────────────────────────────────────────
 
@@ -489,43 +403,117 @@ class _AiEscalationBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        gradient: AppColors.aiGradient,
         borderRadius: AppRadii.brMd,
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primary.withValues(alpha: 0.25),
+            blurRadius: 20,
+            spreadRadius: 2,
+            offset: const Offset(0, 6),
+          ),
+        ],
       ),
-      child: Row(
-        children: [
-          const Icon(Icons.auto_awesome, color: Colors.white, size: 28),
-          const SizedBox(width: 12),
-          const Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      child: Container(
+        padding: const EdgeInsets.all(AppSpacing.md),
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [Color(0xFF1A56DB), Color(0xFF6C2BD9)],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+          ),
+          borderRadius: AppRadii.brMd,
+          border: Border.all(
+            color: Colors.white.withValues(alpha: 0.20),
+            width: 1.5,
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
               children: [
-                Text(
-                  'Asistencia con IA disponible',
-                  style: TextStyle(
-                    fontFamily: 'Rubik',
-                    fontWeight: FontWeight.w700,
-                    fontSize: 14,
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.15),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.support_agent_rounded,
                     color: Colors.white,
+                    size: 26,
                   ),
                 ),
-                SizedBox(height: 2),
-                Text(
-                  'La evidencia recopilada es insuficiente. La IA puede ayudarte a profundizar el diagnóstico.',
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12,
-                    color: Colors.white,
-                    height: 1.4,
+                const SizedBox(width: 12),
+                const Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '¡Requiere soporte especializado!',
+                        style: TextStyle(
+                          fontFamily: 'Rubik',
+                          fontWeight: FontWeight.w700,
+                          fontSize: 15,
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(height: 2),
+                      Text(
+                        'El diagnóstico automático no pudo determinar la causa con certeza.',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12,
+                          color: Colors.white70,
+                          height: 1.4,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
-          ),
-        ],
+            const SizedBox(height: AppSpacing.sm),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.md,
+                vertical: AppSpacing.sm,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: Colors.white.withValues(alpha: 0.25),
+                ),
+              ),
+              child: const Row(
+                children: [
+                  Icon(
+                    Icons.auto_awesome_rounded,
+                    color: Colors.white,
+                    size: 18,
+                  ),
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Usa el botón "Consultar con IA" de abajo para obtener un análisis detallado con inteligencia artificial.',
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12,
+                        color: Colors.white,
+                        height: 1.4,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -534,8 +522,14 @@ class _AiEscalationBanner extends StatelessWidget {
 // ─── Action Buttons ───────────────────────────────────────────────────────────
 
 class _ActionButtons extends ConsumerWidget {
-  const _ActionButtons({required this.result});
+  const _ActionButtons({
+    required this.result,
+    this.deviceName,
+    this.symptomLabel,
+  });
   final DiagnosticResult result;
+  final String? deviceName;
+  final String? symptomLabel;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -563,9 +557,11 @@ class _ActionButtons extends ConsumerWidget {
             onPressed: () {
               final user = ref.read(currentUserProvider);
               final name = user?.displayName?.split(' ').first ?? 'Técnico';
+              // Usa el nombre real del dispositivo si viene de un diagnóstico
+              // específico, de lo contrario usa la causa probable del DSS.
               final ctx = AiChatContext(
-                deviceType: result.probableCause?.label ?? 'Dispositivo',
-                symptomLabel: result.probableCause?.description,
+                deviceType: deviceName ?? result.probableCause?.label ?? 'Dispositivo',
+                symptomLabel: symptomLabel ?? result.probableCause?.description,
                 userName: name,
               );
               Navigator.of(context).push(

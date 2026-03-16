@@ -28,8 +28,8 @@ const mockProblems = <Problem> [
   Problem( 
     id: 4,
     icon: Icon(Icons.lock_outline, color: Colors.redAccent, size: 24,),
-    title: 'Fallas de autenticación',
-    description: 'El sistema no permite el ingreso del usuario',
+    title: 'Ruidos o sonidos inusuales',
+    description: 'El equipo emite ruidos o sonidos inusuales',
     appliedCategoryIds: {1,2,4},// CCTV, Red y Control acceso
   ),
     Problem(
