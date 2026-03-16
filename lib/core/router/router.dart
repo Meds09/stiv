@@ -11,6 +11,8 @@ import 'package:stiv/features/guides/presentation/guides_page.dart';
 import 'package:stiv/features/guides/presentation/guide_detail_page.dart';
 import 'package:stiv/features/guides/domain/models/guides.dart';
 import 'package:stiv/features/diagnostic/presentation/pages/quick_diagnostic_page/quick_diagnostic_flow_page/diagnostic_flow_page.dart';
+import 'package:stiv/features/diagnostic/presentation/pages/device_diagnostic_page/device_diagnostic_flow_page.dart';
+import 'package:stiv/features/diagnostic/presentation/providers/device_diagnostic_flow_provider.dart';
 
 /// Estado del Onboarding (con SharedPreferences)
 class OnboardingState extends ChangeNotifier {
@@ -125,6 +127,21 @@ final router = GoRouter(
           );
         }
         return SelectDevicePage(deviceId: deviceId, device: null);
+      },
+    ),
+
+    // Flujo de diagnóstico específico por dispositivo registrado
+    GoRoute(
+      path: '/diagnostic/device/:deviceId/flow',
+      name: 'device-diagnostic-flow',
+      builder: (context, state) {
+        final params = state.extra as DeviceDiagnosticParams?;
+        if (params == null) {
+          return const Scaffold(
+            body: Center(child: Text('Parámetros de diagnóstico inválidos')),
+          );
+        }
+        return DeviceDiagnosticFlowPage(params: params);
       },
     ),
 
