@@ -82,11 +82,17 @@ List<Hypothesis> _hypothesesForSymptom(String symptomKey) {
 /// Gestiona la lógica del flujo de diagnóstico contextualizado por dispositivo.
 /// Reutiliza [DiagnosticFlowState] para compatibilidad con los widgets existentes.
 class DeviceDiagnosticFlowNotifier
-    extends StateNotifier<DiagnosticFlowState> {
-  DeviceDiagnosticFlowNotifier(DeviceDiagnosticParams params)
-      : super(_buildInitialState(params));
+    extends Notifier<DiagnosticFlowState> {
+  final DeviceDiagnosticParams _params;
+
+  DeviceDiagnosticFlowNotifier(this._params);
 
   static const _engine = InferenceEngine(confidenceThreshold: 0.75);
+
+  @override
+  DiagnosticFlowState build() {
+    return _buildInitialState(_params);
+  }
 
   static DiagnosticFlowState _buildInitialState(DeviceDiagnosticParams p) {
     final questions = deviceDiagnosticQuestions;
@@ -311,8 +317,8 @@ class DeviceDiagnosticFlowNotifier
 
 /// Provider autoDispose que gestiona el flujo DSS específico por dispositivo.
 /// El parámetro es [DeviceDiagnosticParams] (deviceId + symptomKey + etc.)
-final deviceDiagnosticFlowProvider = StateNotifierProvider.autoDispose
+final deviceDiagnosticFlowProvider = NotifierProvider.autoDispose
     .family<DeviceDiagnosticFlowNotifier, DiagnosticFlowState,
         DeviceDiagnosticParams>(
-  (ref, params) => DeviceDiagnosticFlowNotifier(params),
+  DeviceDiagnosticFlowNotifier.new,
 );

@@ -8,7 +8,7 @@ final authStateProvider = StreamProvider<User?>((ref) {
 
 final currentUserProvider = Provider<User?>((ref) {
   return ref.watch(
-    authStateProvider.select((state) => state.valueOrNull),
+    authStateProvider.select((state) => state.value),
   );
 });
 
@@ -23,7 +23,15 @@ final userFirstNameProvider = Provider<String>((ref) {
 });
 
 
-final isSigningOutProvider = StateProvider<bool>((ref) => false);
+class IsSigningOutNotifier extends Notifier<bool> {
+  @override
+  bool build() => false;
+
+  void setSigningOut(bool signingOut) => state = signingOut;
+}
+
+final isSigningOutProvider =
+    NotifierProvider<IsSigningOutNotifier, bool>(IsSigningOutNotifier.new);
 
 
 final _authStateListenerProvider = Provider<void>((ref) {
@@ -31,7 +39,7 @@ final _authStateListenerProvider = Provider<void>((ref) {
     next.whenData((user) {
       // Si hay usuario (inició sesión), resetea isSigningOut
       if (user != null) {
-        ref.read(isSigningOutProvider.notifier).state = false;
+        ref.read(isSigningOutProvider.notifier).setSigningOut(false);
       }
     });
   });
@@ -49,10 +57,10 @@ class AuthController {
   AuthController(this.ref);
   
   Future<void> signOut() async {
-    ref.read(isSigningOutProvider.notifier).state = true;
+    ref.read(isSigningOutProvider.notifier).setSigningOut(true);
     await Future.delayed(const Duration(milliseconds: 800));
     await FirebaseAuth.instance.signOut();
-    ref.read(menuIndexProvider.notifier).state = 0;
+    ref.read(menuIndexProvider.notifier).setIndex(0);
     
   }
   

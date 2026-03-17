@@ -32,7 +32,7 @@ class _GuidesSearchBarState extends ConsumerState<GuidesSearchBar> {
         padding: const WidgetStatePropertyAll(EdgeInsets.symmetric(horizontal: 16)),
         leading: const Icon(Icons.search, color: AppColors.primary),
         onChanged: (query) {
-          ref.read(guideSearchQueryProvider.notifier).state = query;
+          ref.read(guideSearchQueryProvider.notifier).setQuery(query);
         },
       ),
     );

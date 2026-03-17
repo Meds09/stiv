@@ -128,16 +128,7 @@ class _DeviceTypeListState extends ConsumerState<DeviceTypeList>
                 child: const Icon(Icons.expand_more, color: AppColors.textSecondary),
               ),
               onTap: () {
-                final notifier = ref.read(isExpandedCategoryIdProvider.notifier);
-                final next = {...notifier.state};
-
-                if (next.contains(widget.category.id)) {
-                  next.remove(widget.category.id);
-                } else {
-                  next.add(widget.category.id);
-                }
-
-                notifier.state = next;
+                ref.read(isExpandedCategoryIdProvider.notifier).toggle(widget.category.id);
               },
             ),
 
@@ -188,7 +179,7 @@ class _DevicesBlock extends ConsumerWidget {
                 ),
               ),
               onTap: () {
-                ref.read(selectedDeviceProvider.notifier).state = device;
+                ref.read(selectedDeviceProvider.notifier).setDevice(device);
 
                 context.pushNamed(
                   'diagnosticChat',

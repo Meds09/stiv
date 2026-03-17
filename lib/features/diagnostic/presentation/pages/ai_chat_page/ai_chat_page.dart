@@ -167,7 +167,7 @@ class _AiChatPageState extends ConsumerState<AiChatPage> {
           actions: [
             TextButton(
               onPressed: () {
-                ref.read(menuIndexProvider.notifier).state = 0;
+                ref.read(menuIndexProvider.notifier).setIndex(0);
                 router.go('/home');
               },
               child: const Text(

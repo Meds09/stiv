@@ -39,13 +39,11 @@ class _CustomBottomNavigationBarState
 
   void onItemTapped(BuildContext context, WidgetRef ref, int index) {
     final router = GoRouter.of(context);
-    final indexProvider = ref.read(menuIndexProvider.notifier);
+    ref.read(menuIndexProvider.notifier).setIndex(index);
 
     _animationController.forward(from: 0.0).then((_) {
       _animationController.reverse();
     });
-
-    indexProvider.state = index;
 
     switch (index) {
       case 0:

@@ -136,18 +136,9 @@ class _DeviceTypeListState extends ConsumerState<DeviceTypeList>
                 child: const Icon(Icons.expand_more, color: AppColors.textSecondary),
               ),
               onTap: () {
-                final notifier = ref.read(
+                ref.read(
                   isExpandedCategoryIdProviderFromDevicesPage.notifier,
-                );
-                final next = {...notifier.state};
-
-                if (next.contains(widget.category.id)) {
-                  next.remove(widget.category.id);
-                } else {
-                  next.add(widget.category.id);
-                }
-
-                notifier.state = next;
+                ).toggle(widget.category.id);
               },
             ),
 

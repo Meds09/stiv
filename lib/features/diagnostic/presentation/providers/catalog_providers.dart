@@ -8,11 +8,27 @@ import 'package:stiv/features/devices/domain/models/device.dart';
 import 'package:stiv/features/devices/providers/devices_providers.dart' as dp;
 import 'package:stiv/features/home/presentation/providers/recent_diagnostics_provider.dart';
 
+class SelectedDeviceNotifier extends Notifier<Device?> {
+  @override
+  Device? build() => null;
+  void setDevice(Device? device) => state = device;
+}
 /// Selected device provider for diagnostic flow
-final selectedDeviceProvider = StateProvider<Device?>((ref) => null);
+final selectedDeviceProvider = NotifierProvider<SelectedDeviceNotifier, Device?>(SelectedDeviceNotifier.new);
 
+class ExpandedCategoryIdsNotifier extends Notifier<Set<int>> {
+  @override
+  Set<int> build() => <int>{};
+  void toggle(int id) {
+    if (state.contains(id)) {
+      state = {...state}..remove(id);
+    } else {
+      state = {...state}..add(id);
+    }
+  }
+}
 // State provider for expanded categories in device page
-final isExpandedCategoryIdProvider = StateProvider<Set<int>>((ref) => <int>{});
+final isExpandedCategoryIdProvider = NotifierProvider<ExpandedCategoryIdsNotifier, Set<int>>(ExpandedCategoryIdsNotifier.new);
 
 /// Catalog repository provider using Firestore
 final catalogRepositoryProvider = Provider<CatalogRepository>((ref) {

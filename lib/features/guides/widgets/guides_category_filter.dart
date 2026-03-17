@@ -37,10 +37,17 @@ class GuidesCategoryFilter extends ConsumerWidget {
                 label: Text(category),
                 selected: isSelected,
                 onSelected: (selected) {
+                  // The original logic was: if 'Todas' is selected, set null. Otherwise, set the category.
+                  // The provided edit's `if (isSelected)` condition would mean:
+                  // if the *currently selected* chip is clicked again, set null.
+                  // if a *non-selected* chip is clicked, set its category.
+                  // This changes the behavior for 'Todas'.
+                  // To maintain the original behavior while using setCategory:
                   if (category == 'Todas') {
-                    ref.read(selectedCategoryProvider.notifier).state = null;
+                    ref.read(selectedCategoryProvider.notifier).setCategory(null);
                   } else {
-                    ref.read(selectedCategoryProvider.notifier).state = category;
+                    // Assuming category is a String, not an object with a 'name' property.
+                    ref.read(selectedCategoryProvider.notifier).setCategory(category);
                   }
                 },
                 backgroundColor: AppColors.surface,

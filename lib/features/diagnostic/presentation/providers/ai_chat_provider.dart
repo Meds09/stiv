@@ -81,15 +81,23 @@ Inicia el diagnóstico haciendo la primera pregunta técnica relacionada con el 
 
 // ─── Notifier ────────────────────────────────────────────────────────────────
 
-class AiChatNotifier extends StateNotifier<AiChatState> {
-  AiChatNotifier(this._repository, this._context) : super(const AiChatState()) {
-    _startConversation();
-  }
-
-  final AiChatRepository _repository;
+class AiChatNotifier extends Notifier<AiChatState> {
   final AiChatContext _context;
+  
+  AiChatNotifier(this._context);
+
+  AiChatRepository get _repository => ref.read(aiChatRepositoryProvider);
   final _uuid = const Uuid();
   StreamSubscription<String>? _streamSub;
+
+  @override
+  AiChatState build() {
+    ref.onDispose(() {
+      _streamSub?.cancel();
+    });
+    Future.microtask(() => _startConversation());
+    return const AiChatState();
+  }
 
   /// Genera el saludo inicial de la IA al abrir el chat.
   Future<void> _startConversation() async {
@@ -236,21 +244,13 @@ class AiChatNotifier extends StateNotifier<AiChatState> {
     }
   }
 
-  @override
-  void dispose() {
-    _streamSub?.cancel();
-    super.dispose();
-  }
 }
 
 // ─── Provider family (autoDispose) ───────────────────────────────────────────
 
-final aiChatProvider = StateNotifierProvider.autoDispose
+final aiChatProvider = NotifierProvider.autoDispose
     .family<AiChatNotifier, AiChatState, AiChatContext>(
-  (ref, ctx) {
-    final repository = ref.read(aiChatRepositoryProvider);
-    return AiChatNotifier(repository, ctx);
-  },
+  AiChatNotifier.new,
 );
 
 // ─── Provider de contexto construido desde el usuario autenticado ────────────

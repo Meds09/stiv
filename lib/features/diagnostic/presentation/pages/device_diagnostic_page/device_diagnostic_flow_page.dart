@@ -221,7 +221,7 @@ class _DeviceDiagnosticFlowPageState
                     ),
                     onPressed: () {
                       router.go('/home');
-                      ref.read(menuIndexProvider.notifier).state = 0;
+                      ref.read(menuIndexProvider.notifier).setIndex(0);
                     },
                     child: const Text('Salir',
                         style: TextStyle(

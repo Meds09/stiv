@@ -16,11 +16,21 @@ final guideRepositoryProvider = Provider<GuideRepositoryImpl>((ref) {
   return GuideRepositoryImpl(ref.watch(firestoreProvider));
 });
 
+class GuideSearchQueryNotifier extends Notifier<String> {
+  @override
+  String build() => '';
+  void setQuery(String query) => state = query;
+}
 // State Provider for search query
-final guideSearchQueryProvider = StateProvider<String>((ref) => '');
+final guideSearchQueryProvider = NotifierProvider<GuideSearchQueryNotifier, String>(GuideSearchQueryNotifier.new);
 
+class SelectedCategoryNotifier extends Notifier<String?> {
+  @override
+  String? build() => null;
+  void setCategory(String? category) => state = category;
+}
 // Selected Category Provider
-final selectedCategoryProvider = StateProvider<String?>((ref) => null);
+final selectedCategoryProvider = NotifierProvider<SelectedCategoryNotifier, String?>(SelectedCategoryNotifier.new);
 
 // Stream of all active guides (re-creates listener when auth state changes)
 final guidesStreamProvider = StreamProvider<List<Guide>>((ref) {
