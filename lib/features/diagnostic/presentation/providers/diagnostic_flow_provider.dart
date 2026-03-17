@@ -141,10 +141,15 @@ class DiagnosticFlowState {
 }
 
 /// Notifier que gestiona la lógica del flujo de diagnóstico unificado.
-class DiagnosticFlowNotifier extends StateNotifier<DiagnosticFlowState> {
-  DiagnosticFlowNotifier(String _) : super(_initialState());
+class DiagnosticFlowNotifier extends Notifier<DiagnosticFlowState> {
+  DiagnosticFlowNotifier(String _);
 
   static const _engine = InferenceEngine(confidenceThreshold: 0.75);
+
+  @override
+  DiagnosticFlowState build() {
+    return _initialState();
+  }
 
   static DiagnosticFlowState _initialState() {
     final questions = deviceDiagnosticQuestions;
@@ -423,7 +428,7 @@ class DiagnosticFlowNotifier extends StateNotifier<DiagnosticFlowState> {
 
 /// Provider family (autoDispose) del flujo diagnóstico unificado.
 /// El parámetro String es ignorado — siempre se usa el árbol de dispositivos.
-final diagnosticFlowProvider = StateNotifierProvider.autoDispose
+final diagnosticFlowProvider = NotifierProvider.autoDispose
     .family<DiagnosticFlowNotifier, DiagnosticFlowState, String>(
-  (ref, key) => DiagnosticFlowNotifier(key),
+  DiagnosticFlowNotifier.new,
 );

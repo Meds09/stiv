@@ -32,7 +32,7 @@ class _DeviceSearchBarState extends ConsumerState<DeviceSearchBar> {
         padding: const WidgetStatePropertyAll(EdgeInsets.symmetric(horizontal: 16)),
         leading: const Icon(Icons.search, color: AppColors.primary),
         onChanged: (query) {
-          ref.read(deviceSearchQueryProvider.notifier).state = query;
+          ref.read(deviceSearchQueryProvider.notifier).setQuery(query);
         },
       ),
     );

@@ -16,9 +16,25 @@ final deviceRepositoryProvider = Provider<DeviceRepository>((ref) {
   return DeviceRepositoryImpl(ref.watch(firestoreProvider));
 });
 
-// State Providers for UI
-final isExpandedCategoryIdProviderFromDevicesPage = StateProvider<Set<int>>((ref) => <int>{});
-final deviceSearchQueryProvider = StateProvider<String>((ref) => '');
+class ExpandedCategoryIdNotifierFromDevices extends Notifier<Set<int>> {
+  @override
+  Set<int> build() => <int>{};
+  void toggle(int id) {
+    if (state.contains(id)) {
+      state = {...state}..remove(id);
+    } else {
+      state = {...state}..add(id);
+    }
+  }
+}
+final isExpandedCategoryIdProviderFromDevicesPage = NotifierProvider<ExpandedCategoryIdNotifierFromDevices, Set<int>>(ExpandedCategoryIdNotifierFromDevices.new);
+
+class DeviceSearchQueryNotifier extends Notifier<String> {
+  @override
+  String build() => '';
+  void setQuery(String query) => state = query;
+}
+final deviceSearchQueryProvider = NotifierProvider<DeviceSearchQueryNotifier, String>(DeviceSearchQueryNotifier.new);
 
 // Stream of devices by category (filtered by current user)
 final deviceByCategoryStreamProvider = StreamProvider.family<List<Device>, int>((ref, categoryId) {
