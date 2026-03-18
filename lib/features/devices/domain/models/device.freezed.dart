@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Device {
 
- String get id; String get name; String get model; String get brand; String get userId; String? get image; String get ip; String? get location; int get categoryId; DeviceStatus get status;
+ String get id; String get name; String get model; String get brand; String get userId; String? get image; String get ip; String? get location; int get categoryId;
 /// Create a copy of Device
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $DeviceCopyWith<Device> get copyWith => _$DeviceCopyWithImpl<Device>(this as Dev
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Device&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.model, model) || other.model == model)&&(identical(other.brand, brand) || other.brand == brand)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.image, image) || other.image == image)&&(identical(other.ip, ip) || other.ip == ip)&&(identical(other.location, location) || other.location == location)&&(identical(other.categoryId, categoryId) || other.categoryId == categoryId)&&(identical(other.status, status) || other.status == status));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Device&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.model, model) || other.model == model)&&(identical(other.brand, brand) || other.brand == brand)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.image, image) || other.image == image)&&(identical(other.ip, ip) || other.ip == ip)&&(identical(other.location, location) || other.location == location)&&(identical(other.categoryId, categoryId) || other.categoryId == categoryId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,model,brand,userId,image,ip,location,categoryId,status);
+int get hashCode => Object.hash(runtimeType,id,name,model,brand,userId,image,ip,location,categoryId);
 
 @override
 String toString() {
-  return 'Device(id: $id, name: $name, model: $model, brand: $brand, userId: $userId, image: $image, ip: $ip, location: $location, categoryId: $categoryId, status: $status)';
+  return 'Device(id: $id, name: $name, model: $model, brand: $brand, userId: $userId, image: $image, ip: $ip, location: $location, categoryId: $categoryId)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $DeviceCopyWith<$Res>  {
   factory $DeviceCopyWith(Device value, $Res Function(Device) _then) = _$DeviceCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, String model, String brand, String userId, String? image, String ip, String? location, int categoryId, DeviceStatus status
+ String id, String name, String model, String brand, String userId, String? image, String ip, String? location, int categoryId
 });
 
 
@@ -65,7 +65,7 @@ class _$DeviceCopyWithImpl<$Res>
 
 /// Create a copy of Device
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? model = null,Object? brand = null,Object? userId = null,Object? image = freezed,Object? ip = null,Object? location = freezed,Object? categoryId = null,Object? status = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? model = null,Object? brand = null,Object? userId = null,Object? image = freezed,Object? ip = null,Object? location = freezed,Object? categoryId = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -76,8 +76,7 @@ as String,image: freezed == image ? _self.image : image // ignore: cast_nullable
 as String?,ip: null == ip ? _self.ip : ip // ignore: cast_nullable_to_non_nullable
 as String,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
 as String?,categoryId: null == categoryId ? _self.categoryId : categoryId // ignore: cast_nullable_to_non_nullable
-as int,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as DeviceStatus,
+as int,
   ));
 }
 
@@ -162,10 +161,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String model,  String brand,  String userId,  String? image,  String ip,  String? location,  int categoryId,  DeviceStatus status)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String model,  String brand,  String userId,  String? image,  String ip,  String? location,  int categoryId)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Device() when $default != null:
-return $default(_that.id,_that.name,_that.model,_that.brand,_that.userId,_that.image,_that.ip,_that.location,_that.categoryId,_that.status);case _:
+return $default(_that.id,_that.name,_that.model,_that.brand,_that.userId,_that.image,_that.ip,_that.location,_that.categoryId);case _:
   return orElse();
 
 }
@@ -183,10 +182,10 @@ return $default(_that.id,_that.name,_that.model,_that.brand,_that.userId,_that.i
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String model,  String brand,  String userId,  String? image,  String ip,  String? location,  int categoryId,  DeviceStatus status)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String model,  String brand,  String userId,  String? image,  String ip,  String? location,  int categoryId)  $default,) {final _that = this;
 switch (_that) {
 case _Device():
-return $default(_that.id,_that.name,_that.model,_that.brand,_that.userId,_that.image,_that.ip,_that.location,_that.categoryId,_that.status);case _:
+return $default(_that.id,_that.name,_that.model,_that.brand,_that.userId,_that.image,_that.ip,_that.location,_that.categoryId);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -203,10 +202,10 @@ return $default(_that.id,_that.name,_that.model,_that.brand,_that.userId,_that.i
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String model,  String brand,  String userId,  String? image,  String ip,  String? location,  int categoryId,  DeviceStatus status)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String model,  String brand,  String userId,  String? image,  String ip,  String? location,  int categoryId)?  $default,) {final _that = this;
 switch (_that) {
 case _Device() when $default != null:
-return $default(_that.id,_that.name,_that.model,_that.brand,_that.userId,_that.image,_that.ip,_that.location,_that.categoryId,_that.status);case _:
+return $default(_that.id,_that.name,_that.model,_that.brand,_that.userId,_that.image,_that.ip,_that.location,_that.categoryId);case _:
   return null;
 
 }
@@ -218,7 +217,7 @@ return $default(_that.id,_that.name,_that.model,_that.brand,_that.userId,_that.i
 @JsonSerializable()
 
 class _Device extends Device {
-  const _Device({required this.id, required this.name, required this.model, required this.brand, required this.userId, this.image, required this.ip, this.location, required this.categoryId, this.status = DeviceStatus.offline}): super._();
+  const _Device({required this.id, required this.name, required this.model, required this.brand, required this.userId, this.image, required this.ip, this.location, required this.categoryId}): super._();
   factory _Device.fromJson(Map<String, dynamic> json) => _$DeviceFromJson(json);
 
 @override final  String id;
@@ -230,7 +229,6 @@ class _Device extends Device {
 @override final  String ip;
 @override final  String? location;
 @override final  int categoryId;
-@override@JsonKey() final  DeviceStatus status;
 
 /// Create a copy of Device
 /// with the given fields replaced by the non-null parameter values.
@@ -245,16 +243,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Device&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.model, model) || other.model == model)&&(identical(other.brand, brand) || other.brand == brand)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.image, image) || other.image == image)&&(identical(other.ip, ip) || other.ip == ip)&&(identical(other.location, location) || other.location == location)&&(identical(other.categoryId, categoryId) || other.categoryId == categoryId)&&(identical(other.status, status) || other.status == status));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Device&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.model, model) || other.model == model)&&(identical(other.brand, brand) || other.brand == brand)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.image, image) || other.image == image)&&(identical(other.ip, ip) || other.ip == ip)&&(identical(other.location, location) || other.location == location)&&(identical(other.categoryId, categoryId) || other.categoryId == categoryId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,model,brand,userId,image,ip,location,categoryId,status);
+int get hashCode => Object.hash(runtimeType,id,name,model,brand,userId,image,ip,location,categoryId);
 
 @override
 String toString() {
-  return 'Device(id: $id, name: $name, model: $model, brand: $brand, userId: $userId, image: $image, ip: $ip, location: $location, categoryId: $categoryId, status: $status)';
+  return 'Device(id: $id, name: $name, model: $model, brand: $brand, userId: $userId, image: $image, ip: $ip, location: $location, categoryId: $categoryId)';
 }
 
 
@@ -265,7 +263,7 @@ abstract mixin class _$DeviceCopyWith<$Res> implements $DeviceCopyWith<$Res> {
   factory _$DeviceCopyWith(_Device value, $Res Function(_Device) _then) = __$DeviceCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, String model, String brand, String userId, String? image, String ip, String? location, int categoryId, DeviceStatus status
+ String id, String name, String model, String brand, String userId, String? image, String ip, String? location, int categoryId
 });
 
 
@@ -282,7 +280,7 @@ class __$DeviceCopyWithImpl<$Res>
 
 /// Create a copy of Device
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? model = null,Object? brand = null,Object? userId = null,Object? image = freezed,Object? ip = null,Object? location = freezed,Object? categoryId = null,Object? status = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? model = null,Object? brand = null,Object? userId = null,Object? image = freezed,Object? ip = null,Object? location = freezed,Object? categoryId = null,}) {
   return _then(_Device(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -293,8 +291,7 @@ as String,image: freezed == image ? _self.image : image // ignore: cast_nullable
 as String?,ip: null == ip ? _self.ip : ip // ignore: cast_nullable_to_non_nullable
 as String,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
 as String?,categoryId: null == categoryId ? _self.categoryId : categoryId // ignore: cast_nullable_to_non_nullable
-as int,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as DeviceStatus,
+as int,
   ));
 }
 

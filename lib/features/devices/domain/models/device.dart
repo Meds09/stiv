@@ -4,11 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'device.freezed.dart';
 part 'device.g.dart';
 
-enum DeviceStatus {
-  online,
-  offline,
-  maintenance,
-}
+
 
 @freezed
 abstract class Device with _$Device {
@@ -23,7 +19,7 @@ abstract class Device with _$Device {
     required String ip,
     String? location,
     required int categoryId,
-    @Default(DeviceStatus.offline) DeviceStatus status,
+
   }) = _Device;
 
   factory Device.fromJson(Map<String, dynamic> json) => _$DeviceFromJson(json);

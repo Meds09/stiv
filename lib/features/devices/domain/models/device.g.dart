@@ -16,9 +16,6 @@ _Device _$DeviceFromJson(Map<String, dynamic> json) => _Device(
   ip: json['ip'] as String,
   location: json['location'] as String?,
   categoryId: (json['categoryId'] as num).toInt(),
-  status:
-      $enumDecodeNullable(_$DeviceStatusEnumMap, json['status']) ??
-      DeviceStatus.offline,
 );
 
 Map<String, dynamic> _$DeviceToJson(_Device instance) => <String, dynamic>{
@@ -31,11 +28,4 @@ Map<String, dynamic> _$DeviceToJson(_Device instance) => <String, dynamic>{
   'ip': instance.ip,
   'location': instance.location,
   'categoryId': instance.categoryId,
-  'status': _$DeviceStatusEnumMap[instance.status]!,
-};
-
-const _$DeviceStatusEnumMap = {
-  DeviceStatus.online: 'online',
-  DeviceStatus.offline: 'offline',
-  DeviceStatus.maintenance: 'maintenance',
 };

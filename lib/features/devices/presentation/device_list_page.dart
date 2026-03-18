@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:stiv/core/theme/theme_data.dart';
 import 'package:stiv/features/devices/domain/models/device.dart';
 import 'package:stiv/features/devices/providers/devices_providers.dart';
-import 'package:stiv/features/devices/widgets/status_indicator.dart';
+
 import 'package:stiv/features/diagnostic/models/category.dart';
 import 'package:stiv/features/diagnostic/presentation/providers/catalog_providers.dart';
 import 'package:stiv/features/devices/widgets/device_cached_image.dart';
@@ -205,7 +205,7 @@ class _DevicesBlock extends ConsumerWidget {
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    StatusIndicator(AppColors.primary, deviceId: device.id),
+
                     Text(
                       'IP: ${device.ip}',
                       style: const TextStyle(
