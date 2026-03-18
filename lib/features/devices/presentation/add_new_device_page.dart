@@ -85,7 +85,7 @@ class _AddNewDevicePageState extends ConsumerState<AddNewDevicePage> {
         ip: _ipController.text.trim(),
         location: _locationController.text.trim().isEmpty ? null : _locationController.text.trim(),
         categoryId: _selectedCategoryId!,
-        status: DeviceStatus.offline, 
+ 
         image: imageUrl,
         userId: user.uid,
       );

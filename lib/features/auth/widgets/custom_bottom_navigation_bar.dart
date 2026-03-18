@@ -68,39 +68,34 @@ class _CustomBottomNavigationBarState
     final user = ref.watch(currentUserProvider);
 
     return Container(
-      margin: const EdgeInsets.only(
-        left: AppSpacing.md,
-        right: AppSpacing.md,
-        bottom: AppSpacing.md,
-      ),
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, -5),
           ),
         ],
       ),
       child: ClipRRect(
-        borderRadius: AppRadii.brLg,
         child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+          filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
           child: Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
                 colors: [
+                  AppColors.surface.withValues(alpha: 0.65),
                   AppColors.surface.withValues(alpha: 0.85),
-                  AppColors.surface.withValues(alpha: 0.75),
                 ],
               ),
-              border: Border.all(
-                color: Colors.white.withValues(alpha: 0.2),
-                width: 1.5,
+              border: Border(
+                top: BorderSide(
+                  color: Colors.white.withValues(alpha: 0.1),
+                  width: 1.0,
+                ),
               ),
-              borderRadius: AppRadii.brLg,
             ),
             child: SafeArea(
               top: false,

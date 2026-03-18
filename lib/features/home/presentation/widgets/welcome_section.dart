@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:stiv/core/theme/theme_data.dart';
 
@@ -72,7 +73,7 @@ class _WelcomeSectionState extends State<WelcomeSection>
               const SizedBox(height: AppSpacing.sm),
               _buildSubtitle(),
               const SizedBox(height: AppSpacing.lg),
-              _buildDivider(),
+        
             ],
           ),
         ),
@@ -81,47 +82,46 @@ class _WelcomeSectionState extends State<WelcomeSection>
   }
 
   Widget _buildWelcomeText() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+    return DefaultTextStyle(
+      style: const TextStyle(
+        fontSize: 32,
+        fontFamily: 'Rubik',
+        fontWeight: FontWeight.w700,
+        height: 1.2,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
         Text(
-          'Mantén siempre',
-          style: TextStyle(
+          'Mantén siempre\ntus dispositivos',
+          style: const TextStyle(
             color: AppColors.textPrimary,
-            fontSize: 32,
-            fontFamily: 'Rubik',
-            fontWeight: FontWeight.w700,
-            height: 1.2,
           ),
         ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Text(
-                'tus dispositivos',
-                style: TextStyle(
-                  color: AppColors.textPrimary,
-                  fontSize: 32,
-                  fontFamily: 'Rubik',
-                  fontWeight: FontWeight.w700,
-                  height: 1.2,
+          AnimatedTextKit(
+            animatedTexts: [
+              TypewriterAnimatedText(
+                'Operativos con Stiv',
+                cursor: '_'  ,
+
+
+                textStyle: const TextStyle(
+                  color: AppColors.primary,
+                  fontSize: 36,
+
                 ),
+                speed: const Duration(milliseconds: 100),
               ),
-            ),
-          ],
-        ),
-        Text(
-          'Operativos',
-          style: TextStyle(
-            color: AppColors.primary,
-            fontSize: 36,
-            fontFamily: 'Rubik',
-            fontWeight: FontWeight.w700,
-            height: 1.2,
+            ],isRepeatingAnimation: true,
+            displayFullTextOnTap: true,
+            pause: const Duration(seconds: 2),
+
+           
+
+
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -129,15 +129,5 @@ class _WelcomeSectionState extends State<WelcomeSection>
     return const SizedBox.shrink();
   }
 
-  Widget _buildDivider() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
-      height: 3,
-      decoration: BoxDecoration(
-        color: AppColors.border,
-        borderRadius: BorderRadius.circular(2),
-      ),
-    );
-  }
 }
 

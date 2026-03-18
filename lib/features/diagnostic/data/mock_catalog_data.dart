@@ -19,7 +19,7 @@ final mockDevices = <Device>[
     brand: 'Dahua',
     model: 'HFW-XXX',
     ip: '192.168.19.129', 
-    status: DeviceStatus.online,
+
     userId: 'mock',
   ),
   Device(
@@ -30,7 +30,7 @@ final mockDevices = <Device>[
     model: 'DS-2DEXXXX',
     ip: '192.168.2.128',
     image: 'assets/images/devices/axis_camera.jfif', 
-    status: DeviceStatus.offline,
+
     userId: 'mock',
   ),
 
@@ -41,7 +41,7 @@ final mockDevices = <Device>[
     brand: 'APC',
     model: 'APC',
     ip: '172.120.124.12', 
-    status: DeviceStatus.maintenance,
+
     userId: 'mock',
   ),
 
@@ -52,7 +52,7 @@ final mockDevices = <Device>[
     brand: 'ZKTeco',
     model: 'Zkteco 1',
     ip: '192.168.1.2', 
-    status: DeviceStatus.online,
+
     userId: 'mock',
   ),
 
@@ -64,7 +64,7 @@ final mockDevices = <Device>[
     model: 'Dahua fenix',
     ip: '192.168.1.5',
     image: 'assets/images/devices/router.jfif', 
-    status: DeviceStatus.offline,
+
     userId: 'mock',
   ),
 
