@@ -45,6 +45,8 @@ class HomePage extends ConsumerWidget {
                     ),
                     const SizedBox(height: AppSpacing.lg),
                     WelcomeSection(firstName: firstName),
+                    const SizedBox(height: AppSpacing.sm),
+                    const DiagnosticStatsSection(),
                     const SizedBox(height: AppSpacing.xl),
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -57,15 +59,14 @@ class HomePage extends ConsumerWidget {
                             'Acciones rápidas',
                             style: AppTextStyles.h2,
                           ),
-                          const SizedBox(height: AppSpacing.md),
+                          const SizedBox(height: AppSpacing.sm),
                         ],
                       ),
                     ),
-                    const SizedBox(height: AppSpacing.sm),
+                   const SizedBox(height: AppSpacing.sm),
                     MenuGridSection(options: menuOptions),
                     const SizedBox(height: AppSpacing.xl),
-                    const StatsSection(),
-                     const SizedBox(height: AppSpacing.xl),
+                    const SizedBox(height: AppSpacing.xl),
                     const SizedBox(height: 100), // Padding para que el contenido se vea detrás del nav bar
                   ],
                 ),
