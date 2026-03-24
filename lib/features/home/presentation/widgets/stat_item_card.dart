@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stiv/core/theme/theme_data.dart';
-import 'package:animated_flip_counter/animated_flip_counter.dart';
+import 'package:countup/countup.dart';
 
 class StatItemCard extends StatefulWidget {
   final IconData icon;
@@ -87,11 +87,12 @@ class _StatItemCardState extends State<StatItemCard> {
                 ),
               ),
               SizedBox(height: widget.isPrimary ? AppSpacing.md : AppSpacing.sm),
-              AnimatedFlipCounter(
-                value: widget.value,
-                duration: const Duration(milliseconds: 600),
-                curve: Curves.easeOut,
-                textStyle: AppTextStyles.h1.copyWith(
+              Countup(
+                begin: 0,
+                end: widget.value.toDouble(),
+                duration: const Duration(seconds: 2),
+                separator: ',',
+                style: AppTextStyles.h1.copyWith(
                   fontSize: widget.isPrimary ? 28 : 20,
                   color: AppColors.textPrimary,
                 ),
