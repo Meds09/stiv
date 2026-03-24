@@ -12,25 +12,27 @@ class DiagnosticPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: _buildAppBar(),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: RefreshIndicator(
-                onRefresh: () async {
-                  // Refrescar datos al hacer pull to refresh
-                  await Future.delayed(const Duration(milliseconds: 500));
-                },
-                child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(
-                    parent: AlwaysScrollableScrollPhysics(),
-                  ),
+      body: Column(
+        children: [
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: () async {
+                // Refrescar datos al hacer pull to refresh
+                await Future.delayed(const Duration(milliseconds: 500));
+              },
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics(),
+                ),
+                child: SafeArea(
+                  bottom: true,
+                  top: false,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: const Center(
+                      const Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Center(
                           child: Text(
                             'Selecciona un dispositivo para iniciar el diagnóstico',
                             style: TextStyle(
@@ -59,12 +61,9 @@ class DiagnosticPage extends StatelessWidget {
                               ),
                             ),
                             GestureDetector(
-                          
                               onTap: () {
-
                                 router.push('/devices/add');
                               },
-                              
                               child: const Text(
                                 'Aqui',
                                 style: TextStyle(
@@ -96,23 +95,21 @@ class DiagnosticPage extends StatelessWidget {
                       const SizedBox(height: AppSpacing.lg),
                       const CategoriesList(),
                       const SizedBox(height: AppSpacing.xl),
+                      
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: const [ButtonWithoutDevice()],
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
             ),
-            SafeArea(
-              top: false,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [ButtonWithoutDevice()],
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
